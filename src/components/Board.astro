@@ -1,0 +1,998 @@
+---
+// The site: a cork board, newest first, with a blue marker line running down
+// it through the years. Every section is a big photo with a handwritten
+// caption and a few smaller ones under it, a post-it with the whole story
+// (an opening, then short parts with small headings), and the logos of who it
+// was with, pinned up big on cards of their own. Personal moments are photos
+// of their own between the sections.
+import "@fontsource-variable/caveat/index.css";
+import "@fontsource-variable/geist/wght.css";
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import { STACK, SOCIALS } from "../data/icons";
+import { PERSON, PHOTOS } from "../data/profile";
+import { STOPS, LICENCES, MUSIC, storyHref, type Section } from "../data/sections";
+import { CAPTIONS, PAUSE_CAPTIONS } from "../data/captions";
+import { STORIES } from "../data/stories";
+
+// The first sentence of a story is set a little stronger.
+const firstSentence = (text: string) => {
+  const i = text.indexOf(". ");
+  return i < 0 ? [text, ""] : [text.slice(0, i + 1), text.slice(i + 2)];
+};
+// Up to four more photos of a section sit under its big one.
+const EXTRAS = 4;
+// Logos are pinned up big; `size` (set for the small sticker scale) keeps a
+// stacked or very wide logo in proportion with the rest.
+const logoHeight = (size = 24) => Math.round(size * 2.6);
+
+const meta = (s: Section) => [s.when, s.role].filter(Boolean).join(", ");
+// A few fixed tilts, so the board looks pinned by hand but never messy.
+const TILTS = ["t0", "t1", "t2", "t3", "t4"];
+let n = 0;
+const tilt = () => TILTS[n++ % TILTS.length];
+const NOTE_COLOURS = ["yellow", "pink", "blue", "green"];
+let colour = 0;
+// Photos alternate between the left and the right of their post-it. Most
+// post-its sit apart from their photo, at different heights and indents, and
+// now and then one overlaps the photo's edge: a fixed sequence that looks loose.
+let flips = 0;
+const LAYOUTS = ["apart n-hi", "apart n-lo", "lap n-mid", "apart n-mid", "apart n-lo", "lap n-hi", "apart n-hi", "apart n-mid"];
+const INDENTS = ["", "in2", "in1"];
+let placed = 0;
+const layout = () => `${LAYOUTS[placed % LAYOUTS.length]} ${INDENTS[placed++ % INDENTS.length]}`;
+---
+
+<div class="board" data-road-root>
+  <header class="top">
+    <figure class="polaroid big hero t3">
+      <span class="pin" aria-hidden="true"></span>
+      <Picture src={PHOTOS.portrait} formats={["avif", "webp"]} widths={[500, 800, 1000]} sizes="(max-width: 860px) 92vw, 600px" alt="David Bacelj, smiling, in a black polo shirt" loading="eager" fetchpriority="high" />
+      <figcaption class="hand">Me, in the Incredible office in Jönköping.</figcaption>
+    </figure>
+    <div class="note yellow intro t1">
+      <span class="pin" aria-hidden="true"></span>
+      <h1>David Bacelj</h1>
+      <p class="lead">{PERSON.lead}</p>
+      <p class="body">{PERSON.before}</p>
+      <ul class="socials">
+        {
+          SOCIALS.map((s) => (
+            <li>
+              <a href={s.href} rel="me noopener" target="_blank">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path fill="currentColor" d={s.path} />
+                </svg>
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="hand hint">Newest first. Follow the blue line down to where it all started.</p>
+    </div>
+  </header>
+
+  <section class="trip" data-trip aria-label="What I have done, newest first">
+    <svg class="road" data-road aria-hidden="true">
+      <path data-sketch class="road-sketch" />
+      <path data-body class="road-body" />
+    </svg>
+    <div class="traveller" data-traveller aria-hidden="true">
+      <Picture src={PHOTOS.portrait} formats={["avif", "webp"]} widths={[120]} sizes="48px" alt="" loading="eager" />
+    </div>
+
+    <ol class="stops">
+      {
+        STOPS.map((stop) => (
+          <li class="stop">
+            <div class="lane">
+              <div class="sign reveal" data-sign>
+                <span>{stop.sign}</span>
+              </div>
+            </div>
+            <div class="stop-content">
+              <header class="stop-head reveal">
+                <h2 class="stop-label hand">{stop.label}</h2>
+                <p class="tagline">{stop.tagline}</p>
+              </header>
+              {stop.sections.map((s) => (
+                <section class:list={["entry", layout(), { flip: flips++ % 2 === 1, "no-photo": !s.photo }]} aria-label={s.title}>
+                  {s.photo && (
+                    <div class="pics">
+                      <figure class:list={["polaroid", "hero", tilt(), "reveal"]}>
+                        <span class="pin" aria-hidden="true" />
+                        <Picture src={s.photo.src} formats={["avif", "webp"]} widths={[640, 1000, 1300]} sizes="(max-width: 860px) 92vw, 610px" alt={s.photo.alt} />
+                        <figcaption class="hand">{CAPTIONS[s.id]?.[0] ?? s.photo.alt}</figcaption>
+                      </figure>
+                      {s.thumbs && s.thumbs.length > 0 && (
+                        <div class="extras">
+                          {s.thumbs.slice(0, EXTRAS).map((photo, k) => (
+                            <figure class:list={["polaroid", "small", tilt(), "reveal"]}>
+                              <span class="pin" aria-hidden="true" />
+                              <Picture src={photo.src} formats={["avif", "webp"]} widths={[400, 640]} sizes="(max-width: 860px) 92vw, 290px" alt={photo.alt} />
+                              <figcaption class="hand">{CAPTIONS[s.id]?.[k + 1] ?? photo.alt}</figcaption>
+                            </figure>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <article class:list={["note", NOTE_COLOURS[colour++ % NOTE_COLOURS.length], tilt(), "reveal"]}>
+                    <span class="pin" aria-hidden="true" />
+                    {meta(s) && <p class="hand meta">{meta(s)}</p>}
+                    <h3 class="hand">{s.title}</h3>
+                    {(STORIES[s.id] ?? [{ p: s.lede }]).map((part, k) =>
+                      part.h ? (
+                        <div class="part">
+                          <h4>{part.h}</h4>
+                          <p>{part.p}</p>
+                        </div>
+                      ) : k === 0 ? (
+                        <p class="opening">
+                          <span class="first">{firstSentence(part.p)[0]}</span> {firstSentence(part.p)[1]}
+                        </p>
+                      ) : (
+                        <p>{part.p}</p>
+                      ),
+                    )}
+                    <p class="links">
+                      <a href={storyHref(s.id)} class="more">
+                        Photos, sources and the whole story →
+                      </a>
+                    </p>
+                  </article>
+                  {s.logos && s.logos.length > 0 && (
+                    <ul class="logo-wall" aria-label={`Together with: ${s.logos.map((l) => l.alt).join(", ")}`}>
+                      {s.logos.map((l) => (
+                        <li class:list={["logo-card", tilt(), "reveal", { dark: l.dark }]}>
+                          <span class="pin" aria-hidden="true" />
+                          <Logo src={l.src} alt={l.alt} height={logoHeight(l.size)} />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
+              {stop.pause && (
+                <section class:list={["moment", { flip: flips++ % 2 === 1 }]} aria-label={stop.pause.title}>
+                  <figure class:list={["polaroid", "hero", tilt(), "reveal"]}>
+                    <span class="pin" aria-hidden="true" />
+                    <Picture src={stop.pause.photo.src} formats={["avif", "webp"]} widths={[640, 1000]} sizes="(max-width: 860px) 92vw, 520px" alt={stop.pause.photo.alt} />
+                    <figcaption class="hand">{PAUSE_CAPTIONS[stop.sign] ?? stop.pause.text}</figcaption>
+                  </figure>
+                </section>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <footer class="end">
+    <article class="note green t2 reveal">
+      <span class="pin" aria-hidden="true"></span>
+      <h2 class="hand">Off the clock</h2>
+      <p class="lead">Cross-country skiing in winter, camping and hunting the rest of the year, and the sea whenever I can get there.</p>
+      <div class="end-grid">
+        <div>
+          <h4 class="hand">Licences</h4>
+          <ul>{LICENCES.map((l) => <li>{l}</li>)}</ul>
+        </div>
+        <div>
+          <h4 class="hand">On repeat: {MUSIC.artist}</h4>
+          <ul>{MUSIC.songs.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div>
+          <h4 class="hand">Tools I build with</h4>
+          <ul class="tools">
+            {
+              STACK.map((icon) => (
+                <li title={icon.title}>
+                  <Icon icon={icon} size={22} brand label={icon.title} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </article>
+    <section class="entry say apart n-mid" aria-label="Say hello">
+    <figure class="polaroid hero portrait t3 reveal">
+      <span class="pin" aria-hidden="true"></span>
+      <Picture src={PHOTOS.studio} formats={["avif", "webp"]} widths={[500, 900]} sizes="(max-width: 860px) 92vw, 440px" alt="David Bacelj in a navy polo shirt, against a white wall" />
+      <figcaption class="hand">That's me. Thanks for following the line all the way down.</figcaption>
+    </figure>
+    <article class="note pink t4 reveal">
+      <span class="pin" aria-hidden="true"></span>
+      <h2 class="hand">Say hello!</h2>
+      <ul class="hello">
+        {
+          SOCIALS.map((s) => (
+            <li>
+              <a href={s.href} rel="me noopener" target="_blank">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path fill="currentColor" d={s.path} />
+                </svg>
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="small">Open source: <a href="https://github.com/davidbacelj/davidbacelj">github.com/davidbacelj/davidbacelj</a></p>
+    </article>
+    </section>
+  </footer>
+</div>
+
+<script>
+  // The blue line runs down the left of the board through every year, swaying
+  // a little between them, and draws itself in as you scroll; my photo rides
+  // its tip. Each frame only reads a lookup table, so scrolling stays smooth.
+  const root = document.querySelector<HTMLElement>("[data-road-root]")!;
+  const trip = root.querySelector<HTMLElement>("[data-trip]")!;
+  const svg = root.querySelector<SVGSVGElement>("[data-road]")!;
+  const sketch = root.querySelector<SVGPathElement>("[data-sketch]")!;
+  const body = root.querySelector<SVGPathElement>("[data-body]")!;
+  const traveller = root.querySelector<HTMLElement>("[data-traveller]")!;
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STEP = 6;
+  let length = 0;
+  let top = 0;
+  let lutX = new Float64Array(0);
+  let lutY = new Float64Array(0);
+
+  const build = () => {
+    const box = trip.getBoundingClientRect();
+    const w = Math.round(box.width);
+    const h = Math.round(box.height);
+    svg.setAttribute("width", String(w));
+    svg.setAttribute("height", String(h));
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    const signs = [...trip.querySelectorAll<HTMLElement>("[data-sign]")].map((el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+    });
+    if (signs.length < 2) return;
+    const sway = w < 860 ? 6 : 26;
+    const pts = [{ x: signs[0].x, y: 0 }, ...signs, { x: signs[signs.length - 1].x, y: h }];
+    const route = [pts[0]];
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1];
+      const b = pts[i];
+      const swings = Math.floor((b.y - a.y) / 420);
+      for (let s = 1; s <= swings; s++) route.push({ x: a.x + (s % 2 ? sway : -sway), y: a.y + ((b.y - a.y) * s) / (swings + 1) });
+      route.push(b);
+    }
+    let d = `M ${route[0].x.toFixed(1)} ${route[0].y.toFixed(1)}`;
+    for (let i = 1; i < route.length; i++) {
+      const a = route[i - 1];
+      const b = route[i];
+      const k = (b.y - a.y) * 0.5;
+      d += ` C ${a.x.toFixed(1)} ${(a.y + k).toFixed(1)}, ${b.x.toFixed(1)} ${(b.y - k).toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+    }
+    sketch.setAttribute("d", d);
+    body.setAttribute("d", d);
+    length = body.getTotalLength();
+    const n = Math.ceil(length / STEP) + 1;
+    lutX = new Float64Array(n);
+    lutY = new Float64Array(n);
+    for (let i = 0; i < n; i++) {
+      const p = body.getPointAtLength(Math.min(length, i * STEP));
+      lutX[i] = p.x;
+      lutY[i] = p.y;
+    }
+    body.style.strokeDasharray = `${length} ${length}`;
+    top = box.top + window.scrollY;
+    frame();
+  };
+
+  // Where the line is at a given height: binary search, then interpolate.
+  const atHeight = (y: number) => {
+    let lo = 0;
+    let hi = lutY.length - 1;
+    if (y <= lutY[0]) return { at: 0, x: lutX[0], y: lutY[0] };
+    if (y >= lutY[hi]) return { at: length, x: lutX[hi], y: lutY[hi] };
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (lutY[mid] < y) lo = mid;
+      else hi = mid;
+    }
+    const f = (y - lutY[lo]) / (lutY[hi] - lutY[lo] || 1);
+    return { at: Math.min(length, (lo + f) * STEP), x: lutX[lo] + (lutX[hi] - lutX[lo]) * f, y };
+  };
+
+  let queued = false;
+  const frame = () => {
+    queued = false;
+    if (!length) return;
+    if (still) {
+      body.style.strokeDashoffset = "0";
+      return;
+    }
+    const p = atHeight(window.scrollY + window.innerHeight * 0.55 - top);
+    body.style.strokeDashoffset = String(length - p.at);
+    traveller.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px)`;
+    traveller.classList.toggle("parked", p.at <= 1 || p.at >= length - 1);
+  };
+  const queue = () => {
+    if (!queued) {
+      queued = true;
+      requestAnimationFrame(frame);
+    }
+  };
+
+  new ResizeObserver(() => build()).observe(trip);
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+
+  // Photos and notes are pinned up as you reach them. Without this script,
+  // or with reduced motion, everything simply stays visible.
+  if (!still) {
+    root.classList.add("js-board");
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            seen.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 },
+    );
+    root.querySelectorAll(".reveal").forEach((el) => seen.observe(el));
+  }
+</script>
+
+<style>
+  .board {
+    --ink: #22201c;
+    --dim: #5f584c;
+    --marker: #2f5fa8;
+    --ground: #ddc39d;
+    --hand: "Caveat Variable", "Bradley Hand", cursive;
+    --sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+    --note: 370px;
+    /* A section's photo and post-it columns */
+    --photo-w: 610px;
+    --note-w: 480px;
+    --lane: 110px;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: clamp(28px, 5vw, 72px) 20px 130px;
+    overflow-x: hidden;
+    /* Cork: three layers of fine dots on a warm brown */
+    background:
+      radial-gradient(circle at 30% 40%, rgb(110 70 30 / 0.16) 1px, transparent 1.7px) 0 0 / 9px 9px,
+      radial-gradient(circle at 70% 70%, rgb(255 245 225 / 0.22) 1px, transparent 2px) 0 0 / 13px 13px,
+      radial-gradient(circle at 50% 20%, rgb(120 80 40 / 0.1) 1.5px, transparent 2.5px) 0 0 / 23px 19px,
+      var(--ground);
+  }
+  .hand {
+    font-family: var(--hand);
+    font-weight: 600;
+  }
+
+  /* Things pinned to the board */
+  .pin {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    z-index: 2;
+    width: 18px;
+    height: 18px;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fca5a5 0%, #ef4444 40%, #991b1b 100%);
+    box-shadow: 0 3px 4px rgb(0 0 0 / 0.35);
+  }
+  .note {
+    position: relative;
+    width: var(--note);
+    padding: 26px;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 0.06), 0 18px 28px -18px rgb(60 40 10 / 0.6);
+  }
+  .yellow {
+    background: #fde68a;
+  }
+  .pink {
+    background: #fbcfe8;
+  }
+  .blue {
+    background: #bfdbfe;
+  }
+  .green {
+    background: #bbf7d0;
+  }
+  .polaroid {
+    position: relative;
+    padding: 10px 10px 0;
+    background: #fff;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 0.06), 0 16px 26px -16px rgb(60 40 10 / 0.55);
+  }
+  .polaroid :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .polaroid figcaption {
+    padding: 10px 4px 14px;
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .polaroid.big :global(img),
+  .polaroid.portrait :global(img) {
+    aspect-ratio: 4 / 5;
+    object-position: 50% 20%;
+  }
+  .t0 {
+    rotate: -1.6deg;
+  }
+  .t1 {
+    rotate: 1.1deg;
+  }
+  .t2 {
+    rotate: -0.7deg;
+  }
+  .t3 {
+    rotate: 1.8deg;
+  }
+  .t4 {
+    rotate: -1.2deg;
+  }
+
+  /* Writing on the notes */
+  h1 {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 750;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+  .note h2 {
+    font-size: 44px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .note h3 {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .meta {
+    font-size: 24px;
+    line-height: 1;
+    color: #1e3a8a;
+    margin-bottom: 4px;
+  }
+  .lead {
+    font-size: 17px;
+    font-weight: 560;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .body {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #3b372f;
+    margin-bottom: 8px;
+  }
+  .small {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 6px;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .more {
+    font-weight: 650;
+    font-size: 15px;
+  }
+  .socials,
+  .hello {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .socials a,
+  .hello a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.75);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .hint {
+    margin-top: 16px;
+    font-size: 23px;
+    line-height: 1.15;
+    color: #1e3a8a;
+  }
+
+  /* The header */
+  .top {
+    max-width: 1180px;
+    margin: 0 auto clamp(80px, 9vw, 130px);
+    display: grid;
+    grid-template-columns: minmax(0, 600px) minmax(0, 540px);
+    gap: clamp(32px, 4vw, 60px);
+    align-items: center;
+  }
+  .top .intro {
+    width: auto;
+    padding: 32px 34px;
+  }
+  .top .intro .meta,
+  .top .intro h1 + .lead {
+    font-size: 17px;
+  }
+
+  /* The blue line and the year signs */
+  .trip {
+    position: relative;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .road {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .road path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .road-sketch {
+    stroke: rgb(30 58 138 / 0.22);
+    stroke-width: 2;
+    stroke-dasharray: 2 9;
+  }
+  .road-body {
+    stroke: var(--marker);
+    stroke-width: 9;
+    opacity: 0.88;
+  }
+  .traveller {
+    position: absolute;
+    top: -24px;
+    left: -24px;
+    z-index: 3;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    overflow: hidden;
+    box-shadow: 0 5px 12px rgb(0 0 0 / 0.3);
+    will-change: transform;
+    transition: opacity 0.3s ease;
+  }
+  .traveller :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+    transform: scale(1.5) translateY(6%);
+  }
+  .traveller.parked {
+    opacity: 0;
+  }
+
+  .stop {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: var(--lane) minmax(0, 1fr);
+    padding-bottom: clamp(180px, 18vw, 280px);
+  }
+  .lane {
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+  .sign {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 74px;
+    border: 3px solid var(--marker);
+    border-radius: 47% 53% 44% 56% / 55% 42% 58% 45%;
+    background: #fef6c8;
+    box-shadow: 0 0 0 5px var(--ground);
+    rotate: -4deg;
+  }
+  .sign span {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 30px;
+    color: #1e3a8a;
+  }
+  .stop-content {
+    display: grid;
+    gap: clamp(170px, 17vw, 260px);
+  }
+  .stop-head {
+    padding-top: 14px;
+    margin-bottom: clamp(-90px, -6vw, -40px);
+  }
+  .stop-label {
+    font-size: clamp(48px, 5.4vw, 72px);
+    line-height: 1;
+    color: #1e3a8a;
+  }
+  .tagline {
+    max-width: 640px;
+    margin-top: 8px;
+    font-size: clamp(19px, 1.7vw, 23px);
+    font-weight: 560;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  /* One section: a big photo and its post-it, overlapping a little */
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(0, var(--photo-w)) minmax(0, var(--note-w));
+    align-items: center;
+    justify-content: start;
+  }
+  /* Where the post-it sits: apart or overlapping, high, middle or low, and a
+     small indent. Written with :where() so the phone layout below wins. */
+  .entry:where(.apart) {
+    column-gap: clamp(36px, 4.5vw, 72px);
+  }
+  .entry:where(.in1) {
+    padding-left: clamp(0px, 3vw, 44px);
+  }
+  .entry:where(.in2) {
+    padding-left: clamp(0px, 6vw, 88px);
+  }
+  .entry:where(.n-hi) > .note {
+    align-self: start;
+    margin-top: clamp(24px, 4vw, 64px);
+  }
+  .entry:where(.n-lo) > .note {
+    align-self: end;
+    margin-bottom: clamp(16px, 3vw, 44px);
+  }
+  .entry.flip {
+    grid-template-columns: minmax(0, var(--note-w)) minmax(0, var(--photo-w));
+  }
+  .entry.flip .pics {
+    order: 2;
+  }
+  .entry.no-photo {
+    grid-template-columns: minmax(0, 470px);
+  }
+  .entry > .note {
+    z-index: 1;
+    width: auto;
+    padding: 32px 32px 30px;
+  }
+  .entry:where(.lap) > .note {
+    margin-left: -40px;
+  }
+  .entry:where(.lap.flip) > .note {
+    margin-left: 0;
+    margin-right: -40px;
+  }
+  .entry:where(.no-photo) > .note {
+    margin: 0;
+  }
+  .hero {
+    padding: 14px 14px 0;
+  }
+  .hero figcaption {
+    padding: 14px 8px 20px;
+    font-size: 27px;
+    line-height: 1.15;
+  }
+  /* Keep the caption clear of a post-it that overlaps the photo's edge. */
+  .entry:where(.lap) .hero figcaption {
+    padding-right: 56px;
+  }
+  .entry:where(.lap.flip) .hero figcaption {
+    padding: 14px 8px 20px 56px;
+  }
+
+  /* The story on the post-it: an opening, then short parts with small headings */
+  .note p {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: #2a2620;
+  }
+  .opening {
+    margin-top: 6px;
+  }
+  .opening .first {
+    font-weight: 620;
+    color: var(--ink);
+  }
+  .part {
+    margin-top: 20px;
+  }
+  .part h4 {
+    font-size: 17.5px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .note .links {
+    margin-top: 22px;
+  }
+
+  /* The photos of a section: the big one, and up to four smaller ones under it */
+  .pics {
+    display: grid;
+    gap: clamp(40px, 4vw, 56px);
+  }
+  .extras {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(32px, 3.5vw, 48px) clamp(24px, 3vw, 40px);
+    padding: 0 6px;
+  }
+  .polaroid.small {
+    padding: 8px 8px 0;
+  }
+  .polaroid.small figcaption {
+    padding: 8px 4px 12px;
+    font-size: 19px;
+  }
+
+  /* Who it was with: each logo pinned up big on a card of its own */
+  .logo-wall {
+    grid-column: 1 / -1;
+    order: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(36px, 4vw, 56px) clamp(32px, 4vw, 64px);
+    margin-top: clamp(64px, 7vw, 100px);
+    padding: 0 12px;
+  }
+  .entry.flip .logo-wall {
+    justify-content: flex-end;
+  }
+  .logo-card {
+    position: relative;
+    display: grid;
+    place-items: center;
+    max-width: 100%;
+    padding: clamp(22px, 2.6vw, 34px) clamp(26px, 3vw, 42px);
+    background: #fff;
+    box-shadow: 0 2px 2px rgb(0 0 0 / 0.06), 0 16px 26px -16px rgb(60 40 10 / 0.55);
+  }
+  .logo-card.dark {
+    background: #22201c;
+  }
+  .logo-card:nth-child(3n + 2) {
+    margin-top: 34px;
+  }
+  .logo-card:nth-child(3n) {
+    margin-top: -14px;
+  }
+
+  /* A personal moment: a photo of its own */
+  .moment {
+    display: grid;
+    grid-template-columns: minmax(0, 540px);
+    justify-content: start;
+    padding-left: clamp(0px, 14vw, 220px);
+  }
+  .moment.flip {
+    justify-content: end;
+    padding: 0 clamp(0px, 10vw, 160px) 0 0;
+  }
+
+  /* The end */
+  .end {
+    max-width: 1180px;
+    margin: clamp(40px, 6vw, 80px) auto 0;
+    display: grid;
+    gap: clamp(90px, 10vw, 140px);
+    padding-left: var(--lane);
+  }
+  .end > .note {
+    width: min(640px, 100%);
+  }
+  .entry.say {
+    grid-template-columns: minmax(0, 440px) minmax(0, 390px);
+  }
+  .end .lead {
+    border: 0;
+  }
+  .end-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .end-grid h4 {
+    font-size: 24px;
+    line-height: 1;
+    color: #1e3a8a;
+    margin-bottom: 4px;
+  }
+  .end-grid li {
+    font-size: 14px;
+  }
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tools li {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: rgb(255 255 255 / 0.7);
+  }
+
+  /* Pinned up as you reach them: a small drop and settle */
+  @media (prefers-reduced-motion: no-preference) {
+    .js-board .reveal {
+      opacity: 0;
+      translate: 0 -18px;
+      scale: 1.04;
+    }
+    .js-board .reveal.in {
+      opacity: 1;
+      translate: 0 0;
+      scale: 1;
+      transition:
+        opacity 260ms ease-out,
+        translate 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        scale 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .js-board .reveal .pin {
+      scale: 1.6;
+      opacity: 0;
+    }
+    .js-board .reveal.in .pin {
+      scale: 1;
+      opacity: 1;
+      transition:
+        scale 300ms 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 160ms 220ms ease-out;
+    }
+  }
+
+  /* Phone: the line down the left edge, everything in one column beside it */
+  @media (max-width: 860px) {
+    .board {
+      --lane: 52px;
+      --note: 100%;
+      padding: 28px 14px 110px;
+    }
+    .top {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 36px;
+    }
+    .entry,
+    .entry.flip,
+    .entry.no-photo,
+    .entry.say,
+    .moment,
+    .moment.flip {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0;
+    }
+    /* On a phone the story comes straight after the big photo, then the
+       smaller photos, then the logos. */
+    .entry .pics {
+      display: contents;
+    }
+    .entry .extras {
+      order: 2;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+      margin-top: 50px;
+      padding: 0 4px;
+    }
+    .extras .polaroid:nth-child(odd) {
+      margin-right: 14%;
+    }
+    .extras .polaroid:nth-child(even) {
+      margin-left: 14%;
+    }
+    .entry > .note {
+      order: 1;
+      align-self: auto;
+      margin: 22px 10px 0;
+      padding: 24px 22px 22px;
+    }
+    .logo-wall,
+    .entry.flip .logo-wall {
+      justify-content: flex-start;
+      gap: 28px 22px;
+      margin-top: 50px;
+      padding: 0 4px;
+    }
+    .logo-card {
+      padding: 18px 20px;
+    }
+    .logo-card :global(img) {
+      max-width: 100%;
+      max-height: 54px;
+    }
+    .logo-card:nth-child(n) {
+      margin-top: 0;
+    }
+    .entry .hero figcaption,
+    .entry.flip .hero figcaption {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .note h3 {
+      font-size: 40px;
+    }
+    .hero figcaption {
+      font-size: 22px;
+    }
+    .stop-content {
+      gap: 130px;
+    }
+    .stop-head {
+      margin-bottom: -30px;
+    }
+    .tagline {
+      font-size: 18px;
+    }
+    .end {
+      padding-left: 0;
+      gap: 80px;
+    }
+    .top .intro {
+      padding: 24px 22px;
+    }
+    .stop {
+      column-gap: 8px;
+    }
+    .sign {
+      width: 50px;
+      height: 46px;
+      border-width: 2px;
+    }
+    .sign span {
+      font-size: 19px;
+    }
+    .end-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .road-body {
+      stroke-width: 6;
+    }
+    .traveller {
+      width: 36px;
+      height: 36px;
+      top: -18px;
+      left: -18px;
+    }
+  }
+</style>

@@ -15,8 +15,9 @@ The site is then at http://localhost:4321. `npm run build` writes the production
 
 ## Where things are
 
-- `src/data/profile.ts` holds everything the site says about me: the intro, the links and the timeline. Change the facts there, not in the components.
-- `src/components/` holds the page sections. `src/layouts/Base.astro` is the HTML shell with the metadata.
+- `src/data/sections.ts` holds every year and section, newest first, with its full story, photos, logos and links. `stories.ts` holds the written story of each section (the post-it and the article page), `captions.ts` the handwritten photo captions, and `profile.ts` the intro and links. Change the facts there, not in the components.
+- New photos from a phone carry GPS and camera data. Strip it before adding them: re-save through Pillow into a fresh image, and check with `exiftool` or Pillow's `getexif()` that nothing is left.
+- `src/components/Board.astro` is the home page, the cork board. `src/pages/story/[id].astro` builds one article per section. `src/layouts/Base.astro` is the HTML shell with the metadata.
 - `src/assets/` holds the photos. Astro resizes them and converts them to AVIF and WebP at build time.
 - `vercel.json` sets the security headers. Astro writes the Content-Security-Policy for scripts and styles into each page (see `astro.config.mjs`).
 

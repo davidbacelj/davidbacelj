@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://davidbacelj.com",
-  // The pilot looks are drafts: kept out of the sitemap (and marked noindex).
+  // Pilot pages are drafts: kept out of the sitemap (and marked noindex).
   integrations: [sitemap({ filter: (page) => !new URL(page).pathname.startsWith("/pilot") })],
   // Astro writes a Content-Security-Policy into every page with the hash of each
   // script and style it emits, so nothing else can run. Headers Astro can't set
@@ -14,5 +14,10 @@ export default defineConfig({
       directives: ["default-src 'self'", "img-src 'self' data:", "font-src 'self'", "connect-src 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"],
     },
   },
+  // No code blocks on the site; Shiki's inline styles would also clash with the CSP.
+  markdown: { syntaxHighlight: false },
+  // Keep every asset as its own file: small fonts would otherwise be inlined as
+  // data: URIs, which the CSP's font-src 'self' blocks.
+  vite: { build: { assetsInlineLimit: 0 } },
   devToolbar: { enabled: false },
 });

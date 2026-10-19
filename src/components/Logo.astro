@@ -1,0 +1,68 @@
+---
+// A company, award or investor logo at a set height. Raster logos are resized
+// for 1x and 2x screens; SVG logos are served as files. The height comes from
+// a class (not a style attribute, which the CSP doesn't allow), so it holds
+// even where the global `img { height: auto }` rule applies.
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  height?: number;
+  class?: string;
+  /** Load right away, for logos that start off-screen but scroll in on their own. */
+  eager?: boolean;
+}
+
+const HEIGHTS = [12, 14, 16, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40, 44, 48, 52, 56, 62, 64, 70, 72, 78, 88, 100, 114];
+const { src, alt, height = 28, class: className, eager = false } = Astro.props;
+const loading = eager ? "eager" : "lazy";
+const h = HEIGHTS.reduce((best, n) => (Math.abs(n - height) < Math.abs(best - height) ? n : best));
+const width = Math.round((src.width / src.height) * h);
+const isSvg = src.format === "svg";
+const classes = ["logo", `h${h}`, className];
+---
+
+{
+  isSvg ? (
+    <img src={src.src} alt={alt} width={width} height={h} class:list={classes} loading={loading} decoding="async" />
+  ) : (
+    <Image src={src} alt={alt} width={width} height={h} densities={[1, 2]} class:list={classes} loading={loading} />
+  )
+}
+
+<style>
+  .logo {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: left center;
+  }
+  .h12 { height: 12px; }
+  .h14 { height: 14px; }
+  .h16 { height: 16px; }
+  .h20 { height: 20px; }
+  .h22 { height: 22px; }
+  .h24 { height: 24px; }
+  .h26 { height: 26px; }
+  .h28 { height: 28px; }
+  .h30 { height: 30px; }
+  .h32 { height: 32px; }
+  .h34 { height: 34px; }
+  .h40 { height: 40px; }
+  .h44 { height: 44px; }
+  .h52 { height: 52px; }
+  .h64 { height: 64px; }
+  .h70 { height: 70px; }
+  .h36 { height: 36px; }
+  .h48 { height: 48px; }
+  .h56 { height: 56px; }
+  .h62 { height: 62px; }
+  .h72 { height: 72px; }
+  .h78 { height: 78px; }
+  .h88 { height: 88px; }
+  .h100 { height: 100px; }
+  .h114 { height: 114px; }
+</style>

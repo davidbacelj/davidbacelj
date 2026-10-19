@@ -36,11 +36,20 @@ ul {
   list-style: none;
 }
 
-img,
-picture {
+img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+/* A <picture> only picks the file; its <img> lays out as if it were the direct
+   child, so height: 100% and flex sizing reach the tile around it. */
+picture {
+  display: contents;
+}
+/* Its <source> tags would otherwise take up cells in a grid. */
+picture > source {
+  display: none;
 }
 
 a {
@@ -68,4 +77,15 @@ a {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Moving between pages fades, and a story card's photo grows into its article. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+::view-transition-group(story-hero) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }

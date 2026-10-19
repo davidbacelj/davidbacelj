@@ -1,11 +1,10 @@
 ---
-// While the look is being picked, the home page shows the recommended pilot (A).
+// The home page: the cork board, newest first. Each section links to its full
+// story under /story/.
 import Base from "../layouts/Base.astro";
-import LookA from "../components/LookA.astro";
-import PilotSwitch from "../components/PilotSwitch.astro";
+import Board from "../components/Board.astro";
 ---
 
-<Base themeColor="#f6f5f0">
-  <LookA />
-  <PilotSwitch look="a" />
+<Base themeColor="#ddc39d">
+  <Board />
 </Base>
