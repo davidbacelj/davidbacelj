@@ -13,6 +13,8 @@ npm run dev
 
 The site is then at http://localhost:4321. `npm run build` writes the production site to `dist/`, and `npm run preview` serves that build.
 
+CI installs with `npm ci` on a newer npm than some Macs have. An older npm can drop optional peer packages (such as `@emnapi/core`) from `package-lock.json` when you add or remove a dependency, and CI then refuses the lock. Check a changed lock with CI's npm before pushing: `npx npm@11.19.0 ci --ignore-scripts --dry-run`.
+
 ## Where things are
 
 - `src/data/sections.ts` holds every year and section, newest first, with its full story, photos, logos and links. `stories.ts` holds the written story of each section (the post-it and the article page), `captions.ts` the handwritten photo captions, and `profile.ts` the intro and links. Change the facts there, not in the components.
