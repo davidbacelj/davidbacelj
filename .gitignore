@@ -1,0 +1,24 @@
+# Dependencies and builds
+node_modules/
+dist/
+.astro/
+.vercel/
+.output/
+
+# Secrets: never commit these. The site needs none today; if one is ever
+# added, put it in Vercel's environment variables and a local .env.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local tools and OS files
+.claude/*
+!.claude/launch.json
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+npm-debug.log*
+*.log

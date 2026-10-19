@@ -1,0 +1,56 @@
+---
+// Review-only: jumps between the three pilot looks. Goes away with the losers.
+interface Props {
+  look: "a" | "b" | "c";
+}
+const { look } = Astro.props;
+const looks = [
+  { id: "a", name: "Drawing sheet" },
+  { id: "b", name: "Detections" },
+  { id: "c", name: "Quiet editorial" },
+];
+---
+
+<nav class="pilot" aria-label="Pilot looks">
+  {
+    looks.map((l) => (
+      <a href={`/pilot/${l.id}`} aria-current={l.id === look ? "page" : undefined}>
+        <b>{l.id.toUpperCase()}</b> {l.name}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .pilot {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 10;
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    background: #111;
+    border-radius: 999px;
+    font: 500 13px/1 ui-sans-serif, system-ui, sans-serif;
+  }
+  .pilot a {
+    color: #bbb;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pilot a[aria-current="page"] {
+    background: #fff;
+    color: #111;
+  }
+  @media (max-width: 560px) {
+    .pilot a {
+      font-size: 0;
+    }
+    .pilot b {
+      font-size: 13px;
+    }
+  }
+</style>

@@ -1,0 +1,570 @@
+---
+// Look A, "Drawing sheet": the page is a technical drawing of a person. Each
+// section is a sheet with a zoned border; the story is the drawing's revision
+// table, and the title block's current revision points at its last row.
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import { Picture } from "astro:assets";
+import photo from "../assets/david-bacelj.jpg";
+import { PERSON, LINKS, TIMELINE } from "../data/profile";
+
+// Drawing revisions skip letters that read like numbers (ASME Y14.35).
+const LETTERS = "ABCDEFGHJKLMNPRTUVWY";
+const rows = TIMELINE.map((entry, i) => ({ ...entry, rev: LETTERS[i] }));
+const current = rows[rows.length - 1].rev;
+const today = new Date().toISOString().slice(0, 10);
+const columns = [1, 2, 3, 4, 5, 6, 7, 8];
+const zoneRows = ["A", "B", "C", "D"];
+---
+
+<div class="look-a">
+  <section class="sheet" aria-labelledby="name">
+    <div class="zones zones-x top" aria-hidden="true">{columns.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-x bottom" aria-hidden="true">{columns.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-y left" aria-hidden="true">{zoneRows.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-y right" aria-hidden="true">{zoneRows.map((n) => <span>{n}</span>)}</div>
+
+    <div class="inner hero">
+      <header class="bar">
+        <a class="mono" href="/">davidbacelj.com</a>
+        <nav class="mono" aria-label="Sections">
+          <a href="#revisions">Revisions</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <figure class="view">
+        <div class="frame">
+          <Picture
+            src={photo}
+            formats={["avif", "webp"]}
+            widths={[480, 720, 1000]}
+            sizes="(max-width: 860px) 92vw, 38vw"
+            alt="David Bacelj, smiling, in a black polo shirt in an office"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <span class="centre top" aria-hidden="true"></span>
+          <span class="centre bottom" aria-hidden="true"></span>
+          <span class="centre left" aria-hidden="true"></span>
+          <span class="centre right" aria-hidden="true"></span>
+        </div>
+        <figcaption class="mono">View A</figcaption>
+      </figure>
+
+      <div class="words">
+        <h1 id="name">David<br />Bacelj</h1>
+        <p class="lead">{PERSON.lead}</p>
+        <p class="before">{PERSON.before}</p>
+      </div>
+
+      <dl class="title-block">
+        <div class="cell wide"><dt>Name</dt><dd>{PERSON.name}</dd></div>
+        <div class="cell wide"><dt>Role</dt><dd>Co-founder, Incredible</dd></div>
+        <div class="cell"><dt>Based in</dt><dd>{PERSON.place}</dd></div>
+        <div class="cell"><dt>Rev</dt><dd><a class="rev-link" href="#revisions">{current}</a></dd></div>
+        <div class="cell"><dt>Date</dt><dd class="mono">{today}</dd></div>
+        <div class="cell"><dt>Sheet</dt><dd class="mono">1 of 2</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sheet" id="revisions" aria-labelledby="revisions-title">
+    <div class="zones zones-x top" aria-hidden="true">{columns.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-x bottom" aria-hidden="true">{columns.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-y left" aria-hidden="true">{zoneRows.map((n) => <span>{n}</span>)}</div>
+    <div class="zones zones-y right" aria-hidden="true">{zoneRows.map((n) => <span>{n}</span>)}</div>
+
+    <div class="inner story">
+      <h2 id="revisions-title">Revision history</h2>
+      <p class="intro">Everything I have worked on since school, oldest first. The last row is where I am now.</p>
+
+      <table class="revisions">
+        <thead class="mono">
+          <tr><th scope="col">Rev</th><th scope="col">Year</th><th scope="col">Description</th></tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr class:list={{ current: row.rev === current }}>
+                <td class="rev">
+                  <span class="delta" aria-hidden="true">
+                    <svg viewBox="0 0 28 24"><path d="M14 1.5 26.5 22.5H1.5Z" /></svg>
+                  </span>
+                  <span class="letter">{row.rev}</span>
+                </td>
+                <td class="year mono">{row.year}</td>
+                <td class="what">
+                  <h3>{row.title}</h3>
+                  <p>{row.text}</p>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <div class="contact" id="contact">
+        <h2>Contact</h2>
+        <ul>
+          {
+            LINKS.map((link) => (
+              <li>
+                <a href={link.href} rel="me noopener" target="_blank">{link.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <dl class="title-block end">
+        <div class="cell wide"><dt>Drawn by</dt><dd>{PERSON.name}</dd></div>
+        <div class="cell"><dt>Rev</dt><dd class="rev-text">{current}</dd></div>
+        <div class="cell"><dt>Sheet</dt><dd class="mono">2 of 2</dd></div>
+        <div class="cell full"><dt>Source</dt><dd><a href="https://github.com/davidbacelj/davidbacelj">github.com/davidbacelj/davidbacelj</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<style>
+  .look-a {
+    --paper: #f6f5f0;
+    --ink: #15161a;
+    --dim: #5f6066;
+    --line: rgb(21 22 26 / 0.2);
+    --accent: #e4572e;
+    --zone: 20px;
+    --sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.5;
+    padding: 16px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .mono {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* A sheet: an outer trim line, the zone strip, then the drawing border. */
+  .sheet {
+    position: relative;
+    border: 1px solid var(--ink);
+    padding: var(--zone);
+  }
+
+  .zones {
+    position: absolute;
+    display: flex;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+  }
+  .zones span {
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+  .zones-x {
+    left: var(--zone);
+    right: var(--zone);
+    height: var(--zone);
+  }
+  .zones-x span + span {
+    border-left: 1px solid var(--line);
+  }
+  .zones-x.top {
+    top: 0;
+  }
+  .zones-x.bottom {
+    bottom: 0;
+  }
+  .zones-y {
+    top: var(--zone);
+    bottom: var(--zone);
+    width: var(--zone);
+    flex-direction: column;
+  }
+  .zones-y span + span {
+    border-top: 1px solid var(--line);
+  }
+  .zones-y.left {
+    left: 0;
+  }
+  .zones-y.right {
+    right: 0;
+  }
+
+  .inner {
+    border: 1.5px solid var(--ink);
+    padding: clamp(20px, 3.4vw, 56px);
+  }
+
+  /* Sheet 1 */
+  .hero {
+    min-height: calc(100svh - 32px - 2 * var(--zone));
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "bar bar"
+      "view words"
+      "view block";
+    column-gap: clamp(32px, 5vw, 88px);
+    row-gap: 32px;
+  }
+
+  .bar {
+    grid-area: bar;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .bar a {
+    text-decoration: none;
+  }
+  .bar nav {
+    display: flex;
+    gap: 28px;
+  }
+  .bar nav a:hover,
+  .contact a:hover {
+    color: var(--accent);
+  }
+
+  .hero .title-block {
+    grid-area: block;
+  }
+
+  .view {
+    grid-area: view;
+    align-self: end;
+    display: grid;
+    gap: 14px;
+  }
+  .frame {
+    position: relative;
+    border: 1px solid var(--ink);
+    padding: 10px;
+  }
+  .frame :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 20%;
+  }
+  /* Centre marks: dash-dot lines just outside the frame, as on a drawn part. */
+  .centre {
+    position: absolute;
+    --dashdot: repeating-linear-gradient(var(--dir), var(--ink) 0 8px, transparent 8px 11px, var(--ink) 11px 13px, transparent 13px 16px);
+    background: var(--dashdot);
+  }
+  .centre.top,
+  .centre.bottom {
+    --dir: 180deg;
+    left: 50%;
+    width: 1px;
+    height: 40px;
+  }
+  .centre.top {
+    top: -30px;
+  }
+  .centre.bottom {
+    bottom: -30px;
+  }
+  .centre.left,
+  .centre.right {
+    --dir: 90deg;
+    top: 50%;
+    height: 1px;
+    width: 40px;
+  }
+  .centre.left {
+    left: -30px;
+  }
+  .centre.right {
+    right: -30px;
+  }
+  .view figcaption {
+    color: var(--dim);
+    margin-top: 18px;
+  }
+
+  .words {
+    grid-area: words;
+    align-self: center;
+    display: grid;
+    gap: 28px;
+    max-width: 760px;
+  }
+  h1 {
+    font-size: clamp(64px, 10.5vw, 176px);
+    font-weight: 640;
+    font-stretch: 112%;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+  }
+  .lead {
+    font-size: clamp(22px, 2.1vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .before {
+    font-size: clamp(18px, 1.5vw, 22px);
+    line-height: 1.45;
+    color: var(--dim);
+    max-width: 620px;
+  }
+
+  /* The title block: a ruled grid of small labels and values. The 1px gaps
+     show the ink behind the cells, so the rules hold in any arrangement. */
+  .title-block {
+    justify-self: end;
+    width: min(100%, 520px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .cell {
+    padding: 8px 12px 10px;
+    background: var(--paper);
+    min-width: 0;
+  }
+  .cell.wide {
+    grid-column: span 2;
+  }
+  .cell.full {
+    grid-column: 1 / -1;
+  }
+  .cell dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .cell dd {
+    font-size: 16px;
+    font-weight: 520;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cell dd.mono {
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .rev-link,
+  .rev-text {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* Sheet 2 */
+  .story {
+    display: grid;
+    gap: 24px;
+    padding-top: clamp(40px, 6vw, 96px);
+  }
+  h2 {
+    font-size: clamp(40px, 5.4vw, 80px);
+    font-weight: 620;
+    font-stretch: 108%;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .intro {
+    font-size: clamp(18px, 1.6vw, 22px);
+    color: var(--dim);
+    max-width: 640px;
+    margin-bottom: clamp(16px, 3vw, 40px);
+  }
+
+  .revisions {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1.5px solid var(--ink);
+  }
+  .revisions th {
+    text-align: left;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-bottom: 1.5px solid var(--ink);
+    color: var(--dim);
+  }
+  .revisions td {
+    padding: 18px 16px 20px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .revisions tr:last-child td {
+    border-bottom: 0;
+  }
+  .revisions th:nth-child(-n + 2),
+  .revisions td:nth-child(-n + 2) {
+    border-right: 1px solid var(--line);
+    width: 1%;
+    white-space: nowrap;
+  }
+  .rev {
+    position: relative;
+    width: 72px;
+  }
+  .delta {
+    display: block;
+    width: 34px;
+    height: 29px;
+  }
+  .delta svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.3;
+  }
+  .letter {
+    position: absolute;
+    left: 16px;
+    top: 26px;
+    width: 34px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .current .delta svg {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+  .current .letter {
+    color: var(--paper);
+  }
+  .year {
+    font-size: 14px;
+    padding-top: 22px !important;
+  }
+  .what {
+    display: grid;
+    gap: 4px;
+  }
+  .what h3 {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .what p {
+    color: var(--dim);
+    max-width: 720px;
+  }
+
+  .contact {
+    display: grid;
+    gap: 20px;
+    padding: clamp(48px, 7vw, 112px) 0 clamp(24px, 4vw, 56px);
+  }
+  .contact ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 40px;
+  }
+  .contact a {
+    font-size: clamp(24px, 2.6vw, 36px);
+    font-weight: 560;
+    letter-spacing: -0.015em;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--ink);
+  }
+
+  .title-block.end {
+    justify-self: end;
+  }
+  .title-block.end a {
+    text-decoration: none;
+  }
+
+  @media (max-width: 860px) {
+    .look-a {
+      --zone: 16px;
+      padding: 8px;
+      gap: 8px;
+      font-size: 17px;
+    }
+    .zones span:nth-child(n + 5) {
+      display: none;
+    }
+    .hero {
+      min-height: 0;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "bar"
+        "words"
+        "view"
+        "block";
+      row-gap: 36px;
+    }
+    .bar nav {
+      gap: 16px;
+    }
+    .view {
+      padding: 0 20px;
+    }
+    .title-block {
+      justify-self: stretch;
+      grid-template-columns: 1fr 1fr;
+    }
+    .cell dd {
+      white-space: normal;
+    }
+    .inner {
+      padding: 20px 16px;
+    }
+    .revisions thead {
+      display: none;
+    }
+    .revisions tr {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      grid-template-areas:
+        "rev year"
+        "rev what";
+      column-gap: 4px;
+      padding: 16px 12px 18px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .revisions tr:last-child {
+      border-bottom: 0;
+    }
+    .revisions td {
+      padding: 0 !important;
+      border: 0 !important;
+      width: auto !important;
+    }
+    .rev {
+      grid-area: rev;
+    }
+    .letter {
+      left: 0;
+      top: 10px;
+    }
+    .year {
+      grid-area: year;
+    }
+    .what {
+      grid-area: what;
+    }
+  }
+</style>
