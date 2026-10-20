@@ -2,11 +2,12 @@
 // more than one section uses. Each fact comes from a public source: Incredible's
 // site and blog, Science Park Jönköping, Spintop Ventures, Företagarna, or
 // David's own words.
-import portrait from "../assets/photos/portrait.jpg";
 import cofounders from "../assets/photos/cofounders.webp";
 import team from "../assets/photos/team.webp";
 import studio from "../assets/photos/portrait-studio.webp";
 import hosting from "../assets/photos/hosting.webp";
+import stage from "../assets/photos/stage.webp";
+import sofa from "../assets/photos/me-sofa.webp";
 import skapaAward from "../assets/photos/skapa-award.webp";
 import hackaping from "../assets/photos/hackaping.webp";
 import stellaStage from "../assets/photos/stella-stage.webp";
@@ -21,7 +22,7 @@ import skapaLogo from "../assets/logos/skapa.svg";
 import scienceParkLogo from "../assets/logos/science-park.svg";
 import foretagarnaLogo from "../assets/logos/foretagarna.svg";
 
-export const PHOTOS = { portrait, studio, cofounders, team, hosting, skapaAward, hackaping, stellaStage };
+export const PHOTOS = { studio, stage, sofa, cofounders, team, hosting, skapaAward, hackaping, stellaStage };
 export const PRODUCT = { incredibleHome, incredibleSayIt, stellaCli };
 export const LOGOS = {
   incredible: incredibleLogo,

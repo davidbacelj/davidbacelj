@@ -1,0 +1,717 @@
+---
+// The home page (David's pick, 2026-10-20): the stage photo filling the first
+// screen, the big numbers, a big welcome film at the start of the road (coming
+// soon until he records it), then the road itself: a thin line straight down
+// through black year pills, with every project as a card led by a big photo
+// of him (the ones he picked), each opening its blog post.
+import "@fontsource-variable/geist/wght.css";
+import { Picture } from "astro:assets";
+import Logo from "./Logo.astro";
+import Px from "./Px.astro";
+import Icon from "./Icon.astro";
+import { STACK, SOCIALS } from "../data/icons";
+import { PHOTOS } from "../data/profile";
+import { STOPS, LICENCES, MUSIC, storyHref } from "../data/sections";
+import { PAUSE_CAPTIONS } from "../data/captions";
+import { STATS, SECTION_STATS } from "../data/highlights";
+import { MONO } from "../data/monoLogos";
+import { COVERS } from "../data/covers";
+import { documentOf } from "../data/documents";
+import { STORIES } from "../data/stories";
+
+// An ordinary reading time, at about 220 words a minute.
+const minutes = (id: string) => Math.max(1, Math.round((STORIES[id] ?? []).reduce((n, p) => n + p.p.split(/\s+/).length, 0) / 220));
+
+const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label === n)!).filter(Boolean);
+---
+
+<div class="st" data-stage-root>
+  <header class="hero">
+    <Picture src={PHOTOS.stage} formats={["avif"]} fallbackFormat="webp" widths={[1000, 1800, 2600, 3200]} sizes="100vw" alt="David Bacelj in a black suit at the podium, hosting Hacking Ground under the stage lights" loading="eager" fetchpriority="high" />
+    <div class="hero-text">
+      <h1>David Bacelj</h1>
+      <p class="hero-line">Co-founder of Incredible. Before that, head of AI at Wheelscanning, a Saab spin-off, and CTO of RoboWaste.</p>
+      <ul class="icons">
+        {
+          ICONS.map((s) => (
+            <li>
+              <a href={s.href} rel="me noopener" target="_blank" aria-label={s.label} title={s.label}>
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <path fill="currentColor" d={s.path} />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <p class="hero-credit">Hosting Hacking Ground, Jönköping, 2025</p>
+  </header>
+
+  <section class="stats" aria-label="In numbers">
+    <ul>
+      {
+        STATS.map((st) => (
+          <li>
+            <span class="num">{st.value}</span>
+            <span class="label">{st.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="road" id="road" data-road aria-label="The road, newest first">
+    <svg class="line" data-line aria-hidden="true"><path data-trace class="trace" /><path data-ink class="ink" /></svg>
+
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div class="frame">
+        <Px src={PHOTOS.sofa} alt="David Bacelj smiling on a sofa in the office" widths={[800, 1300, 1900]} sizes="(max-width: 900px) 92vw, 1040px" cover class="frame-bg" />
+        <div class="frame-inner">
+          <span class="play" aria-hidden="true"></span>
+          <h2 id="welcome-title">Welcome</h2>
+          <p>A short film from me, about who I am and what I build.</p>
+          <p class="soon">Coming soon</p>
+        </div>
+      </div>
+      <p class="pill start" data-node>Start</p>
+    </section>
+
+    {
+      STOPS.map((stop) => (
+        <div class="stop">
+          <div class="year">
+            <p class="pill" data-node>
+              {stop.sign}
+            </p>
+            <p class="year-label">{stop.label}</p>
+            <p class="year-line">{stop.tagline}</p>
+          </div>
+          {stop.sections.map((s) => {
+            const doc = documentOf(s, COVERS[s.id]);
+            const stat = SECTION_STATS[s.id];
+            return (
+              <a class="doc" href={storyHref(s.id)} data-doc={s.id} id={s.id}>
+                <span class="sheet">
+                  {doc.cover && (
+                    <span class="d-photo">
+                      <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 900px) 92vw, 820px" cover />
+                    </span>
+                  )}
+                  <span class="d-body">
+                    <span class="d-meta">
+                      <span>{[s.when ?? stop.sign, s.role].filter(Boolean).join(", ")}</span>
+                      <span>{minutes(s.id)} min read{s.video ? ", with film" : ""}</span>
+                    </span>
+                    <span class="d-title">{doc.title}</span>
+                    <span class="d-text">{s.lede}</span>
+                    <span class="d-foot">
+                      {stat ? (
+                        <span class="d-stat">
+                          <b>{stat.value}</b> {stat.label}
+                        </span>
+                      ) : (
+                        <span class="d-logos">
+                          {s.logos?.slice(0, 3).map((l) => (
+                            <Logo src={MONO[l.alt] ?? l.src} alt={l.alt} height={Math.round((l.size ?? 24) * 0.9)} />
+                          ))}
+                        </span>
+                      )}
+                      <span class="d-open">Read the post →</span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+            );
+          })}
+          {stop.pause && (
+            <figure class="pause">
+              <Px src={stop.pause.photo.src} alt={stop.pause.photo.alt} widths={[500, 900]} sizes="(max-width: 900px) 90vw, 520px" />
+              <figcaption>{PAUSE_CAPTIONS[stop.sign] ?? stop.pause.text}</figcaption>
+            </figure>
+          )}
+        </div>
+      ))
+    }
+  </section>
+
+  <footer class="end">
+    <div class="end-grid">
+      <div class="touch">
+        <Px src={PHOTOS.studio} alt="David Bacelj in a navy polo shirt against a white wall" widths={[500, 900]} sizes="(max-width: 900px) 92vw, 420px" class="studio" />
+        <h2>Get in touch</h2>
+        <ul class="icons">
+          {
+            ICONS.map((s) => (
+              <li>
+                <a href={s.href} rel="me noopener" target="_blank" aria-label={s.label} title={s.label}>
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                    <path fill="currentColor" d={s.path} />
+                  </svg>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3>Off the clock</h3>
+        <p>Cross-country skiing in winter, camping and hunting the rest of the year, and the sea whenever I can get there.</p>
+        <ul class="facts">{LICENCES.map((l) => <li>{l}</li>)}</ul>
+        <p>On repeat: {MUSIC.artist}, {MUSIC.songs.join(", ")}.</p>
+        <ul class="tools">
+          {
+            STACK.map((icon) => (
+              <li title={icon.title}>
+                <Icon icon={icon} size={20} label={icon.title} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // The line runs from the welcome film through every year pill, swaying a
+  // little between them, and draws itself as you scroll.
+  const root = document.querySelector<HTMLElement>("[data-stage-root]")!;
+  const road = root.querySelector<HTMLElement>("[data-road]")!;
+  const svg = root.querySelector<SVGSVGElement>("[data-line]")!;
+  const trace = root.querySelector<SVGPathElement>("[data-trace]")!;
+  const ink = root.querySelector<SVGPathElement>("[data-ink]")!;
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STEP = 6;
+  let length = 0;
+  let top = 0;
+  let lutY = new Float64Array(0);
+  const build = () => {
+    const box = road.getBoundingClientRect();
+    const w = Math.round(box.width);
+    const h = Math.round(box.height);
+    svg.setAttribute("width", String(w));
+    svg.setAttribute("height", String(h));
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    const nodes = [...road.querySelectorAll<HTMLElement>("[data-node]")].map((el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+    });
+    if (nodes.length < 2) return;
+    const sway = w < 900 ? 0 : 22;
+    const pts = [...nodes, { x: nodes[nodes.length - 1].x, y: h }];
+    const path = [pts[0]];
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1];
+      const b = pts[i];
+      const swings = Math.max(1, Math.floor((b.y - a.y) / 700));
+      for (let s = 1; s < swings; s++) path.push({ x: a.x + (s % 2 ? sway : -sway), y: a.y + ((b.y - a.y) * s) / swings });
+      path.push(b);
+    }
+    let d = `M ${path[0].x.toFixed(1)} ${path[0].y.toFixed(1)}`;
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1];
+      const b = path[i];
+      const k = (b.y - a.y) * 0.5;
+      d += ` C ${a.x.toFixed(1)} ${(a.y + k).toFixed(1)}, ${b.x.toFixed(1)} ${(b.y - k).toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+    }
+    trace.setAttribute("d", d);
+    ink.setAttribute("d", d);
+    length = ink.getTotalLength();
+    const n = Math.ceil(length / STEP) + 1;
+    lutY = new Float64Array(n);
+    for (let i = 0; i < n; i++) lutY[i] = ink.getPointAtLength(Math.min(length, i * STEP)).y;
+    ink.style.strokeDasharray = `${length} ${length}`;
+    top = box.top + window.scrollY;
+    frame();
+  };
+  const at = (y: number) => {
+    let lo = 0;
+    let hi = lutY.length - 1;
+    if (y <= lutY[0]) return 0;
+    if (y >= lutY[hi]) return length;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (lutY[mid] < y) lo = mid;
+      else hi = mid;
+    }
+    return Math.min(length, (lo + (y - lutY[lo]) / (lutY[hi] - lutY[lo] || 1)) * STEP);
+  };
+  let queued = false;
+  const frame = () => {
+    queued = false;
+    if (length) ink.style.strokeDashoffset = still ? "0" : String(length - at(window.scrollY + window.innerHeight * 0.6 - top));
+  };
+  new ResizeObserver(() => build()).observe(road);
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(frame);
+      }
+    },
+    { passive: true },
+  );
+
+</script>
+
+<style>
+  .st {
+    --night: #0c0c0d;
+    --ivory: #f4f1ea;
+    --ink: #121212;
+    --dim: #67635c;
+    --rule: rgb(18 18 18 / 0.12);
+    --wide: 1240px;
+    font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--ivory);
+    overflow-x: hidden;
+  }
+
+  /* The first screen: the stage */
+  .hero {
+    position: relative;
+    min-height: max(640px, 100svh);
+    display: grid;
+    align-items: end;
+    background: var(--night);
+    color: #fff;
+    overflow: hidden;
+  }
+  .hero :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 58% 35%;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgb(0 0 0 / 0.86) 0%, rgb(0 0 0 / 0.35) 38%, rgb(0 0 0 / 0) 62%),
+      linear-gradient(to right, rgb(0 0 0 / 0.55) 0%, rgb(0 0 0 / 0) 55%);
+  }
+  .hero-text {
+    position: relative;
+    z-index: 1;
+    width: min(var(--wide), 100% - 48px);
+    margin: 0 auto;
+    padding-bottom: clamp(48px, 8vh, 96px);
+  }
+  h1 {
+    font-size: clamp(64px, 11vw, 176px);
+    font-weight: 650;
+    letter-spacing: -0.055em;
+    line-height: 0.86;
+    margin-left: -0.04em;
+  }
+  .hero-line {
+    max-width: 640px;
+    margin-top: 26px;
+    font-size: clamp(19px, 1.8vw, 24px);
+    line-height: 1.4;
+    color: rgb(255 255 255 / 0.86);
+  }
+  .icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  .icons a {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 50%;
+    color: #fff;
+  }
+  .hero-credit {
+    position: absolute;
+    right: 24px;
+    bottom: 20px;
+    z-index: 1;
+    font-size: 12.5px;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  /* Numbers */
+  .stats {
+    padding: clamp(90px, 10vw, 150px) 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .stats ul {
+    width: min(var(--wide), 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 56px 40px;
+  }
+  .stats li {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+  .num {
+    font-size: clamp(46px, 5.4vw, 76px);
+    font-weight: 620;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .label {
+    font-size: 15.5px;
+    line-height: 1.4;
+    color: var(--dim);
+  }
+
+  /* The road: the welcome film, then the line straight down */
+  .road {
+    position: relative;
+    width: min(var(--wide), 100% - 48px);
+    margin: 0 auto;
+    padding: clamp(110px, 12vw, 180px) 0 clamp(120px, 12vw, 180px);
+  }
+  .line {
+    position: absolute;
+    inset: 0 auto auto 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .line path {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .trace {
+    stroke: #cfcfc9;
+    stroke-width: 2;
+    stroke-dasharray: 2 8;
+  }
+  .ink {
+    stroke: var(--ink);
+    stroke-width: 3;
+  }
+  .welcome {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    padding-bottom: clamp(110px, 12vw, 170px);
+  }
+  .frame {
+    position: relative;
+    width: min(1040px, 100%);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 24px;
+    background: #141416;
+    box-shadow: 0 40px 80px -48px rgb(0 0 0 / 0.6);
+  }
+  .frame :global(.frame-bg) {
+    position: absolute;
+    inset: 0;
+  }
+  .frame :global(.frame-bg .px-main) {
+    object-position: 42% 40%;
+  }
+  .frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.72) 0%, rgb(0 0 0 / 0.15) 55%, rgb(0 0 0 / 0.05) 100%);
+    pointer-events: none;
+  }
+  .frame-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: end;
+    justify-items: start;
+    gap: 10px;
+    height: 100%;
+    padding: clamp(24px, 4vw, 48px);
+    color: #fff;
+  }
+  .play {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 16px 40px -12px rgb(0 0 0 / 0.6);
+  }
+  .play::after {
+    content: "";
+    position: absolute;
+    left: 34px;
+    top: 26px;
+    border-style: solid;
+    border-width: 16px 0 16px 26px;
+    border-color: transparent transparent transparent var(--ink);
+  }
+  .frame h2 {
+    font-size: clamp(36px, 4.4vw, 60px);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+  .frame p {
+    max-width: 460px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: rgb(255 255 255 / 0.8);
+  }
+  .frame .soon {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.16);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .start {
+    margin-top: clamp(70px, 8vw, 110px);
+  }
+  .stop {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding-bottom: clamp(40px, 5vw, 80px);
+  }
+  .year {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    padding-bottom: clamp(90px, 10vw, 140px);
+  }
+  .pill {
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 19px;
+    font-weight: 640;
+    box-shadow: 0 0 0 8px var(--ivory);
+  }
+  .year-label {
+    margin-top: 22px;
+    padding: 4px 14px;
+    background: var(--ivory);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 650;
+    letter-spacing: -0.04em;
+  }
+  .year-line {
+    max-width: 480px;
+    padding: 2px 14px;
+    background: var(--ivory);
+    font-size: 16.5px;
+    color: var(--dim);
+  }
+
+  /* A document: one card, centred on the line, led by a big photo */
+  .doc {
+    display: block;
+    width: min(820px, 100%);
+    margin-bottom: clamp(150px, 16vw, 240px);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .sheet {
+    display: block;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+    transition:
+      translate 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 300ms ease;
+  }
+  .doc:hover .sheet {
+    translate: 0 -6px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 44px 80px -40px rgb(0 0 0 / 0.55);
+  }
+  .d-photo {
+    display: block;
+    aspect-ratio: 3 / 2;
+  }
+  .d-body {
+    display: block;
+    padding: 28px 34px 28px;
+  }
+  .d-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--dim);
+  }
+  .d-title {
+    display: block;
+    margin-top: 10px;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 640;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+  .d-text {
+    display: block;
+    margin-top: 14px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: #34332f;
+  }
+  .d-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eeece8;
+  }
+  .d-stat {
+    min-width: 0;
+    font-size: 14.5px;
+    line-height: 1.4;
+    color: #3d3c38;
+  }
+  .d-stat b {
+    margin-right: 6px;
+    font-size: 24px;
+    font-weight: 660;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .d-logos {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .d-logos :global(.logo) {
+    opacity: 0.72;
+    max-width: 110px;
+  }
+  .d-open {
+    flex: none;
+    font-size: 15px;
+    font-weight: 620;
+  }
+
+  /* A personal moment on the line */
+  .pause {
+    width: min(520px, 100%);
+    margin-bottom: clamp(150px, 16vw, 240px);
+    padding: 10px 10px 4px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 30px 60px -36px rgb(0 0 0 / 0.4);
+  }
+  .pause :global(.px) {
+    border-radius: 10px;
+  }
+  .pause figcaption {
+    padding: 10px 6px 8px;
+    font-size: 14.5px;
+    color: var(--dim);
+  }
+
+  /* The end */
+  .end {
+    background: var(--night);
+    color: #fff;
+    padding: clamp(100px, 12vw, 170px) 24px 120px;
+  }
+  .end-grid {
+    width: min(var(--wide), 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 64px;
+  }
+  .touch :global(.studio) {
+    width: min(420px, 100%);
+    margin-bottom: 40px;
+    border-radius: 18px;
+  }
+  .end h2 {
+    font-size: clamp(44px, 6vw, 92px);
+    font-weight: 620;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+  }
+  .end h3 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .end p,
+  .facts li {
+    margin-top: 10px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.7);
+  }
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 20px;
+    color: rgb(255 255 255 / 0.8);
+  }
+
+  /* Phone */
+  @media (max-width: 900px) {
+    .hero-text {
+      width: calc(100% - 32px);
+    }
+    .hero :global(img) {
+      object-position: 62% 30%;
+    }
+    .hero-credit {
+      display: none;
+    }
+    .stats ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px 20px;
+    }
+    .num {
+      white-space: normal;
+    }
+    .stats,
+    .end {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .road {
+      width: calc(100% - 32px);
+    }
+    .frame {
+      aspect-ratio: 4 / 5;
+      border-radius: 18px;
+    }
+    .d-body {
+      padding: 20px 20px 22px;
+    }
+    .d-meta {
+      flex-direction: column;
+      gap: 2px;
+    }
+    .d-foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .end-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

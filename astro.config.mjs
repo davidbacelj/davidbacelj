@@ -4,8 +4,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
   site: "https://davidbacelj.com",
-  // Pilot pages are drafts: kept out of the sitemap (and marked noindex).
-  integrations: [sitemap({ filter: (page) => !new URL(page).pathname.startsWith("/pilot") })],
+  integrations: [sitemap()],
   // Astro writes a Content-Security-Policy into every page with the hash of each
   // script and style it emits, so nothing else can run. Headers Astro can't set
   // from a <meta> (frame-ancestors, HSTS and friends) are in vercel.json.

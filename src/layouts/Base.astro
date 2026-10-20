@@ -7,11 +7,9 @@ interface Props {
   description?: string;
   /** The page's background colour, for the browser's own chrome. */
   themeColor?: string;
-  /** Pilot pages stay out of search engines. */
-  noindex?: boolean;
 }
 
-const { title = PERSON.name, description = PERSON.description, themeColor = "#ffffff", noindex = false } = Astro.props;
+const { title = PERSON.name, description = PERSON.description, themeColor = "#ffffff" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 // Who the site is about, for search engines.
@@ -31,7 +29,6 @@ const schema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {noindex && <meta name="robots" content="noindex" />}
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

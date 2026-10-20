@@ -1,0 +1,147 @@
+---
+// A photo with a soft loading state. While the real photo loads, a 16 px wide
+// copy of it (a couple of hundred bytes) shows blurred, so each tile already
+// has the photo's colours, with a gentle light moving over it. Photos that
+// have loaded fade in one at a time, in the order they arrive, so the page
+// fills in calmly. A photo that fails to load keeps its blurred preview.
+// Without JavaScript the photos simply show after a moment.
+import type { ImageMetadata } from "astro";
+import { Picture, getImage } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  widths: number[];
+  sizes: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  /** Crop to fill the frame the parent gives (otherwise the photo is shown whole). */
+  cover?: boolean;
+  class?: string;
+}
+const { src, alt, widths, sizes, loading = "lazy", fetchpriority, cover = false, class: className } = Astro.props;
+const tiny = await getImage({ src, width: 16, format: "webp", quality: 70 });
+---
+
+<span class:list={["px", { cover }, className]} data-px>
+  <img class="px-low" src={tiny.src} width={tiny.attributes.width} height={tiny.attributes.height} alt="" aria-hidden="true" decoding="async" />
+  <Picture src={src} formats={["avif"]} fallbackFormat="webp" widths={widths} sizes={sizes} alt={alt} loading={loading} fetchpriority={fetchpriority} decoding="async" class="px-main" />
+</span>
+
+<script>
+  // Reveal each photo once it has loaded, at most one every 55 ms.
+  document.documentElement.classList.add("px-ready");
+  const queue: HTMLElement[] = [];
+  let running = false;
+  const next = () => {
+    const el = queue.shift();
+    if (!el) {
+      running = false;
+      return;
+    }
+    el.classList.add("in");
+    setTimeout(next, 55);
+  };
+  const ready = (el: HTMLElement) => {
+    queue.push(el);
+    if (!running) {
+      running = true;
+      next();
+    }
+  };
+  document.querySelectorAll<HTMLElement>("[data-px]").forEach((el) => {
+    const img = el.querySelector<HTMLImageElement>(".px-main");
+    if (!img) return;
+    if (img.complete && img.naturalWidth) ready(el);
+    else {
+      img.addEventListener("load", () => ready(el), { once: true });
+      // If the photo fails, keep the blurred preview and stop the light moving.
+      img.addEventListener("error", () => el.classList.add("failed"), { once: true });
+    }
+  });
+</script>
+
+<style>
+  .px {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: #d8d4cc;
+  }
+  .px.cover {
+    width: 100%;
+    height: 100%;
+  }
+  .px-low {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(14px) saturate(1.15);
+    scale: 1.2;
+    transition: opacity 500ms ease 250ms;
+  }
+  /* A soft light that moves across the preview while the photo loads */
+  .px::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, rgb(255 255 255 / 0) 30%, rgb(255 255 255 / 0.28) 50%, rgb(255 255 255 / 0) 70%);
+    background-size: 250% 100%;
+    animation: px-sweep 1.6s linear infinite;
+    pointer-events: none;
+  }
+  .px.in::after,
+  .px.failed::after {
+    animation: none;
+    opacity: 0;
+  }
+  .px.failed :global(.px-main) {
+    visibility: hidden;
+  }
+  .px :global(.px-main) {
+    position: relative;
+    width: 100%;
+    opacity: 0;
+    scale: 1.03;
+    /* Without JavaScript, show the photo after a moment anyway. */
+    animation: px-show 0s 2.5s forwards;
+    transition:
+      opacity 600ms ease-out,
+      scale 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .px.cover :global(.px-main) {
+    height: 100%;
+    object-fit: cover;
+  }
+  :global(html.px-ready) .px :global(.px-main) {
+    animation: none;
+  }
+  .px.in :global(.px-main) {
+    opacity: 1;
+    scale: 1;
+  }
+  .px.in .px-low {
+    opacity: 0;
+  }
+  @keyframes px-sweep {
+    from {
+      background-position: 150% 0;
+    }
+    to {
+      background-position: -100% 0;
+    }
+  }
+  @keyframes px-show {
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .px::after {
+      animation: none;
+    }
+  }
+</style>

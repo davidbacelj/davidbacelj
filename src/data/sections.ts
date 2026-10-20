@@ -34,6 +34,7 @@ import threeTempApp from "../assets/product/3temp-app.webp";
 import hackapingAgents from "../assets/product/hackaping-agents.webp";
 
 import submarine from "../assets/life/submarine.webp";
+import submarineDive from "../assets/life/submarine-dive.webp";
 import solarLamp from "../assets/life/solar-lamp.webp";
 import solarLamp2 from "../assets/life/solar-lamp-2.webp";
 import gardenRobot from "../assets/life/garden-robot.webp";
@@ -64,7 +65,7 @@ import ebossLogo from "../assets/logos/eboss.png";
 import toyotaLogo from "../assets/logos/toyota.png";
 import rapidLogo from "../assets/logos/rapid-dimension.png";
 import quicksetLogo from "../assets/logos/quickset.png";
-import fcproductionLogo from "../assets/logos/fcproduction.webp";
+import fcproductionLogo from "../assets/logos/fcproduction.png";
 import spintopLogo from "../assets/logos/spintop.svg";
 import starbrightLogo from "../assets/logos/starbright.svg";
 import cellmarkLogo from "../assets/logos/cellmark.svg";
@@ -107,6 +108,8 @@ export interface Section {
       sets a stacked or small logo taller than the usual line. */
   logos?: { src: ImageMetadata; alt: string; dark?: boolean; size?: number }[];
   links?: { label: string; href: string }[];
+  /** A film, served from public/media, with a still to show before it plays. */
+  video?: { src: string; poster: ImageMetadata; caption: string };
 }
 
 export interface Stop {
@@ -146,7 +149,12 @@ export const STOPS: Stop[] = [
           { src: starbrightLogo, alt: "Starbright Invest", size: 14 },
           { src: productHuntLogo, alt: "Product Hunt", size: 28 },
         ],
-        links: [{ label: "incredible.one", href: "https://www.incredible.one" }],
+        links: [
+          { label: "incredible.one", href: "https://www.incredible.one" },
+          { label: "Funding", href: "https://www.incredible.one/blog/incredible-reveals-pre-seed-funding" },
+          { label: "CellMark", href: "https://www.incredible.one/blog/cellmark-success-story" },
+          { label: "Product Hunt", href: "https://www.incredible.one/blog/our-2025-vibe-computing" },
+        ],
       },
     ],
   },
@@ -299,6 +307,7 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "labeldetector",
+        links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-philip" }, { label: "Science Park", href: "https://sciencepark.se/nyhet/norditech-ar-arets-inkubatorbolag-2023-2/" }],
         title: "LabelDetector",
         when: "2022 to 2023",
         role: "AI vision",
@@ -334,7 +343,7 @@ export const STOPS: Stop[] = [
           { src: wheelscanningLogo, alt: "Wheelscanning" },
           { src: saabLogo, alt: "Saab" },
         ],
-        links: [{ label: "wheelscanning.se", href: "https://www.wheelscanning.se/en/" }],
+        links: [{ label: "wheelscanning.se", href: "https://www.wheelscanning.se/en/" }, { label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" }],
       },
       {
         id: "orangebox",
@@ -347,6 +356,7 @@ export const STOPS: Stop[] = [
       },
       {
         id: "rapid",
+        links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" }],
         title: "Rapid Dimension",
         role: "Brought in the project",
         lede: "I landed the job of writing the software that drives Rapid Dimension's industrial 3D printers.",
@@ -355,6 +365,7 @@ export const STOPS: Stop[] = [
       },
       {
         id: "norditech-more",
+        links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-philip" }],
         title: "Quick-set, 3TEMP and FC Production",
         role: "With Philip Alm",
         lede: "Three more Norditech projects that Philip and I worked on together.",
@@ -362,7 +373,7 @@ export const STOPS: Stop[] = [
         logos: [
           { src: quicksetLogo, alt: "Quick-set" },
           { src: threeTempLogo, alt: "3TEMP", size: 20 },
-          { src: fcproductionLogo, alt: "FC Production" },
+          { src: fcproductionLogo, alt: "FC Production", dark: true },
         ],
       },
     ],
@@ -391,10 +402,12 @@ export const STOPS: Stop[] = [
         links: [
           { label: "SVT", href: "https://www.svt.se/nyheter/lokalt/uppsala/hogteknologiskt-oga-ska-oka-plastsortering-och-minska-utslapp--2d0cih" },
           { label: "Vattenfall", href: "https://group.vattenfall.com/se/nyheter-och-press/nyheter/2023/ny-effektiv-metod-for-att-identifiera-och-mata-plast-i-avfall" },
+          { label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" },
         ],
       },
       {
         id: "norditech",
+        links: [{ label: "Science Park", href: "https://sciencepark.se/nyhet/norditech-ar-arets-inkubatorbolag-2023-2/" }],
         title: "Norditech",
         when: "2020",
         role: "Co-founder and CTO",
@@ -483,6 +496,7 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "submarine",
+        video: { src: "/media/submarine-dive.mp4", poster: submarineDive, caption: "Filmed by the submarine's GoPro on a dive along the sea floor, August 2016." },
         title: "A home-built submarine",
         when: "As a teenager",
         role: "Built from scratch",
@@ -508,9 +522,6 @@ export const STOPS: Stop[] = [
     pause: { photo: { src: beehive, alt: "The beehive in a summer meadow" }, title: "Summers with the bees", text: "As a kid I kept bees with my grandparents. I still think it is one of the most fun things there is." },
   },
 ];
-
-/** Every section in road order (newest first), each with the year of its stop. */
-export const SECTIONS = STOPS.flatMap((stop) => stop.sections.map((s) => ({ ...s, sign: stop.sign, stopLabel: stop.label })));
 
 /** Where each section's article lives. */
 export const storyHref = (id: string) => `/story/${id}`;

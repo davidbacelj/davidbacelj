@@ -79,13 +79,9 @@ a {
   }
 }
 
-/* Moving between pages fades, and a story card's photo grows into its article. */
+/* Moving between the road and a post fades. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
   }
-}
-::view-transition-group(story-hero) {
-  animation-duration: 420ms;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
