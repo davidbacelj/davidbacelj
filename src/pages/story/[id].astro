@@ -1,13 +1,13 @@
 ---
-// One project from the road as a blog post, with David's chosen photo.
+// One post from the road, with David's chosen photo.
 import StagePost from "../../components/StagePost.astro";
-import { STOPS } from "../../data/sections";
+import { POSTS } from "../../data/road";
 import { COVERS } from "../../data/covers";
 
 export function getStaticPaths() {
-  return STOPS.flatMap((stop) => stop.sections).map((s, i) => ({ params: { id: s.id }, props: { i } }));
+  return POSTS.map((p) => ({ params: { id: p.s.id } }));
 }
-const { i } = Astro.props as { i: number };
+const { id } = Astro.params;
 ---
 
-<StagePost i={i} covers={COVERS} />
+<StagePost id={id} covers={COVERS} />

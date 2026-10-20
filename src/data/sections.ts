@@ -47,17 +47,13 @@ import tidaholm from "../assets/life/tidaholm.webp";
 import orangebox from "../assets/life/orangebox.webp";
 import orangebox2 from "../assets/life/orangebox-2.webp";
 import hackapingStage from "../assets/life/hackaping-stage.webp";
-import skiing from "../assets/life/skiing.webp";
-import camping from "../assets/life/camping.webp";
 import hunting from "../assets/life/hunting.webp";
-import beehive from "../assets/life/beehive.webp";
 import groundJonkoping from "../assets/life/ground-jonkoping.webp";
 import goldenGate from "../assets/life/golden-gate.webp";
 import techbbq from "../assets/life/techbbq.webp";
 import websummit from "../assets/life/websummit.webp";
 import travelWebsummit from "../assets/life/travel-websummit.webp";
 import inUs from "../assets/life/in-us.webp";
-import costume from "../assets/life/costume.webp";
 
 import robowasteLogo from "../assets/logos/robowaste.png";
 import wheelscanningLogo from "../assets/logos/wheelscanning.png";
@@ -108,6 +104,8 @@ export interface Section {
       sets a stacked or small logo taller than the usual line. */
   logos?: { src: ImageMetadata; alt: string; dark?: boolean; size?: number }[];
   links?: { label: string; href: string }[];
+  /** Show the photo and its thumbs together as a collage, on the card and the post. */
+  collage?: boolean;
   /** A film, served from public/media, with a still to show before it plays. */
   video?: { src: string; poster: ImageMetadata; caption: string };
 }
@@ -268,7 +266,7 @@ export const STOPS: Stop[] = [
         when: "2024",
         role: "With Philip Alm",
         lede: "Philip and I won the SKAPA prize in Jönköping County, then second prize in the national SKAPA talent award.",
-        photo: { src: PHOTOS.skapaAward, alt: "Accepting the SKAPA award with Philip" },
+        photo: { src: PHOTOS.skapaAward, alt: "Philip Alm and David on stage with the SKAPA diploma, made out to them both" },
         logos: [{ src: LOGOS.skapa, alt: "SKAPA" }],
         links: [{ label: "Stiftelsen SKAPA", href: "https://www.stiftelsenskapa.se/skapa-pristagare-2025/skapa-pristagare-2024" }],
       },
@@ -303,7 +301,6 @@ export const STOPS: Stop[] = [
     sign: "2022",
     label: "Cameras that count stock",
     tagline: "I taught cameras to read pallet labels and count the stock.",
-    pause: { photo: { src: costume, alt: "David in a dark suit in a grand hall" }, title: "Suited up", text: "Autumn 2022, for once out of the workshop clothes." },
     sections: [
       {
         id: "labeldetector",
@@ -377,7 +374,6 @@ export const STOPS: Stop[] = [
         ],
       },
     ],
-    pause: { photo: { src: skiing, alt: "Ski tracks across a frozen lake at sunset" }, title: "Cross-country skiing", text: "My favourite way to spend a winter day." },
   },
   {
     sign: "2020",
@@ -423,7 +419,6 @@ export const STOPS: Stop[] = [
         ],
       },
     ],
-    pause: { photo: { src: camping, alt: "A campsite by a lake in the forest" }, title: "Camping", text: "I love being out in nature. A tent by a lake is the best of it." },
   },
   {
     sign: "2019",
@@ -519,7 +514,6 @@ export const STOPS: Stop[] = [
         photo: { src: lathe, alt: "An old metal lathe cutting a part in the garage" },
       },
     ],
-    pause: { photo: { src: beehive, alt: "The beehive in a summer meadow" }, title: "Summers with the bees", text: "As a kid I kept bees with my grandparents. I still think it is one of the most fun things there is." },
   },
 ];
 
@@ -533,5 +527,12 @@ export const LICENCES = [
   "Diving licence. I haven't dived much yet.",
 ];
 
-/** Favourite artist, and three of his songs. */
-export const MUSIC = { artist: "Avicii", songs: ["Levels", "Wake Me Up", "The Nights"] };
+/** Favourite artist, and three of his songs, with the year each came out. */
+export const MUSIC = {
+  artist: "Avicii",
+  songs: [
+    { title: "Levels", year: 2011 },
+    { title: "Wake Me Up", year: 2013 },
+    { title: "The Nights", year: 2014 },
+  ],
+};

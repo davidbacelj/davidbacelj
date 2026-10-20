@@ -278,4 +278,15 @@ export const STORIES: Record<string, Part[]> = {
     { h: "Electronics", p: "I love electronics. I taught myself circuit board design, usually in DipTrace, and I build and solder the boards myself." },
     { h: "The lathe", p: "I love mechanical work too. I got an old lathe, and I still machine parts on it." },
   ],
+  "off-the-clock": [
+    { p: "When I am not building something, I am usually outside. This is what I do off the clock." },
+    { h: "Skiing", p: "Cross-country skiing is my favourite way to spend a winter day, with fresh tracks across a frozen lake at sunset." },
+    { h: "Camping", p: "I love being out in nature, and a tent by a lake is the best of it." },
+    {
+      h: "Licences",
+      p: "I have a hunting licence (jägarexamen) and go hunting whenever I can. I have a boat licence (skepparexamen), so I can find my way with a sea chart, and a diving licence, though I haven't dived much yet.",
+    },
+    { h: "The bees", p: "As a kid I spent the summers keeping bees with my grandparents. I still think it is one of the most fun things there is." },
+    { h: "Suited up", p: "And once in a while the workshop clothes come off, like in autumn 2022." },
+  ],
 };

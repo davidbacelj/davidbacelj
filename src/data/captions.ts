@@ -38,7 +38,7 @@ export const CAPTIONS: Record<string, string[]> = {
     "Asking SWE-LLM, in Swedish, who Astrid Lindgren was. And what 10 + 23 is.",
     "SWE-LLM: Llama 3 70B, taught to write proper Swedish.",
   ],
-  skapa: ["Accepting the SKAPA award with Philip, 2024."],
+  skapa: ["Accepting the SKAPA prize with Philip, 2024. The diploma is made out to us both."],
   stella: [
     "STELLA on stage at GRO36, the first time we showed it.",
     "Guests in front of the Norditech screen after the talk.",
@@ -69,13 +69,15 @@ export const CAPTIONS: Record<string, string[]> = {
   ],
   solar: ["Solar lamps glowing in glass bottles. Sold with honey.", "One lamp in the dark garden, charged by the sun all day.", "Back at UngDrive Masters in 2023."],
   submarine: ["My home-built submarine: an aluminium hull, an Arduino inside and a GoPro on board."],
+  "off-the-clock": [
+    "Fresh tracks across a frozen lake. My favourite kind of winter day.",
+    "A tent by a lake. The best of being out in nature.",
+    "Summers keeping bees with my grandparents.",
+    "Suited up, autumn 2022. For once out of the workshop clothes.",
+  ],
   start: ["My old lathe in the garage, cutting a part."],
 };
 
 export const PAUSE_CAPTIONS: Record<string, string> = {
   "2024": "Out hunting. I have a hunting licence and go whenever I can.",
-  "2022": "Suited up, autumn 2022. For once out of the workshop clothes.",
-  "2021": "Fresh tracks across a frozen lake. My favourite kind of winter day.",
-  "2020": "A tent by a lake. The best of being out in nature.",
-  "2015": "Summers keeping bees with my grandparents.",
 };

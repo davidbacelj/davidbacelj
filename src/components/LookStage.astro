@@ -1,9 +1,9 @@
 ---
 // The home page (David's pick, 2026-10-20): the stage photo filling the first
-// screen, the big numbers, a big welcome film at the start of the road (coming
-// soon until he records it), then the road itself: a thin line straight down
-// through black year pills, with every project as a card led by a big photo
-// of him (the ones he picked), each opening its blog post.
+// screen, then a big welcome film at the start of the road (coming soon until
+// he records it), then the road itself: a thin line straight down with his
+// posts in his own order (src/data/road.ts), each a card led by a big photo of
+// him where he picked one, and his personal photos between them.
 import "@fontsource-variable/geist/wght.css";
 import { Picture } from "astro:assets";
 import Logo from "./Logo.astro";
@@ -11,9 +11,10 @@ import Px from "./Px.astro";
 import Icon from "./Icon.astro";
 import { STACK, SOCIALS } from "../data/icons";
 import { PHOTOS } from "../data/profile";
-import { STOPS, LICENCES, MUSIC, storyHref } from "../data/sections";
+import { MUSIC, storyHref } from "../data/sections";
+import { ROAD } from "../data/road";
 import { PAUSE_CAPTIONS } from "../data/captions";
-import { STATS, SECTION_STATS } from "../data/highlights";
+import { SECTION_STATS } from "../data/highlights";
 import { MONO } from "../data/monoLogos";
 import { COVERS } from "../data/covers";
 import { documentOf } from "../data/documents";
@@ -22,6 +23,8 @@ import { STORIES } from "../data/stories";
 // An ordinary reading time, at about 220 words a minute.
 const minutes = (id: string) => Math.max(1, Math.round((STORIES[id] ?? []).reduce((n, p) => n + p.p.split(/\s+/).length, 0) / 220));
 
+const TENSORFLOW = STACK.find((i) => i.slug === "tensorflow")!;
+const handle = (href: string) => href.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "");
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label === n)!).filter(Boolean);
 ---
 
@@ -48,20 +51,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     <p class="hero-credit">Hosting Hacking Ground, Jönköping, 2025</p>
   </header>
 
-  <section class="stats" aria-label="In numbers">
-    <ul>
-      {
-        STATS.map((st) => (
-          <li>
-            <span class="num">{st.value}</span>
-            <span class="label">{st.label}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="road" id="road" data-road aria-label="The road, newest first">
+  <section class="road" id="road" data-road aria-label="The road">
     <svg class="line" data-line aria-hidden="true"><path data-trace class="trace" /><path data-ink class="ink" /></svg>
 
     <section class="welcome" aria-labelledby="welcome-title">
@@ -77,30 +67,101 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
       <p class="pill start" data-node>Start</p>
     </section>
 
-    {
-      STOPS.map((stop) => (
-        <div class="stop">
-          <div class="year">
-            <p class="pill" data-node>
-              {stop.sign}
-            </p>
-            <p class="year-label">{stop.label}</p>
-            <p class="year-line">{stop.tagline}</p>
-          </div>
-          {stop.sections.map((s) => {
-            const doc = documentOf(s, COVERS[s.id]);
-            const stat = SECTION_STATS[s.id];
+    <div class="items">
+      {
+        ROAD.map((item) => {
+          if (item.kind === "break" && item.name === "music")
             return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk music" aria-labelledby="music-title">
+                  <span class="disc" aria-hidden="true">
+                    <span />
+                  </span>
+                  <div>
+                    <h2 id="music-title">{MUSIC.artist}, on repeat</h2>
+                    <ol class="tracks">
+                      {MUSIC.songs.map((t, k) => (
+                        <li>
+                          <span class="tn">{String(k + 1).padStart(2, "0")}</span>
+                          <span class="tt">{t.title}</span>
+                          <span class="ty">{t.year}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </section>
+              </div>
+            );
+          if (item.kind === "break" && item.name === "tensorflow")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk tf" aria-labelledby="tf-title">
+                  <span class="tf-logo">
+                    <Icon icon={TENSORFLOW} size={56} brand label="TensorFlow" />
+                  </span>
+                  <h2 id="tf-title">I build AI models in TensorFlow</h2>
+                  <p>At Wheelscanning I built the vision models from the ground up in TensorFlow: one reads the text on tyres, another finds damage on rims.</p>
+                </section>
+              </div>
+            );
+          if (item.kind === "break")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk profiles" aria-labelledby="profiles-title">
+                  <h2 id="profiles-title">Follow along</h2>
+                  <ul>
+                    {ICONS.map((x) => (
+                      <li>
+                        <a href={x.href} rel="me noopener" target="_blank" class:list={["prof", x.label.toLowerCase()]}>
+                          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+                            <path fill="currentColor" d={x.path} />
+                          </svg>
+                          <span class="pl">{x.label}</span>
+                          <span class="ph">{handle(x.href)}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            );
+          if (item.kind === "pause")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <figure class="pause">
+                  <Px src={item.photo.src} alt={item.photo.alt} widths={[500, 900]} sizes="(max-width: 900px) 90vw, 520px" />
+                  <figcaption>{PAUSE_CAPTIONS[item.sign] ?? item.text}</figcaption>
+                </figure>
+              </div>
+            );
+          const { s, year } = item;
+          const doc = documentOf(s, COVERS[s.id]);
+          const stat = SECTION_STATS[s.id];
+          return (
+            <div class="post">
+              <span class="dot" data-node aria-hidden="true" />
               <a class="doc" href={storyHref(s.id)} data-doc={s.id} id={s.id}>
                 <span class="sheet">
-                  {doc.cover && (
-                    <span class="d-photo">
-                      <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 900px) 92vw, 820px" cover />
+                  {s.collage ? (
+                    <span class="d-photo d-collage">
+                      {[s.photo, ...(s.thumbs ?? [])].filter((p) => p !== undefined).slice(0, 4).map((p) => (
+                        <Px src={p.src} alt={p.alt} widths={[400, 700]} sizes="(max-width: 900px) 62vw, 550px" cover />
+                      ))}
                     </span>
+                  ) : (
+                    doc.cover && (
+                      <span class="d-photo">
+                        <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 900px) 92vw, 820px" cover />
+                      </span>
+                    )
                   )}
                   <span class="d-body">
                     <span class="d-meta">
-                      <span>{[s.when ?? stop.sign, s.role].filter(Boolean).join(", ")}</span>
+                      <span>{[year, s.role].filter(Boolean).join(", ")}</span>
                       <span>{minutes(s.id)} min read{s.video ? ", with film" : ""}</span>
                     </span>
                     <span class="d-title">{doc.title}</span>
@@ -122,17 +183,11 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                   </span>
                 </span>
               </a>
-            );
-          })}
-          {stop.pause && (
-            <figure class="pause">
-              <Px src={stop.pause.photo.src} alt={stop.pause.photo.alt} widths={[500, 900]} sizes="(max-width: 900px) 90vw, 520px" />
-              <figcaption>{PAUSE_CAPTIONS[stop.sign] ?? stop.pause.text}</figcaption>
-            </figure>
-          )}
-        </div>
-      ))
-    }
+            </div>
+          );
+        })
+      }
+    </div>
   </section>
 
   <footer class="end">
@@ -155,15 +210,12 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
         </ul>
       </div>
       <div>
-        <h3>Off the clock</h3>
-        <p>Cross-country skiing in winter, camping and hunting the rest of the year, and the sea whenever I can get there.</p>
-        <ul class="facts">{LICENCES.map((l) => <li>{l}</li>)}</ul>
-        <p>On repeat: {MUSIC.artist}, {MUSIC.songs.join(", ")}.</p>
+        <h3>Tools I build with</h3>
         <ul class="tools">
           {
             STACK.map((icon) => (
               <li title={icon.title}>
-                <Icon icon={icon} size={20} label={icon.title} />
+                <Icon icon={icon} size={28} label={icon.title} />
               </li>
             ))
           }
@@ -174,8 +226,8 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
 </div>
 
 <script>
-  // The line runs from the welcome film through every year pill, swaying a
-  // little between them, and draws itself as you scroll.
+  // The line runs from the welcome film through the dot above every post,
+  // swaying a little between them, and draws itself as you scroll.
   const root = document.querySelector<HTMLElement>("[data-stage-root]")!;
   const road = root.querySelector<HTMLElement>("[data-road]")!;
   const svg = root.querySelector<SVGSVGElement>("[data-line]")!;
@@ -340,36 +392,6 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     color: rgb(255 255 255 / 0.6);
   }
 
-  /* Numbers */
-  .stats {
-    padding: clamp(90px, 10vw, 150px) 24px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .stats ul {
-    width: min(var(--wide), 100%);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 56px 40px;
-  }
-  .stats li {
-    display: grid;
-    align-content: start;
-    gap: 8px;
-  }
-  .num {
-    font-size: clamp(46px, 5.4vw, 76px);
-    font-weight: 620;
-    letter-spacing: -0.045em;
-    line-height: 1;
-    white-space: nowrap;
-  }
-  .label {
-    font-size: 15.5px;
-    line-height: 1.4;
-    color: var(--dim);
-  }
-
   /* The road: the welcome film, then the line straight down */
   .road {
     position: relative;
@@ -478,19 +500,27 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
   .start {
     margin-top: clamp(70px, 8vw, 110px);
   }
-  .stop {
+  /* The posts, straight down the line, a dot above each */
+  .items {
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    padding-bottom: clamp(40px, 5vw, 80px);
+    padding-top: clamp(90px, 10vw, 140px);
   }
-  .year {
+  .post {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     justify-items: center;
-    text-align: center;
-    padding-bottom: clamp(90px, 10vw, 140px);
+  }
+  .dot {
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin-bottom: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 0 7px var(--ivory);
   }
   .pill {
     padding: 10px 22px;
@@ -500,21 +530,6 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     font-size: 19px;
     font-weight: 640;
     box-shadow: 0 0 0 8px var(--ivory);
-  }
-  .year-label {
-    margin-top: 22px;
-    padding: 4px 14px;
-    background: var(--ivory);
-    font-size: clamp(28px, 3vw, 40px);
-    font-weight: 650;
-    letter-spacing: -0.04em;
-  }
-  .year-line {
-    max-width: 480px;
-    padding: 2px 14px;
-    background: var(--ivory);
-    font-size: 16.5px;
-    color: var(--dim);
   }
 
   /* A document: one card, centred on the line, led by a big photo */
@@ -608,6 +623,172 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     font-weight: 620;
   }
 
+  /* A collage on the card of the personal post */
+  .d-collage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    background: #fff;
+  }
+  .d-collage :global(.px:first-child) {
+    grid-row: span 2;
+  }
+  .d-collage :global(.px:nth-child(2)) {
+    grid-column: span 2;
+  }
+
+  /* Breaks between the posts */
+  .brk {
+    width: min(820px, 100%);
+    margin-bottom: clamp(150px, 16vw, 240px);
+    border-radius: 22px;
+  }
+  .brk h2 {
+    font-size: clamp(30px, 3.4vw, 46px);
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 1.04;
+  }
+  .music {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 64px);
+    padding: clamp(32px, 5vw, 56px);
+    background: var(--night);
+    color: #fff;
+    box-shadow: 0 34px 70px -40px rgb(0 0 0 / 0.55);
+  }
+  /* A record, turning slowly */
+  .disc {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(150px, 20vw, 220px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      repeating-radial-gradient(circle, #1b1b1d 0 2px, #101011 2px 5px),
+      #111;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06), 0 20px 40px -20px rgb(0 0 0 / 0.8);
+    animation: turn 9s linear infinite;
+  }
+  .disc::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 30deg, rgb(255 255 255 / 0) 0deg, rgb(255 255 255 / 0.14) 40deg, rgb(255 255 255 / 0) 90deg, rgb(255 255 255 / 0) 200deg, rgb(255 255 255 / 0.1) 240deg, rgb(255 255 255 / 0) 290deg);
+  }
+  .disc span {
+    width: 34%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #111 0 7%, #e9e4da 8% 100%);
+  }
+  @keyframes turn {
+    to {
+      rotate: 1turn;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .disc {
+      animation: none;
+    }
+  }
+  .tracks {
+    margin-top: 22px;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+  }
+  .tracks li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+    font-size: 19px;
+  }
+  .tn,
+  .ty {
+    font-size: 14px;
+    color: rgb(255 255 255 / 0.55);
+    font-variant-numeric: tabular-nums;
+  }
+  .tt {
+    font-weight: 560;
+  }
+  .tf {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    padding: clamp(36px, 5vw, 60px);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+  }
+  .tf-logo {
+    display: grid;
+    place-items: center;
+    width: 104px;
+    height: 104px;
+    margin-bottom: 6px;
+    border-radius: 26px;
+    background: #fff4e8;
+  }
+  .tf p {
+    max-width: 560px;
+    text-wrap: pretty;
+    font-size: 17.5px;
+    line-height: 1.55;
+    color: #34332f;
+  }
+  .profiles {
+    padding: clamp(32px, 5vw, 52px);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+  }
+  .profiles ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .prof {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 26px 16px 22px;
+    border-radius: 16px;
+    background: var(--ivory);
+    color: var(--ink);
+    text-decoration: none;
+    transition: translate 250ms ease, background 250ms ease;
+  }
+  .prof:hover {
+    translate: 0 -4px;
+  }
+  .prof svg {
+    margin-bottom: 8px;
+  }
+  .prof.linkedin svg {
+    color: #0a66c2;
+  }
+  .pl {
+    font-size: 18px;
+    font-weight: 640;
+  }
+  .ph {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13.5px;
+    color: var(--dim);
+  }
+
   /* A personal moment on the line */
   .pause {
     width: min(520px, 100%);
@@ -654,8 +835,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     font-size: 22px;
     font-weight: 600;
   }
-  .end p,
-  .facts li {
+  .end p {
     margin-top: 10px;
     font-size: 15.5px;
     line-height: 1.55;
@@ -680,14 +860,6 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     .hero-credit {
       display: none;
     }
-    .stats ul {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 40px 20px;
-    }
-    .num {
-      white-space: normal;
-    }
-    .stats,
     .end {
       padding-left: 16px;
       padding-right: 16px;
@@ -709,6 +881,32 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     .d-foot {
       flex-direction: column;
       align-items: flex-start;
+    }
+    .music {
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      text-align: center;
+    }
+    .music > div {
+      width: 100%;
+    }
+    .tracks li {
+      text-align: left;
+    }
+    .profiles ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .prof {
+      grid-template-columns: auto minmax(0, 1fr);
+      justify-items: start;
+      align-items: center;
+      column-gap: 16px;
+      padding: 18px 20px;
+      text-align: left;
+    }
+    .prof svg {
+      grid-row: span 2;
+      margin: 0;
     }
     .end-grid {
       grid-template-columns: minmax(0, 1fr);

@@ -35,4 +35,5 @@ export const HEADLINES: Headline[] = [
   { id: "tidaholm", title: "I built industrial machines, from CAD to assembly" },
   { id: "submarine", title: "I built a submarine to look for Second World War wrecks" },
   { id: "start", title: "Self-taught in C++, circuit boards and the lathe" },
+  { id: "off-the-clock", title: "Off the clock: skiing, camping and summers with the bees" },
 ];

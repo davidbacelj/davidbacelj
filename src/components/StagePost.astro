@@ -10,21 +10,23 @@ import Base from "../layouts/Base.astro";
 import Px from "./Px.astro";
 import Logo from "./Logo.astro";
 import { SOCIALS } from "../data/icons";
-import { STOPS, storyHref } from "../data/sections";
+import { storyHref } from "../data/sections";
+import { POSTS } from "../data/road";
 import { SECTION_STATS } from "../data/highlights";
 import { documentOf, type DocPhoto } from "../data/documents";
 
 interface Props {
-  /** The section's place in the road, newest first. */
-  i: number;
+  /** The post's section id. */
+  id: string;
   covers?: Record<string, DocPhoto>;
 }
-const { i, covers = {} } = Astro.props;
-const all = STOPS.flatMap((stop) => stop.sections.map((s) => ({ s, year: s.when ?? stop.sign })));
-const { s, year } = all[i];
+const { id, covers = {} } = Astro.props;
+// Newer and older follow the road's order on the home page.
+const i = POSTS.findIndex((p) => p.s.id === id);
+const { s, year } = POSTS[i];
 const doc = documentOf(s, covers[s.id]);
-const newer = all[i - 1];
-const older = all[i + 1];
+const newer = POSTS[i - 1];
+const older = POSTS[i + 1];
 const stat = SECTION_STATS[s.id];
 const poster = s.video ? await getImage({ src: s.video.poster, width: 1280, format: "webp" }) : undefined;
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
@@ -57,7 +59,18 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
       </header>
 
       {
-        doc.cover && (
+        s.collage ? (
+          <div class="hero collage">
+            {[doc.cover, ...doc.pages.map((pg) => pg.photo), ...doc.rest]
+              .filter((p) => p !== undefined)
+              .map((p, k) => (
+                <figure>
+                  <Px src={p.photo.src} alt={p.photo.alt} widths={[500, 900, 1300]} sizes={k === 1 ? "(max-width: 700px) 100vw, 740px" : "(max-width: 700px) 50vw, 380px"} loading="eager" cover />
+                  <figcaption>{p.caption}</figcaption>
+                </figure>
+              ))}
+          </div>
+        ) : doc.cover && (
           <figure class="hero">
             <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[800, 1300, 2000]} sizes="(max-width: 1200px) 100vw, 1120px" loading="eager" fetchpriority="high" />
             <figcaption>{doc.cover.caption}</figcaption>
@@ -95,7 +108,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
                   <p>{part.p}</p>
                 </>
               ))}
-              {pg.photo && (
+              {pg.photo && !s.collage && (
                 <figure class="wide">
                   <Px src={pg.photo.photo.src} alt={pg.photo.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 1000px) 100vw, 920px" />
                   <figcaption>{pg.photo.caption}</figcaption>
@@ -106,7 +119,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
         }
 
         {
-          doc.rest.length > 0 && (
+          doc.rest.length > 0 && !s.collage && (
             <div class="gallery">
               {doc.rest.map(({ photo, caption }) => (
                 <figure>
@@ -167,7 +180,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
       {
         newer ? (
           <a href={storyHref(newer.s.id)}>
-            <span>Newer</span>
+            <span>Previous</span>
             {documentOf(newer.s, covers[newer.s.id]).title}
           </a>
         ) : (
@@ -177,7 +190,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
       {
         older ? (
           <a href={storyHref(older.s.id)} class="older">
-            <span>Older</span>
+            <span>Next</span>
             {documentOf(older.s, covers[older.s.id]).title}
           </a>
         ) : (
@@ -278,6 +291,37 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
   }
   .hero :global(.px) {
     border-radius: 16px;
+  }
+  /* The personal post: its photos together as one collage, each caption on its photo */
+  .collage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, clamp(220px, 27vw, 320px));
+    gap: 10px;
+  }
+  .collage figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+  .collage figure:first-child {
+    grid-row: span 2;
+  }
+  .collage figure:nth-child(2) {
+    grid-column: span 2;
+  }
+  .collage :global(.px) {
+    height: 100%;
+    border-radius: 0;
+  }
+  .collage figcaption {
+    position: absolute;
+    inset: auto 0 0;
+    margin: 0;
+    padding: 36px 16px 14px;
+    background: linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / 0.6));
+    color: #fff;
   }
   figcaption {
     margin-top: 12px;
@@ -450,6 +494,25 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     .wide {
       margin-left: -16px;
       margin-right: -16px;
+    }
+    .collage {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
+      grid-auto-rows: 62vw;
+      gap: 4px;
+    }
+    .collage figure {
+      border-radius: 0;
+    }
+    .collage figure:nth-child(2) {
+      grid-column: auto;
+    }
+    .collage figure:first-child {
+      grid-row: auto;
+    }
+    .collage figcaption {
+      padding: 28px 12px 10px;
+      font-size: 12.5px;
     }
     .hero :global(.px),
     .wide :global(.px),

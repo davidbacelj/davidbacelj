@@ -8,7 +8,7 @@ import studio from "../assets/photos/portrait-studio.webp";
 import hosting from "../assets/photos/hosting.webp";
 import stage from "../assets/photos/stage.webp";
 import sofa from "../assets/photos/me-sofa.webp";
-import skapaAward from "../assets/photos/skapa-award.webp";
+import skapaAward from "../assets/photos/skapa-diploma.webp";
 import hackaping from "../assets/photos/hackaping.webp";
 import stellaStage from "../assets/photos/stella-stage.webp";
 

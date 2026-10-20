@@ -1,19 +1,10 @@
-// The numbers: the big ones under the stage photo and one headline number per
-// section. Every one comes from a public source or from David himself.
+// One headline number per post. Every one comes from a public source or from
+// David himself.
 
 export interface Stat {
   value: string;
   label: string;
 }
-
-/** The big numbers under the stage photo. Only true ones go live. */
-export const STATS: Stat[] = [
-  { value: "26.5M", label: "SEK raised for Incredible" },
-  { value: "#1", label: "on Product Hunt, 2025" },
-  { value: "0.1%", label: "I am among the top 0.1% of GTM engineers" },
-  { value: "2", label: "first places at Hackaping, 2025" },
-  { value: "11", label: "years building, since 2015" },
-];
 
 /** One headline number per section, where there is a true one. */
 export const SECTION_STATS: Record<string, Stat> = {
