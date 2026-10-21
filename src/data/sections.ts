@@ -30,7 +30,6 @@ import labelParsed from "../assets/product/labeldetector-label.webp";
 import stellaFramework from "../assets/product/stella-framework.webp";
 import sweLlm from "../assets/product/swe-llm.webp";
 import sweLlmChat from "../assets/product/swe-llm-chat.webp";
-import threeTempApp from "../assets/product/3temp-app.webp";
 import hackapingAgents from "../assets/product/hackaping-agents.webp";
 
 import submarine from "../assets/life/submarine.webp";
@@ -41,13 +40,11 @@ import gardenRobot from "../assets/life/garden-robot.webp";
 import gardenRobot2 from "../assets/life/garden-robot-2.webp";
 import gardenPcb from "../assets/life/garden-pcb.webp";
 import gardenCad from "../assets/life/garden-cad.webp";
-import lathe from "../assets/life/lathe.webp";
 import ungdrive from "../assets/life/ungdrive.webp";
 import tidaholm from "../assets/life/tidaholm.webp";
 import orangebox from "../assets/life/orangebox.webp";
 import orangebox2 from "../assets/life/orangebox-2.webp";
 import hackapingStage from "../assets/life/hackaping-stage.webp";
-import hunting from "../assets/life/hunting.webp";
 import groundJonkoping from "../assets/life/ground-jonkoping.webp";
 import goldenGate from "../assets/life/golden-gate.webp";
 import techbbq from "../assets/life/techbbq.webp";
@@ -80,7 +77,10 @@ import ufLogo from "../assets/logos/ung-foretagsamhet.svg";
 import ungdriveLogo from "../assets/logos/ungdrive.svg";
 import norditechLogo from "../assets/logos/norditech.png";
 import saabLogo from "../assets/logos/saab.png";
-import ljusgardaLogo from "../assets/logos/ljusgarda.png";
+// Ljusgårda's logotype on a light green panel (2026-10-21: the logo is its main image).
+import ljusgardaCover from "../assets/photos/ljusgarda-cover.png";
+// Norditech's logotype on a light blue panel (2026-10-21: the consulting post leads with it).
+import norditechCover from "../assets/photos/norditech-cover.png";
 
 export interface Photo {
   src: ImageMetadata;
@@ -237,12 +237,13 @@ export const STOPS: Stop[] = [
         when: "2024 and 2025",
         role: "Co-founder",
         lede: "We took VISS.AI and then Incredible to the US, to TechBBQ in Copenhagen and to Web Summit in Lisbon.",
+        collage: true,
         photo: { src: goldenGate, alt: "With the team at the Golden Gate Bridge, April 2024" },
         thumbs: [
-          { src: inUs, alt: "Showing VISS.AI at our booth in the US, April 2024" },
+          { src: inUs, alt: "Showing VISS.AI at our booth at Startup Grind in the US, April 2024" },
           { src: techbbq, alt: "At TechBBQ in Copenhagen, September 2024" },
           { src: travelWebsummit, alt: "The team on the plane to Web Summit, November 2024" },
-          { src: websummit, alt: "At Web Summit, November 2025" },
+          { src: websummit, alt: "David and the team at Web Summit, one of them in an orange prison suit, November 2025" },
         ],
       },
       {
@@ -271,7 +272,6 @@ export const STOPS: Stop[] = [
         links: [{ label: "Stiftelsen SKAPA", href: "https://www.stiftelsenskapa.se/skapa-pristagare-2025/skapa-pristagare-2024" }],
       },
     ],
-    pause: { photo: { src: hunting, alt: "A view over a lake from a rocky hill during a hunt" }, title: "Out hunting", text: "I have a hunting licence and go whenever I can." },
   },
   {
     sign: "2023",
@@ -352,22 +352,19 @@ export const STOPS: Stop[] = [
         thumbs: [{ src: orangebox2, alt: "Orange Box lockers being set up" }],
       },
       {
-        id: "rapid",
-        links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" }],
-        title: "Rapid Dimension",
-        role: "Brought in the project",
-        lede: "I landed the job of writing the software that drives Rapid Dimension's industrial 3D printers.",
-        photo: { src: rapidPrinter, alt: "The Rapid Dimension industrial 3D printer" },
-        logos: [{ src: rapidLogo, alt: "Rapid Dimension" }],
-      },
-      {
         id: "norditech-more",
-        links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-philip" }],
-        title: "Quick-set, 3TEMP and FC Production",
-        role: "With Philip Alm",
-        lede: "Three more Norditech projects that Philip and I worked on together.",
-        photo: { src: threeTempApp, alt: "The 3TEMP brewer app showing a roast analysis" },
+        // 2026-10-21: the Rapid Dimension post (3D printer software) merged in here.
+        links: [
+          { label: "Incredible blog, David's projects", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" },
+          { label: "Incredible blog, Philip's projects", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-philip" },
+        ],
+        title: "Consulting at Norditech",
+        role: "Consultant",
+        lede: "For over two years I worked as a consultant at Norditech. These are a few of the projects we built.",
+        photo: { src: norditechCover, alt: "The Norditech logo" },
+        thumbs: [{ src: rapidPrinter, alt: "The Rapid Dimension industrial 3D printer" }],
         logos: [
+          { src: rapidLogo, alt: "Rapid Dimension" },
           { src: quicksetLogo, alt: "Quick-set" },
           { src: threeTempLogo, alt: "3TEMP", size: 20 },
           { src: fcproductionLogo, alt: "FC Production", dark: true },
@@ -456,7 +453,7 @@ export const STOPS: Stop[] = [
       },
       {
         id: "ljusgarda",
-        logos: [{ src: ljusgardaLogo, alt: "Ljusgårda", size: 44 }],
+        photo: { src: ljusgardaCover, alt: "The Ljusgårda logo: Ljusgårda, Supernormal Greens" },
         title: "Ljusgårda",
         when: "2018",
         role: "Automation engineer",
@@ -497,21 +494,6 @@ export const STOPS: Stop[] = [
         role: "Built from scratch",
         lede: "I built a remote-controlled submarine to look for World War II submarines sunk along the coast.",
         photo: { src: submarine, alt: "The home-built aluminium submarine on a workbench" },
-      },
-    ],
-  },
-  {
-    sign: "2015",
-    label: "Growing up in Jönköping",
-    tagline: "I taught myself to code, solder and machine parts.",
-    sections: [
-      {
-        id: "start",
-        title: "Where it started",
-        when: "2015 to 2018",
-        role: "Student and tinkerer",
-        lede: "I studied IT in Jönköping and taught myself to code and build electronics.",
-        photo: { src: lathe, alt: "An old metal lathe cutting a part in the garage" },
       },
     ],
   },

@@ -29,6 +29,8 @@ const newer = POSTS[i - 1];
 const older = POSTS[i + 1];
 const stat = SECTION_STATS[s.id];
 const poster = s.video ? await getImage({ src: s.video.poster, width: 1280, format: "webp" }) : undefined;
+// A collage post shows all its photos together at the top, four to six of them.
+const collage = [doc.cover, ...doc.pages.map((pg) => pg.photo), ...doc.rest].filter((p) => p !== undefined);
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
 ---
 
@@ -60,12 +62,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
 
       {
         s.collage ? (
-          <div class="hero collage">
-            {[doc.cover, ...doc.pages.map((pg) => pg.photo), ...doc.rest]
-              .filter((p) => p !== undefined)
-              .map((p, k) => (
+          <div class:list={["hero collage", { five: collage.length === 5, six: collage.length >= 6 }]}>
+            {collage.map((p, k) => (
                 <figure>
-                  <Px src={p.photo.src} alt={p.photo.alt} widths={[500, 900, 1300]} sizes={k === 1 ? "(max-width: 700px) 100vw, 740px" : "(max-width: 700px) 50vw, 380px"} loading="eager" cover />
+                  <Px src={p.photo.src} alt={p.photo.alt} widths={[500, 900, 1300]} sizes={k < 2 ? "(max-width: 700px) 100vw, 740px" : "(max-width: 700px) 50vw, 380px"} loading="eager" cover />
                   <figcaption>{p.caption}</figcaption>
                 </figure>
               ))}
@@ -311,6 +311,26 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
   .collage figure:nth-child(2) {
     grid-column: span 2;
   }
+  /* Five photos: two on top, three under them */
+  .collage.five {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: clamp(220px, 27vw, 340px) clamp(200px, 24vw, 300px);
+  }
+  .collage.five figure {
+    grid-row: auto;
+    grid-column: span 2;
+  }
+  .collage.five figure:nth-child(-n + 2) {
+    grid-column: span 3;
+  }
+  /* Six photos: three and three */
+  .collage.six {
+    grid-template-rows: repeat(2, clamp(220px, 26vw, 320px));
+  }
+  .collage.six figure {
+    grid-row: auto;
+    grid-column: auto;
+  }
   .collage :global(.px) {
     height: 100%;
     border-radius: 0;
@@ -509,6 +529,21 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     }
     .collage figure:first-child {
       grid-row: auto;
+    }
+    .collage.five {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
+    }
+    .collage.five figure,
+    .collage.five figure:nth-child(-n + 2),
+    .collage.six figure {
+      grid-column: auto;
+    }
+    .collage.six {
+      grid-template-rows: none;
+    }
+    .collage.five figure:first-child {
+      grid-column: span 2;
     }
     .collage figcaption {
       padding: 28px 12px 10px;

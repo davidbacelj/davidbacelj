@@ -1,20 +1,20 @@
 // The road on the home page, in David's own order (2026-10-20): not by year,
 // just the posts as he wants them read, with breaks between them. Each entry
 // is a section id, "pause:<year>" for that year's personal photo, or
-// "break:<name>" for one of the breaks drawn on the home page (music,
-// tensorflow, profiles). His life outside work is one post at the very end
+// "break:<name>" for one of the breaks drawn on the home page (profiles,
+// tensorflow, music, home). His life outside work is one post at the very end
 // (personal.ts). The build stops if a post or a photo is missing or doubled.
 import { STOPS, type Photo, type Section } from "./sections";
 import { PERSONAL } from "./personal";
 
 const ORDER = [
   "incredible",
+  "break:profiles",
   "hacking-ground",
   "viss",
   "skapa",
   "on-the-road",
   "swe-llm",
-  "pause:2024",
   "hackaping",
   "norditech",
   "stella",
@@ -23,23 +23,21 @@ const ORDER = [
   "wheelscanning",
   "robowaste",
   "orangebox",
-  "rapid",
   "norditech-more",
-  "break:profiles",
   "tidaholm",
   "break:music",
   "garden",
   "ljusgarda",
   "solar",
   "submarine",
-  "start",
+  "break:home",
   "off-the-clock",
 ];
 
 export type Post = { kind: "post"; s: Section; year: string };
 export type Pause = { kind: "pause"; sign: string; photo: Photo; text: string };
-export type Break = { kind: "break"; name: "music" | "tensorflow" | "profiles" };
-const BREAKS = ["music", "tensorflow", "profiles"] as const;
+const BREAKS = ["music", "tensorflow", "profiles", "home"] as const;
+export type Break = { kind: "break"; name: (typeof BREAKS)[number] };
 
 const posts = new Map(STOPS.flatMap((stop) => stop.sections.map((s): [string, Post] => [s.id, { kind: "post", s, year: s.when ?? stop.sign }])));
 posts.set(PERSONAL.id, { kind: "post", s: PERSONAL, year: PERSONAL.when! });

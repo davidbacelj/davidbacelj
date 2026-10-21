@@ -72,9 +72,21 @@ export const STORIES: Record<string, Part[]> = {
   ],
   "on-the-road": [
     { p: "2024 was the year we took VISS.AI out into the world, and we kept going in 2025." },
-    { h: "The US", p: "In April 2024 we flew to the US, showed VISS.AI at our booth and took the long way round past the Golden Gate Bridge." },
-    { h: "Copenhagen", p: "In September I was at TechBBQ in Copenhagen." },
-    { h: "Lisbon", p: "In November the team flew to Web Summit in Lisbon, and we went back to Web Summit in 2025." },
+    {
+      h: "The US",
+      p: "In April 2024 we flew to the US for Startup Grind, a startup event where we showed VISS.AI at our own booth. We found a lot of investors to talk to, and we met Zapier's CEO and talked about where things are heading. On the way we took the long way round past the Golden Gate Bridge.",
+    },
+    {
+      h: "Copenhagen",
+      p: "In September 2024 we were at TechBBQ in Copenhagen. There we found more than 40 potential customers who were interested in the function calling that Incredible provides, where an AI model uses real apps and tools.",
+    },
+    {
+      h: "Web Summit",
+      p: "In November 2024 the team flew to Web Summit in Lisbon, and we went back in 2025. Our goal there was to book 100 relevant meetings. We beat it and booked 140.",
+    },
+    {
+      p: "At Web Summit 2025 we brought an orange prison suit. It was our joke about escaping from OpenAI: we had broken out of the big AI models' expensive pricing, and we are fixing that pricing.",
+    },
   ],
   "swe-llm": [
     {
@@ -154,17 +166,17 @@ export const STORIES: Record<string, Part[]> = {
       p: "I wrote all of it. Each locker runs on a Linux server with a GUI on its screen that I wrote, and I built the 4G connection so every locker is always online. Then I wrote the app that people rent the tools with.",
     },
   ],
-  rapid: [
+  "norditech-more": [
     {
+      p: "For over two years I worked as a consultant at Norditech, the AI company Philip and I started. We took on all kinds of projects for industrial companies, and these are a few of them.",
+    },
+    {
+      h: "Rapid Dimension",
       p: "Rapid Dimension builds industrial 3D printers in Sweden for high-quality manufacturing. They brought us in as consultants to write the software that drives the printers.",
     },
     {
-      h: "My part",
       p: "I landed the project. I didn't write the code myself, the team did, and the job took as much mechanical engineering as software. What won it, as our blog put it, was that people trust me when I say something can be delivered.",
     },
-  ],
-  "norditech-more": [
-    { p: "Through Norditech, Philip and I took on all kinds of projects for industrial companies. These are three more of them." },
     {
       h: "Quick-set",
       p: "Quick-set makes plastic parts. We built a laser inspection system for their robots with an LMI Gocator, a smart 3D laser line profiler, that checks every part passing through at micron-level precision without touching it. The hard part was making it run reliably inside a robot cell on the factory floor.",
@@ -272,21 +284,22 @@ export const STORIES: Record<string, Part[]> = {
     },
     { h: "Did it work?", p: "It did. I built it from scratch, took it out and filmed the sea with it." },
   ],
-  start: [
-    { p: "I went to the IT programme at Erik Dahlbergsgymnasiet in Jönköping. The rest of the time I was in the garage." },
-    { h: "Code", p: "C++ was the first programming language I taught myself." },
-    { h: "Electronics", p: "I love electronics. I taught myself circuit board design, usually in DipTrace, and I build and solder the boards myself." },
-    { h: "The lathe", p: "I love mechanical work too. I got an old lathe, and I still machine parts on it." },
-  ],
   "off-the-clock": [
-    { p: "When I am not building something, I am usually outside. This is what I do off the clock." },
+    { p: "When I am not at work, I am usually outside, or in the garage building something. This is what I do off the clock." },
     { h: "Skiing", p: "Cross-country skiing is my favourite way to spend a winter day, with fresh tracks across a frozen lake at sunset." },
     { h: "Camping", p: "I love being out in nature, and a tent by a lake is the best of it." },
+    { h: "Hunting", p: "I have a hunting licence (jägarexamen) and go hunting whenever I can." },
     {
-      h: "Licences",
-      p: "I have a hunting licence (jägarexamen) and go hunting whenever I can. I have a boat licence (skepparexamen), so I can find my way with a sea chart, and a diving licence, though I haven't dived much yet.",
+      h: "The sea",
+      p: "I have a boat licence (skepparexamen), so I can find my way with a sea chart, and a diving licence, though I haven't dived much yet.",
     },
     { h: "The bees", p: "As a kid I spent the summers keeping bees with my grandparents. I still think it is one of the most fun things there is." },
+    {
+      h: "Self-taught",
+      p: "I went to the IT programme at Erik Dahlbergsgymnasiet in Jönköping, and the rest of the time I was in the garage. C++ was the first programming language I taught myself.",
+    },
+    { h: "Electronics", p: "I love electronics. I taught myself circuit board design, usually in DipTrace, and I build and solder the boards myself." },
+    { h: "The lathe", p: "I love mechanical work too. I got an old lathe, and I still machine parts on it." },
     { h: "Suited up", p: "And once in a while the workshop clothes come off, like in autumn 2022." },
   ],
 };

@@ -19,6 +19,7 @@ import { MONO } from "../data/monoLogos";
 import { COVERS } from "../data/covers";
 import { documentOf } from "../data/documents";
 import { STORIES } from "../data/stories";
+import { SWEDEN } from "../data/sweden";
 
 // An ordinary reading time, at about 220 words a minute.
 const minutes = (id: string) => Math.max(1, Math.round((STORIES[id] ?? []).reduce((n, p) => n + p.p.split(/\s+/).length, 0) / 220));
@@ -106,6 +107,30 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                 </section>
               </div>
             );
+          if (item.kind === "break" && item.name === "home")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk home" aria-labelledby="home-title">
+                  <div class="map-pane">
+                  <svg class="map" viewBox={`0 0 ${SWEDEN.width} ${SWEDEN.height}`} role="img" aria-label="A map of Sweden with Jönköping marked at the southern tip of Lake Vättern">
+                    <path class="land" d={SWEDEN.land} />
+                    <path class="lakes" d={SWEDEN.lakes} />
+                    <circle class="ping" cx={SWEDEN.home.x} cy={SWEDEN.home.y} r="8" />
+                    <circle class="here" cx={SWEDEN.home.x} cy={SWEDEN.home.y} r="8" />
+                    <text class="here-name" x={SWEDEN.home.x + 6} y={SWEDEN.home.y + 42}>
+                      Jönköping
+                    </text>
+                  </svg>
+                  </div>
+                  <div class="home-text">
+                    <p class="coords">57.78° N, 14.16° E</p>
+                    <h2 id="home-title">I live in Jönköping</h2>
+                    <p>This corner of Sweden, at the southern tip of Lake Vättern. I grew up here, and it is where we build Incredible.</p>
+                  </div>
+                </section>
+              </div>
+            );
           if (item.kind === "break")
             return (
               <div class="post">
@@ -147,8 +172,8 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
               <a class="doc" href={storyHref(s.id)} data-doc={s.id} id={s.id}>
                 <span class="sheet">
                   {s.collage ? (
-                    <span class="d-photo d-collage">
-                      {[s.photo, ...(s.thumbs ?? [])].filter((p) => p !== undefined).slice(0, 4).map((p) => (
+                    <span class:list={["d-photo d-collage", { five: (s.thumbs ?? []).length === 4, six: (s.thumbs ?? []).length >= 5 }]}>
+                      {[s.photo, ...(s.thumbs ?? [])].filter((p) => p !== undefined).slice(0, 6).map((p) => (
                         <Px src={p.src} alt={p.alt} widths={[400, 700]} sizes="(max-width: 900px) 62vw, 550px" cover />
                       ))}
                     </span>
@@ -637,6 +662,22 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
   .d-collage :global(.px:nth-child(2)) {
     grid-column: span 2;
   }
+  /* Five photos: two on top, three under them */
+  .d-collage.five {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .d-collage.five :global(.px) {
+    grid-row: auto;
+    grid-column: span 2;
+  }
+  .d-collage.five :global(.px:nth-child(-n + 2)) {
+    grid-column: span 3;
+  }
+  /* Six photos: three and three */
+  .d-collage.six :global(.px) {
+    grid-row: auto;
+    grid-column: auto;
+  }
 
   /* Breaks between the posts */
   .brk {
@@ -789,6 +830,86 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     color: var(--dim);
   }
 
+  /* Where I live: Sweden, with Jönköping marked */
+  .home {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+  }
+  /* The sea and the lakes share one pale blue */
+  .map-pane {
+    display: grid;
+    place-items: center;
+    padding: clamp(36px, 4vw, 52px) 24px;
+    background: #e3eaef;
+  }
+  .map {
+    display: block;
+    width: auto;
+    height: clamp(400px, 36vw, 480px);
+  }
+  .land {
+    fill: var(--ink);
+  }
+  .lakes {
+    fill: #e3eaef;
+  }
+  .home-text {
+    align-self: center;
+    padding: clamp(36px, 5vw, 64px);
+  }
+  .here {
+    fill: #fecc02;
+  }
+  .ping {
+    fill: none;
+    stroke: #fecc02;
+    stroke-width: 3;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ping 2.6s ease-out infinite;
+  }
+  @keyframes ping {
+    from {
+      scale: 1;
+      opacity: 0.9;
+    }
+    to {
+      scale: 3.4;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ping {
+      display: none;
+    }
+  }
+  .here-name {
+    fill: #fff;
+    font-size: 19px;
+    font-weight: 600;
+    text-anchor: middle;
+  }
+  .coords {
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .home h2 {
+    margin-top: 12px;
+  }
+  .home h2 + p {
+    margin-top: 16px;
+    max-width: 400px;
+    font-size: 17.5px;
+    line-height: 1.55;
+    color: #34332f;
+    text-wrap: pretty;
+  }
+
   /* A personal moment on the line */
   .pause {
     width: min(520px, 100%);
@@ -889,6 +1010,22 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     }
     .music > div {
       width: 100%;
+    }
+    .home {
+      grid-template-columns: minmax(0, 1fr);
+      text-align: center;
+    }
+    .map {
+      height: 340px;
+    }
+    .here-name {
+      font-size: 27px;
+    }
+    .home-text {
+      padding: 32px 24px 36px;
+    }
+    .home h2 + p {
+      margin-inline: auto;
     }
     .tracks li {
       text-align: left;

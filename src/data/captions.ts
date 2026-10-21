@@ -28,11 +28,11 @@ export const CAPTIONS: Record<string, string[]> = {
     "Talking it through with Philip by the green wall.",
   ],
   "on-the-road": [
-    "With the team at the Golden Gate Bridge, April 2024.",
-    "Showing VISS.AI at our booth in the US, spring 2024.",
+    "At the Golden Gate Bridge on our Startup Grind trip, April 2024.",
+    "Our VISS.AI booth at Startup Grind, April 2024.",
     "At TechBBQ in Copenhagen, September 2024.",
-    "On the plane to Web Summit in Lisbon with the team.",
-    "Back at Web Summit in 2025.",
+    "On the plane to Web Summit in Lisbon, November 2024.",
+    "Escaping from OpenAI in a prison suit, Web Summit 2025.",
   ],
   "swe-llm": [
     "Asking SWE-LLM, in Swedish, who Astrid Lindgren was. And what 10 + 23 is.",
@@ -52,8 +52,7 @@ export const CAPTIONS: Record<string, string[]> = {
   ],
   wheelscanning: ["The Wheelscan station. Stereo cameras measure every tyre.", "The measurement software running at the station."],
   orangebox: ["Don't buy. Rent. Get the app, pick a box, rent the tool.", "Setting up the lockers before they went live."],
-  rapid: ["Rapid Dimension's industrial 3D printer, driven by our software."],
-  "norditech-more": ["The 3TEMP brewer app, analysing a roast."],
+  "norditech-more": ["Norditech, the AI company Philip and I started.", "Rapid Dimension's industrial 3D printer, driven by our software."],
   robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall."],
   norditech: [
     "Philip and me in 2022. We met at a UF fair and started Norditech together.",
@@ -72,12 +71,14 @@ export const CAPTIONS: Record<string, string[]> = {
   "off-the-clock": [
     "Fresh tracks across a frozen lake. My favourite kind of winter day.",
     "A tent by a lake. The best of being out in nature.",
+    "Out hunting. I go whenever I can.",
     "Summers keeping bees with my grandparents.",
+    "My old lathe in the garage, cutting a part.",
     "Suited up, autumn 2022. For once out of the workshop clothes.",
   ],
-  start: ["My old lathe in the garage, cutting a part."],
+  ljusgarda: ["Ljusgårda, one of Europe's largest indoor farms."],
 };
 
-export const PAUSE_CAPTIONS: Record<string, string> = {
-  "2024": "Out hunting. I have a hunting licence and go whenever I can.",
-};
+// Captions for a year's personal photo on the road, by year. None right now:
+// the hunting photo moved into the "Off the clock" post (2026-10-21).
+export const PAUSE_CAPTIONS: Record<string, string> = {};
