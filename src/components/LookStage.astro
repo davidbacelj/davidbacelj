@@ -20,6 +20,7 @@ import { COVERS } from "../data/covers";
 import { documentOf } from "../data/documents";
 import { STORIES } from "../data/stories";
 import { SWEDEN } from "../data/sweden";
+import { WELCOME_SCRIPT } from "../data/welcome";
 
 // An ordinary reading time, at about 220 words a minute.
 const minutes = (id: string) => Math.max(1, Math.round((STORIES[id] ?? []).reduce((n, p) => n + p.p.split(/\s+/).length, 0) / 220));
@@ -64,6 +65,24 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
           <p>A short film from me, about who I am and what I build.</p>
           <p class="soon">Coming soon</p>
         </div>
+      </div>
+      <div class="script">
+        {
+          WELCOME_SCRIPT.map((p) => {
+            const [before, after] = p.split("get in touch");
+            return (
+              <p>
+                {before}
+                {after !== undefined && (
+                  <>
+                    <a href="#contact">get in touch</a>
+                    {after}
+                  </>
+                )}
+              </p>
+            );
+          })
+        }
       </div>
       <p class="pill start" data-node>Start</p>
     </section>
@@ -217,7 +236,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
 
   <footer class="end">
     <div class="end-grid">
-      <div class="touch">
+      <div class="touch" id="contact">
         <Px src={PHOTOS.studio} alt="David Bacelj in a navy polo shirt against a white wall" widths={[500, 900]} sizes="(max-width: 900px) 92vw, 420px" class="studio" />
         <h2>Get in touch</h2>
         <ul class="icons">
@@ -521,6 +540,36 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     color: #fff;
     font-size: 13px;
     font-weight: 600;
+  }
+  /* What the film says, as text until it is recorded */
+  .script {
+    width: min(720px, 100%);
+    margin-top: clamp(40px, 5vw, 64px);
+    padding: clamp(28px, 5vw, 56px);
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+  }
+  .script p {
+    font-size: 18.5px;
+    line-height: 1.7;
+    color: #26241f;
+    text-wrap: pretty;
+  }
+  .script p + p {
+    margin-top: 18px;
+  }
+  .script p:first-child {
+    font-size: clamp(21px, 2.2vw, 25px);
+    font-weight: 560;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .script a {
+    color: inherit;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
   }
   .start {
     margin-top: clamp(70px, 8vw, 110px);
@@ -1023,6 +1072,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     }
     .home-text {
       padding: 32px 24px 36px;
+    }
+    .script p {
+      font-size: 17px;
+      line-height: 1.65;
     }
     .home h2 + p {
       margin-inline: auto;
