@@ -100,9 +100,9 @@ export interface Section {
   with?: string;
   photo?: Photo;
   thumbs?: Photo[];
-  /** Who it was with. `dark` puts a white-only logo on a dark sticker; `size`
-      sets a stacked or small logo taller than the usual line. */
-  logos?: { src: ImageMetadata; alt: string; dark?: boolean; size?: number }[];
+  /** Who it was with. `dark` puts a white-only logo on a dark tile; `scale`
+      makes a logo that looks small next to the others bigger (1.3 is 30% taller). */
+  logos?: { src: ImageMetadata; alt: string; dark?: boolean; scale?: number }[];
   links?: { label: string; href: string }[];
   /** Show the photo and its thumbs together as a collage, on the card and the post. */
   collage?: boolean;
@@ -143,9 +143,9 @@ export const STOPS: Stop[] = [
         logos: [
           { src: LOGOS.incredible, alt: "Incredible" },
           { src: cellmarkLogo, alt: "CellMark" },
-          { src: spintopLogo, alt: "Spintop Ventures", size: 30 },
-          { src: starbrightLogo, alt: "Starbright Invest", size: 14 },
-          { src: productHuntLogo, alt: "Product Hunt", size: 28 },
+          { src: spintopLogo, alt: "Spintop Ventures" },
+          { src: starbrightLogo, alt: "Starbright Invest" },
+          { src: productHuntLogo, alt: "Product Hunt" },
         ],
         links: [
           { label: "incredible.one", href: "https://www.incredible.one" },
@@ -181,7 +181,7 @@ export const STOPS: Stop[] = [
         ],
         logos: [
           { src: gro36Logo, alt: "GRO36", dark: true },
-          { src: glitchedLogo, alt: "Glitched", size: 18 },
+          { src: glitchedLogo, alt: "Glitched" },
         ],
         links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/we-hosted-a-hackathon" }],
       },
@@ -198,7 +198,7 @@ export const STOPS: Stop[] = [
           { src: hackapingHall, alt: "The hackathon hall at Linköping University" },
           { src: hackapingAgents, alt: "The agents behind the production-flow solution" },
         ],
-        logos: [{ src: liuLogo, alt: "Linköping University", size: 30 }],
+        logos: [{ src: liuLogo, alt: "Linköping University" }],
         links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/hackaping-double-win" }],
       },
     ],
@@ -221,8 +221,8 @@ export const STOPS: Stop[] = [
         ],
         logos: [
           { src: LOGOS.viss, alt: "VISS.AI" },
-          { src: spintopLogo, alt: "Spintop Ventures", size: 30 },
-          { src: starbrightLogo, alt: "Starbright Invest", size: 14 },
+          { src: spintopLogo, alt: "Spintop Ventures" },
+          { src: starbrightLogo, alt: "Starbright Invest" },
           { src: LOGOS.foretagarna, alt: "Företagarna" },
           { src: almiLogo, alt: "Almi" },
         ],
@@ -231,7 +231,7 @@ export const STOPS: Stop[] = [
         id: "on-the-road",
         logos: [
           { src: techbbqLogo, alt: "TechBBQ", dark: true },
-          { src: webSummitLogo, alt: "Web Summit", size: 30 },
+          { src: webSummitLogo, alt: "Web Summit" },
         ],
         title: "On the road with VISS.AI",
         when: "2024 and 2025",
@@ -281,7 +281,7 @@ export const STOPS: Stop[] = [
       {
         id: "stella",
         logos: [
-          { src: norditechLogo, alt: "Norditech", size: 18 },
+          { src: norditechLogo, alt: "Norditech" },
           { src: gro36Logo, alt: "GRO36", dark: true },
         ],
         title: "STELLA",
@@ -310,13 +310,14 @@ export const STOPS: Stop[] = [
         role: "AI vision",
         lede: "I built the AI vision that reads the labels on pallets, so a warehouse can count its own stock.",
         with: "Toyota Material Handling, Eboss and Almi",
-        photo: { src: labelCameraMounted, alt: "A LabelDetector camera mounted and running at the pilot" },
+        // The camera view leads the post and its card (David's pick, 2026-10-22).
+        photo: { src: labelCamera, alt: "The camera view, with every pallet label identified" },
         thumbs: [
-          { src: labelCamera, alt: "The camera view, with every pallet label identified" },
+          { src: labelCameraMounted, alt: "A LabelDetector camera mounted and running at the pilot" },
           { src: labelParsed, alt: "A pallet label read into supplier, delivery and product details" },
         ],
         logos: [
-          { src: toyotaLogo, alt: "Toyota Material Handling", size: 34 },
+          { src: toyotaLogo, alt: "Toyota Material Handling", scale: 1.3 },
           { src: almiLogo, alt: "Almi" },
           { src: ebossLogo, alt: "Eboss" },
         ],
@@ -344,7 +345,7 @@ export const STOPS: Stop[] = [
       },
       {
         id: "orangebox",
-        logos: [{ src: norditechLogo, alt: "Norditech", size: 18 }],
+        logos: [{ src: norditechLogo, alt: "Norditech" }],
         title: "Orange Box",
         role: "All the software",
         lede: "I wrote all the software for Orange Box, a locker where you rent tools instead of buying them.",
@@ -366,7 +367,7 @@ export const STOPS: Stop[] = [
         logos: [
           { src: rapidLogo, alt: "Rapid Dimension" },
           { src: quicksetLogo, alt: "Quick-set" },
-          { src: threeTempLogo, alt: "3TEMP", size: 20 },
+          { src: threeTempLogo, alt: "3TEMP" },
           { src: fcproductionLogo, alt: "FC Production", dark: true },
         ],
       },
@@ -387,9 +388,9 @@ export const STOPS: Stop[] = [
         photo: { src: robowastePhoto, alt: "Field testing at the sorting machine, the FossilEye machines and the stereo camera rig" },
         logos: [
           { src: robowasteLogo, alt: "RoboWaste" },
-          { src: vattenfallLogo, alt: "Vattenfall", size: 20 },
-          { src: tekniskaVerkenLogo, alt: "Tekniska verken", size: 30 },
-          { src: umeaEnergiLogo, alt: "Umeå Energi", size: 20 },
+          { src: vattenfallLogo, alt: "Vattenfall" },
+          { src: tekniskaVerkenLogo, alt: "Tekniska verken" },
+          { src: umeaEnergiLogo, alt: "Umeå Energi" },
           { src: saabLogo, alt: "Saab" },
         ],
         links: [
@@ -411,7 +412,7 @@ export const STOPS: Stop[] = [
           { src: PHOTOS.cofounders, alt: "Philip and David, August 2024" },
         ],
         logos: [
-          { src: norditechLogo, alt: "Norditech", size: 18 },
+          { src: norditechLogo, alt: "Norditech" },
           { src: LOGOS.sciencePark, alt: "Science Park Jönköping" },
         ],
       },
@@ -439,7 +440,7 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "garden",
-        logos: [{ src: ufLogo, alt: "Ung Företagsamhet", size: 34 }],
+        logos: [{ src: ufLogo, alt: "Ung Företagsamhet" }],
         title: "A garden robot",
         when: "2018",
         role: "Ung Företagsamhet",

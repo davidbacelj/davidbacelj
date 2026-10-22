@@ -46,8 +46,8 @@ export const CAPTIONS: Record<string, string[]> = {
     "The package repository its agents were installed from.",
   ],
   labeldetector: [
-    "A LabelDetector camera on duty at the pilot.",
     "What the camera sees: every pallet label found.",
+    "A LabelDetector camera on duty at the pilot.",
     "One label, read and sorted into supplier, delivery and product.",
   ],
   wheelscanning: ["The Wheelscan station. Stereo cameras measure every tyre.", "The measurement software running at the station."],

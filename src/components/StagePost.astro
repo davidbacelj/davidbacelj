@@ -1,14 +1,15 @@
 ---
 // A project from the road as a normal blog post: a line
 // back to the road, the date and role, the headline and the opening, the big
-// photo David picked, then the story under its small headings with photos
-// between the parts, the film where there is one, the headline number, who
-// it was with and the sources, and the newer and older posts.
+// photo David picked, then the headline number, the film where there is one,
+// and the story under its small headings with photos between the parts and
+// the logos of who it was with after its first part, then the sources and the
+// newer and older posts.
 import "@fontsource-variable/geist/wght.css";
 import { getImage } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import Px from "./Px.astro";
-import Logo from "./Logo.astro";
+import LogoWall from "./LogoWall.astro";
 import { SOCIALS } from "../data/icons";
 import { storyHref } from "../data/sections";
 import { POSTS } from "../data/road";
@@ -31,6 +32,10 @@ const stat = SECTION_STATS[s.id];
 const poster = s.video ? await getImage({ src: s.video.poster, width: 1280, format: "webp" }) : undefined;
 // A collage post shows all its photos together at the top, four to six of them.
 const collage = [doc.cover, ...doc.pages.map((pg) => pg.photo), ...doc.rest].filter((p) => p !== undefined);
+// The logos go at the end of the story's first section, just before its second small heading.
+const parts = doc.pages.flatMap((pg, k) => pg.parts.map((part, j) => ({ k, j, h: part.h })));
+const second = parts.findIndex((p, n) => n > 0 && p.h);
+const wallAt = parts[second > 0 ? second - 1 : parts.length - 1];
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
 ---
 
@@ -99,13 +104,16 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
           )
         }
 
+        {!wallAt && s.logos && <LogoWall logos={s.logos} with={s.with} />}
+
         {
-          doc.pages.map((pg) => (
+          doc.pages.map((pg, k) => (
             <>
-              {pg.parts.map((part) => (
+              {pg.parts.map((part, j) => (
                 <>
                   {part.h && <h2>{part.h}</h2>}
                   <p>{part.p}</p>
+                  {k === wallAt?.k && j === wallAt?.j && s.logos && <LogoWall logos={s.logos} with={s.with} />}
                 </>
               ))}
               {pg.photo && !s.collage && (
@@ -137,23 +145,6 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
               <p>{s.quote.text}</p>
               <footer>From the {s.quote.source}</footer>
             </blockquote>
-          )
-        }
-
-        {
-          (s.with || s.logos) && (
-            <section class="with" aria-label="Together with">
-              {s.with && <p>Together with {s.with}.</p>}
-              {s.logos && (
-                <ul>
-                  {s.logos.map((l) => (
-                    <li class:list={{ dark: l.dark }}>
-                      <Logo src={l.src} alt={l.alt} height={Math.round((l.size ?? 24) * 1.4)} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
           )
         }
 
@@ -421,29 +412,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     font-size: 14.5px;
     color: var(--dim);
   }
-  .with {
+  .sources {
     margin-top: 56px;
     padding-top: 28px;
     border-top: 1px solid var(--rule);
-  }
-  .with p {
-    font-size: 17px;
-    color: var(--dim);
-  }
-  .with ul {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 22px 36px;
-    margin-top: 22px;
-  }
-  .with li.dark {
-    padding: 10px 14px;
-    border-radius: 8px;
-    background: var(--ink);
-  }
-  .sources {
-    margin-top: 40px;
   }
   .sources h2 {
     font-size: 15px;
@@ -568,10 +540,6 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     }
     .more a.older {
       text-align: left;
-    }
-    .with :global(.logo) {
-      max-height: 40px;
-      max-width: 180px;
     }
   }
 </style>

@@ -6,7 +6,6 @@
 // him where he picked one, and his personal photos between them.
 import "@fontsource-variable/geist/wght.css";
 import { Picture } from "astro:assets";
-import Logo from "./Logo.astro";
 import Px from "./Px.astro";
 import Icon from "./Icon.astro";
 import { STACK, SOCIALS } from "../data/icons";
@@ -15,7 +14,6 @@ import { MUSIC, storyHref } from "../data/sections";
 import { ROAD } from "../data/road";
 import { PAUSE_CAPTIONS } from "../data/captions";
 import { SECTION_STATS } from "../data/highlights";
-import { MONO } from "../data/monoLogos";
 import { COVERS } from "../data/covers";
 import { documentOf } from "../data/documents";
 import { STORIES } from "../data/stories";
@@ -211,15 +209,9 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                     <span class="d-title">{doc.title}</span>
                     <span class="d-text">{s.lede}</span>
                     <span class="d-foot">
-                      {stat ? (
+                      {stat && (
                         <span class="d-stat">
                           <b>{stat.value}</b> {stat.label}
-                        </span>
-                      ) : (
-                        <span class="d-logos">
-                          {s.logos?.slice(0, 3).map((l) => (
-                            <Logo src={MONO[l.alt] ?? l.src} alt={l.alt} height={Math.round((l.size ?? 24) * 0.9)} />
-                          ))}
                         </span>
                       )}
                       <span class="d-open">Read the post →</span>
@@ -680,19 +672,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     letter-spacing: -0.04em;
     color: var(--ink);
   }
-  .d-logos {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    min-width: 0;
-    overflow: hidden;
-  }
-  .d-logos :global(.logo) {
-    opacity: 0.72;
-    max-width: 110px;
-  }
+  /* The logos are in the post itself, not on its card (David, 2026-10-22). */
   .d-open {
     flex: none;
+    margin-left: auto;
     font-size: 15px;
     font-weight: 620;
   }
