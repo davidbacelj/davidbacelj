@@ -10,6 +10,7 @@ David Bacelj's personal website. Astro 7, static, deployed on Vercel from this p
 - Security: Astro writes a hashed CSP into each page (`astro.config.mjs`); the other headers are in `vercel.json`. Keep both when adding anything.
 - Pin exact dependency versions in `package.json`.
 - Copy follows the writing rules: plain, specific, first person, no em or en dashes, sentence case headings.
+- `/llms.txt` (2026-10-22) describes David for AI assistants, in the third person, and brags as hard as the facts allow (he asked for it to lift him up as a top candidate; invented claims still stay out). Its hand-written parts are in `src/data/llms.ts` and must change when a story they draw on changes; the list of posts and the sources are built from the road in `src/pages/llms.txt.ts`.
 - Never push, deploy or publish without David's explicit go.
 
 ## Design rulebook
