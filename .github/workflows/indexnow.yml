@@ -1,0 +1,22 @@
+name: IndexNow
+
+# Vercel reports each deploy back to GitHub as a commit status named "Vercel".
+# When a deploy of main succeeds, ask the IndexNow search engines (Bing and
+# friends) to recrawl the site. It can also be run by hand from the Actions tab.
+on:
+  status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    if: github.event_name == 'workflow_dispatch' || (github.event.context == 'Vercel' && github.event.state == 'success' && contains(github.event.branches.*.name, 'main'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/indexnow.mjs

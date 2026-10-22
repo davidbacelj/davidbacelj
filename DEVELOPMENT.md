@@ -29,4 +29,9 @@ The site needs no secrets, API keys or environment variables. If one is ever add
 
 ## Deploying
 
-Import the GitHub repository in Vercel. It detects Astro, so the defaults work: build command `npm run build`, output directory `dist`. Then add `davidbacelj.com` and `www.davidbacelj.com` under the project's Domains. `www.davidbacelj.com` is the main one and the bare domain redirects to it; `site` in `astro.config.mjs` must match the main domain, or the canonical links point search engines at a redirect.
+Import the GitHub repository in Vercel. It detects Astro, so the defaults work: build command `npm run build`, output directory `dist`. Then add `davidbacelj.com` and `www.davidbacelj.com` under the project's Domains. `www.davidbacelj.com` is the main one and the bare domain redirects to it; `site` in `astro.config.mjs` must match the main domain, or the canonical links point search engines at a redirect. For the same reason `trailingSlash` there is `"never"`, matching `trailingSlash: false` in `vercel.json`.
+
+## Search engines
+
+- Google reads `https://www.davidbacelj.com/sitemap-index.xml`, which is submitted once in Google Search Console and listed in `robots.txt`. Google rereads it by itself after each deploy.
+- Bing, Yandex, Naver, Seznam and Yep get a push through [IndexNow](https://www.indexnow.org) after every production deploy: `.github/workflows/indexnow.yml` runs `scripts/indexnow.mjs` when Vercel's commit status on `main` turns green. The key is the 32-character `.txt` file in `public/`; it is public by design. To ping by hand, run the workflow from the Actions tab or `node scripts/indexnow.mjs`.

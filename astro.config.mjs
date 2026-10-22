@@ -6,6 +6,9 @@ export default defineConfig({
   // Vercel serves the site on www and redirects the bare domain there, so the
   // canonical links and the sitemap must use www too.
   site: "https://www.davidbacelj.com",
+  // Vercel redirects /story/x/ to /story/x (trailingSlash in vercel.json), so
+  // the sitemap and canonical links leave the slash off too.
+  trailingSlash: "never",
   integrations: [sitemap()],
   // Astro writes a Content-Security-Policy into every page with the hash of each
   // script and style it emits, so nothing else can run. Headers Astro can't set
