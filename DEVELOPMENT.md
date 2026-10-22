@@ -29,4 +29,4 @@ The site needs no secrets, API keys or environment variables. If one is ever add
 
 ## Deploying
 
-Import the GitHub repository in Vercel. It detects Astro, so the defaults work: build command `npm run build`, output directory `dist`. Then add `davidbacelj.com` and `www.davidbacelj.com` under the project's Domains.
+Import the GitHub repository in Vercel. It detects Astro, so the defaults work: build command `npm run build`, output directory `dist`. Then add `davidbacelj.com` and `www.davidbacelj.com` under the project's Domains. `www.davidbacelj.com` is the main one and the bare domain redirects to it; `site` in `astro.config.mjs` must match the main domain, or the canonical links point search engines at a redirect.

@@ -3,7 +3,9 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://davidbacelj.com",
+  // Vercel serves the site on www and redirects the bare domain there, so the
+  // canonical links and the sitemap must use www too.
+  site: "https://www.davidbacelj.com",
   integrations: [sitemap()],
   // Astro writes a Content-Security-Policy into every page with the hash of each
   // script and style it emits, so nothing else can run. Headers Astro can't set
