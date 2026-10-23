@@ -7,9 +7,10 @@
 import "@fontsource-variable/geist/wght.css";
 import { Picture } from "astro:assets";
 import Px from "./Px.astro";
+import LogoWall from "./LogoWall.astro";
 import Icon from "./Icon.astro";
 import { STACK, SOCIALS } from "../data/icons";
-import { PHOTOS } from "../data/profile";
+import { PHOTOS, PERSON } from "../data/profile";
 import { MUSIC, storyHref } from "../data/sections";
 import { ROAD } from "../data/road";
 import { PAUSE_CAPTIONS } from "../data/captions";
@@ -24,6 +25,7 @@ import { WELCOME_SCRIPT } from "../data/welcome";
 const minutes = (id: string) => Math.max(1, Math.round((STORIES[id] ?? []).reduce((n, p) => n + p.p.split(/\s+/).length, 0) / 220));
 
 const TENSORFLOW = STACK.find((i) => i.slug === "tensorflow")!;
+const LINUX_ICON = STACK.find((i) => i.slug === "linux")!;
 const handle = (href: string) => href.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "");
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label === n)!).filter(Boolean);
 ---
@@ -148,6 +150,21 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                 </section>
               </div>
             );
+          if (item.kind === "break" && item.name === "linux")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk lx" aria-labelledby="linux-title">
+                  <span class="lx-logo">
+                    <Icon icon={LINUX_ICON} size={104} brand label="Linux" />
+                  </span>
+                  <div>
+                    <h2 id="linux-title">At home in the terminal</h2>
+                    <p>Linux and Bash are where I'm fastest, on my own machine and on servers in the cloud.</p>
+                  </div>
+                </section>
+              </div>
+            );
           if (item.kind === "break")
             return (
               <div class="post">
@@ -194,6 +211,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                         <Px src={p.src} alt={p.alt} widths={[400, 700]} sizes="(max-width: 900px) 62vw, 550px" cover />
                       ))}
                     </span>
+                  ) : s.logoCover && s.logos ? (
+                    <span class="d-photo">
+                      <LogoWall logos={s.logos} card />
+                    </span>
                   ) : (
                     doc.cover && (
                       <span class="d-photo">
@@ -231,6 +252,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
       <div class="touch" id="contact">
         <Px src={PHOTOS.studio} alt="David Bacelj in a navy polo shirt against a white wall" widths={[500, 900]} sizes="(max-width: 900px) 92vw, 420px" class="studio" />
         <h2>Get in touch</h2>
+        <a class="mail" href={`mailto:${PERSON.email}`}>{PERSON.email}</a>
         <ul class="icons">
           {
             ICONS.map((s) => (
@@ -343,6 +365,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
   );
 
 </script>
+
 
 <style>
   .st {
@@ -942,6 +965,35 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     text-wrap: pretty;
   }
 
+  /* At home in the terminal: dark like the music break, the Linux logo in a tile */
+  .lx {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 56px);
+    padding: clamp(32px, 5vw, 56px);
+    background: var(--night);
+    color: #fff;
+    box-shadow: 0 34px 70px -40px rgb(0 0 0 / 0.55);
+  }
+  .lx-logo {
+    display: grid;
+    place-items: center;
+    width: clamp(150px, 20vw, 220px);
+    aspect-ratio: 1;
+    border-radius: 30px;
+    background: radial-gradient(circle at 50% 38%, #24200f, #0d0c0a 72%);
+    box-shadow: inset 0 0 0 1px rgb(252 198 36 / 0.16), 0 20px 40px -20px rgb(0 0 0 / 0.8);
+  }
+  .lx p {
+    margin-top: 16px;
+    max-width: 380px;
+    font-size: 17.5px;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.7);
+    text-wrap: pretty;
+  }
+
   /* A personal moment on the line */
   .pause {
     width: min(520px, 100%);
@@ -972,6 +1024,20 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 64px;
+  }
+  .mail {
+    display: inline-block;
+    margin-top: 28px;
+    font-size: clamp(21px, 2.2vw, 28px);
+    font-weight: 560;
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: rgb(255 255 255 / 0.35);
+    text-underline-offset: 6px;
+    transition: text-decoration-color 0.15s;
+  }
+  .mail:hover {
+    text-decoration-color: #fff;
   }
   .touch :global(.studio) {
     width: min(420px, 100%);
@@ -1068,6 +1134,17 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     }
     .profiles ul {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .lx {
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      text-align: center;
+    }
+    .lx p {
+      margin-inline: auto;
+    }
+    .d-open {
+      margin-left: 0;
     }
     .prof {
       grid-template-columns: auto minmax(0, 1fr);

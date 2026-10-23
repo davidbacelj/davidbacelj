@@ -43,6 +43,8 @@ export const PERSON = {
   // The longer version, for search engines' structured data, where there is no length limit.
   bio: "David Bacelj is a Swedish engineer and tech entrepreneur, best known as a co-founder of Incredible, VISS.AI and Norditech. He has raised millions of dollars in venture capital and grown several companies. His expertise is in GTM engineering, sales and building AI models.",
   expertise: ["GTM engineering", "Sales", "Artificial intelligence"],
+  // Public on purpose, so people can reach him (David's call, 2026-10-23).
+  email: "david.bacelj@gmail.com",
 };
 
 /** Where else David is online; the page metadata lists these as the same person. */

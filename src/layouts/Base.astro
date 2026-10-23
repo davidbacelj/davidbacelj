@@ -23,6 +23,7 @@ const schema = {
   knowsAbout: PERSON.expertise,
   jobTitle: "Co-founder",
   worksFor: { "@type": "Organization", name: "Incredible", url: "https://www.incredible.one" },
+  email: `mailto:${PERSON.email}`,
   sameAs: LINKS.filter((l) => l.label !== "Incredible").map((l) => l.href),
 };
 ---

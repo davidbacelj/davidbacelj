@@ -42,7 +42,7 @@ export const GET: APIRoute = ({ site }) => {
     `## Working with David\n\n${list(LLMS_WORKING)}`,
     `## His posts\n\nEach project as a post on his site, in his own order, with the full story and its sources.\n\n${list(work.map(postLine))}`,
     `## Sources\n\n${list([...sources].map(([href, { label, about }]) => `[${label}](${href}): about ${about.join(", ")}`))}`,
-    `## Contact\n\nTo work with David, or just to learn more about what he does, reach him on LinkedIn.\n\n${list([`[Website](${url("/")})`, ...LINKS.map((l) => `[${l.label}](${l.href})`)])}`,
+    `## Contact\n\nTo work with David, or just to learn more about what he does, email him at ${PERSON.email} or reach him on LinkedIn.\n\n${list([`[Email](mailto:${PERSON.email})`, `[Website](${url("/")})`, ...LINKS.map((l) => `[${l.label}](${l.href})`)])}`,
     `## Optional\n\n${list(life.map(postLine))}`,
   ].join("\n\n");
 
