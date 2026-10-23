@@ -13,6 +13,7 @@ import cofoundersGreenWall from "../assets/photos/cofounders-green-wall.webp";
 import cofounders2022 from "../assets/photos/cofounders-2022.webp";
 import norditechTeam2022 from "../assets/photos/norditech-team-2022.webp";
 import wheelscanMachine from "../assets/photos/wheelscan-machine.webp";
+import wheelscanTyre from "../assets/photos/wheelscan-tyre.webp";
 import wheelscanDemo from "../assets/photos/wheelscan-demo.webp";
 import rapidPrinter from "../assets/photos/rapid-printer.webp";
 import labelCameraMounted from "../assets/photos/labeldetector-camera-mounted.webp";
@@ -342,8 +343,12 @@ export const STOPS: Stop[] = [
         role: "Head of AI",
         lede: "I was head of AI at Wheelscanning and built its vision models from the ground up.",
         with: "Saab",
-        photo: { src: wheelscanMachine, alt: "The Wheelscan tyre measurement station" },
-        thumbs: [{ src: wheelscanDemo, alt: "The Wheelscan software at the station" }],
+        // The tyre with Wheelscan's readings leads the post and its card (David's pick, 2026-10-23).
+        photo: { src: wheelscanTyre, alt: "A tyre with Wheelscan's readings drawn on it: tread depth for each groove, the size and model read from the sidewall, and a circled spot of rim damage" },
+        thumbs: [
+          { src: wheelscanMachine, alt: "The Wheelscan tyre measurement station" },
+          { src: wheelscanDemo, alt: "The Wheelscan software at the station" },
+        ],
         logos: [
           { src: wheelscanningLogo, alt: "Wheelscanning" },
           { src: saabLogo, alt: "Saab" },

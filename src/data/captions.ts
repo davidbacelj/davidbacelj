@@ -50,7 +50,11 @@ export const CAPTIONS: Record<string, string[]> = {
     "A LabelDetector camera on duty at the pilot.",
     "One label, read and sorted into supplier, delivery and product.",
   ],
-  wheelscanning: ["The Wheelscan station. Stereo cameras measure every tyre.", "The measurement software running at the station."],
+  wheelscanning: [
+    "Wheelscan measures tread depth and uneven wear, reads the size and model off the sidewall, and finds damage on the rim. I built the models that read the text and find the rim damage.",
+    "The Wheelscan station. Stereo cameras measure every tyre.",
+    "The measurement software running at the station.",
+  ],
   orangebox: ["Don't buy. Rent. Get the app, pick a box, rent the tool.", "Setting up the lockers before they went live."],
   "norditech-more": ["Norditech, the AI company Philip and I started.", "Rapid Dimension's industrial 3D printer, driven by our software."],
   robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall."],

@@ -81,7 +81,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
         ) : swap && s.logos ? (
           <LogoWall logos={s.logos} with={s.with} hero />
         ) : doc.cover && (
-          <figure class="hero">
+          <figure class:list={["hero", { small: doc.cover.photo.src.width < 1000 }]}>
             <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[800, 1300, 2000]} sizes="(max-width: 1200px) 100vw, 1120px" loading="eager" fetchpriority="high" />
             <figcaption>{doc.cover.caption}</figcaption>
           </figure>
@@ -291,6 +291,10 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
   .hero {
     max-width: 1120px;
     margin: clamp(48px, 6vw, 80px) auto 0;
+  }
+  /* A lead image under 1000 px wide stays at the text's width instead of blurring */
+  .hero.small {
+    max-width: 760px;
   }
   .hero :global(.px) {
     border-radius: 16px;
