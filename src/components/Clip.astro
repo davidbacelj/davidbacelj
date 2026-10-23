@@ -1,0 +1,132 @@
+---
+// A news clip from another site's player (David, 2026-10-22: SVT's FossilEye
+// clip), shown as his own photo with a play button. The player, and everything
+// it loads, only comes in when the visitor presses play, so the post makes no
+// third-party requests until then. The player's origin must be in frame-src in
+// astro.config.mjs.
+import Px from "./Px.astro";
+import type { Section } from "../data/sections";
+
+interface Props {
+  clip: NonNullable<Section["clip"]>;
+}
+const { clip } = Astro.props;
+---
+
+<figure class="clip">
+  <button type="button" data-clip={clip.src} data-title={clip.title} aria-label={`Load SVT's player: ${clip.title}`}>
+    <Px src={clip.poster.src} alt={clip.poster.alt} widths={[500, 790]} sizes="(max-width: 1000px) 100vw, 920px" cover />
+    <span class="play">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l10.5-6.5z" /></svg>
+      Load SVT's clip, {clip.length}
+    </span>
+  </button>
+  <figcaption>{clip.caption}</figcaption>
+</figure>
+
+<script>
+  // Swap the photo for the player on the first press. SVT's embed player can't be
+  // told to autoplay, so the visitor then presses its own play button.
+  document.querySelectorAll<HTMLButtonElement>("[data-clip]").forEach((button) =>
+    button.addEventListener(
+      "click",
+      () => {
+        const frame = document.createElement("iframe");
+        frame.src = button.dataset.clip!;
+        frame.title = button.dataset.title!;
+        frame.allow = "fullscreen; picture-in-picture; encrypted-media";
+        frame.allowFullscreen = true;
+        button.replaceWith(frame);
+        frame.focus();
+      },
+      { once: true },
+    ),
+  );
+</script>
+
+<style>
+  .clip {
+    margin: 48px -80px 0;
+  }
+  button,
+  .clip :global(iframe) {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0d1d22;
+  }
+  button {
+    cursor: pointer;
+  }
+  button :global(.px) {
+    position: absolute;
+    inset: 0;
+  }
+  /* A flat veil so the white button reads on any photo */
+  button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.22);
+    transition: background 0.2s;
+  }
+  button:hover::after {
+    background: rgb(0 0 0 / 0.32);
+  }
+  .play {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px 14px 18px;
+    border-radius: 999px;
+    background: #fff;
+    color: #141414;
+    font-size: 16px;
+    font-weight: 620;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s;
+  }
+  button:hover .play {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  button:focus-visible {
+    outline: 3px solid #141414;
+    outline-offset: 3px;
+  }
+  figcaption {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #6b675f;
+  }
+
+  @media (max-width: 1000px) {
+    .clip {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+  @media (max-width: 700px) {
+    .clip {
+      margin-left: -16px;
+      margin-right: -16px;
+    }
+    button,
+    .clip :global(iframe) {
+      border-radius: 0;
+    }
+    figcaption {
+      padding: 0 16px;
+    }
+  }
+</style>

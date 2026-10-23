@@ -1,7 +1,8 @@
 // What each section's post-it says, written out as a story: an opening
 // paragraph, then, where it helps, short parts with a small heading each. The
 // article page shows the same text. Facts come from David's own words, the
-// Incredible blog, Science Park, Vattenfall, SVT and Stiftelsen SKAPA.
+// Incredible blog, Science Park, Vattenfall, SVT, Stiftelsen SKAPA and Tekniska
+// verken's FossilEye report for Energiforsk (2024, with IVL's test results).
 
 export interface Part {
   /** A small heading, in sentence case. The opening part has none. */
@@ -200,15 +201,31 @@ export const STORIES: Record<string, Part[]> = {
     },
     {
       h: "FossilEye",
-      p: "Then we turned to plastic, which is most of the fossil content in waste. When waste is burned for district heating, the plant pays for the CO2 through the EU emissions trading system, and the only way to know how much plastic was in a load was to pick through it by hand a few times a year. FossilEye spreads the waste on a two-metre belt and measures the plastic with hyperspectral imaging, AI vision and stereo vision, so a plant can see which suppliers sort their plastic well.",
+      p: "Then we turned to plastic, which is most of the fossil content in waste. When waste is burned for district heating, the plant pays for the CO2 through the EU emissions trading system, and the only way to know how much plastic was in a load was to pick through it by hand a few times a year. FossilEye measures the plastic in a whole truckload before it is burned. A plant can then see which suppliers sort their plastic well, and the responsibility for the CO2 can move from the district heating customers to whoever sent the plastic.",
+    },
+    {
+      h: "How it started",
+      p: "The idea came from three energy companies. In 2021 Vattenfall, Tekniska verken and Umeå Energi formed a consortium to build a system that measures the fossil content of waste. In 2022 they signed with RoboWaste to develop it and build a mobile pilot plant, and in 2023 we delivered the pilot for testing.",
+    },
+    {
+      h: "How it works",
+      p: "A run takes up to five tonnes of coarsely shredded waste, spread out on a two-metre belt, and two camera systems watch it as it passes. A hyperspectral line camera tells the plastics apart by their spectral signatures: PET, LDPE, HDPE, PVC, PS and PP. Stereo cameras rebuild the volume of every object on the belt. From the plastic type, the volume and the colour images, FossilEye works out how much the plastic weighs. The plant covers 7.8 by 15.4 metres and weighs 8 to 12 tonnes, and it is mobile, so it can move between energy plants.",
     },
     {
       h: "Military tech in the sorting industry",
       p: "The stereo vision came from Saab. Together we brought technology built for defence into waste sorting.",
     },
     {
+      h: "Tested against the lab",
+      p: "Avfall Sverige asked IVL, the Swedish Environmental Research Institute, to develop a way to verify scanning systems like this, and IVL tried it out on FossilEye. They tested it in different weather and compared it with hand-picking analyses and with test burns, where the fossil share is measured with C14 analysis. In one comparison the test burn gave a fossil share of 44.0 percent, and FossilEye measured 44.6 to 47.3 percent, depending on how much ash it assumed. When the same batch ran through twice, the two results almost matched (R² 0.97).",
+    },
+    {
       h: "On tour",
-      p: "Tekniska verken, Vattenfall and Umeå Energi commissioned FossilEye, and a mobile prototype toured their plants: Linköping in November 2023, Uppsala in December and Umeå in January 2024. SVT filmed the waste pouring through it in Uppsala.",
+      p: "Tekniska verken, Vattenfall and Umeå Energi commissioned FossilEye, and a mobile prototype toured their plants: Linköping in November 2023, Uppsala in December and Umeå in January 2024. SVT filmed the waste pouring through it in Uppsala, in the clip at the top of this post.",
+    },
+    {
+      h: "What happened next",
+      p: "In 2024 the three energy companies took over the pilot plant and signed a new agreement with RoboWaste to develop it further and bring it to market. Umeå Energi has said it hopes FossilEye becomes standard practice at energy recovery plants in Sweden and Europe, and in 2026 Vattenfall wrote that a verification and certification programme comes next.",
     },
   ],
   norditech: [

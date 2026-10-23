@@ -6,6 +6,7 @@ import type { ImageMetadata } from "astro";
 import { LOGOS, PHOTOS, PRODUCT } from "./profile";
 
 import robowastePhoto from "../assets/photos/robowaste.webp";
+import fossilEyeHall from "../assets/photos/fossileye-hall.webp";
 import officeTalk from "../assets/photos/office-talk.webp";
 import cofoundersLaughing from "../assets/photos/cofounders-laughing.webp";
 import cofoundersGreenWall from "../assets/photos/cofounders-green-wall.webp";
@@ -108,6 +109,12 @@ export interface Section {
   collage?: boolean;
   /** A film, served from public/media, with a still to show before it plays. */
   video?: { src: string; poster: ImageMetadata; caption: string };
+  /** A news clip from another site's player (SVT's), loaded only when the visitor
+      presses play, so the page makes no third-party requests until then. */
+  clip?: { src: string; title: string; length: string; poster: Photo; caption: string };
+  /** The post opens with the logos instead of the photo; the photo takes the
+      logos' place after the story's first section (David's call for RoboWaste). */
+  logoCover?: boolean;
 }
 
 export interface Stop {
@@ -386,6 +393,14 @@ export const STOPS: Stop[] = [
         lede: "As CTO I built AI vision for sorting waste, and then FossilEye, which measures how much plastic is in waste before it is burned.",
         with: "Vattenfall, Tekniska verken, Umeå Energi and Saab",
         photo: { src: robowastePhoto, alt: "Field testing at the sorting machine, the FossilEye machines and the stereo camera rig" },
+        logoCover: true,
+        clip: {
+          src: "https://www.svt.se/videoplayer-embed/jJyEgoa",
+          title: "Se när FossilEye testas skarpt, SVT Lokala Nyheter Uppsala",
+          length: "1:14",
+          poster: { src: fossilEyeHall, alt: "The two FossilEye machines in a hall, green with the RoboWaste logo" },
+          caption: "FossilEye tested for real in Uppsala. A clip from SVT, December 2023.",
+        },
         logos: [
           { src: robowasteLogo, alt: "RoboWaste" },
           { src: vattenfallLogo, alt: "Vattenfall" },
@@ -396,6 +411,8 @@ export const STOPS: Stop[] = [
         links: [
           { label: "SVT", href: "https://www.svt.se/nyheter/lokalt/uppsala/hogteknologiskt-oga-ska-oka-plastsortering-och-minska-utslapp--2d0cih" },
           { label: "Vattenfall", href: "https://group.vattenfall.com/se/nyheter-och-press/nyheter/2023/ny-effektiv-metod-for-att-identifiera-och-mata-plast-i-avfall" },
+          { label: "Energiforsk", href: "https://energiforsk.se/media/33741/fossileye-varmeklustret.pdf" },
+          { label: "Vattenfall, 2026", href: "https://group.vattenfall.com/press-and-media/newsroom/story/watching-eye-encourages-plastics-recycling" },
           { label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-david" },
         ],
       },

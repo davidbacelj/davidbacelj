@@ -2,22 +2,24 @@
 // Who a post was with, as big logos in a post (David, 2026-10-22): one white
 // tile per logo, the same size in every post, with "Together with ..." under
 // them like a photo caption. Each logo gets about the same area whatever its
-// shape, so a square mark and a long wordmark look equally big.
+// shape, so a square mark and a long wordmark look equally big. As a post's
+// cover (`hero`, Section.logoCover) the tiles are taller and the logos bigger.
 import type { ImageMetadata } from "astro";
 import Logo from "./Logo.astro";
 
 interface Props {
   logos: { src: ImageMetadata; alt: string; dark?: boolean; scale?: number }[];
   with?: string;
+  hero?: boolean;
 }
-const { logos, with: together } = Astro.props;
+const { logos, with: together, hero = false } = Astro.props;
 
-const AREA = 9000;
-const heightOf = (src: ImageMetadata, scale = 1) => Math.min(104, Math.max(24, Math.round(scale * Math.sqrt(AREA / (src.width / src.height)))));
+const AREA = hero ? 14000 : 9000;
+const heightOf = (src: ImageMetadata, scale = 1) => Math.min(114, Math.max(24, Math.round(scale * Math.sqrt(AREA / (src.width / src.height)))));
 const n = logos.length;
 ---
 
-<figure class="wall">
+<figure class:list={["wall", { hero }]}>
   <ul class:list={["tiles", { one: n === 1, two: n === 2 || n === 4, five: n === 5 }]}>
     {
       logos.map((l) => (
@@ -33,6 +35,14 @@ const n = logos.length;
 <style>
   .wall {
     margin: 48px -80px 0;
+  }
+  .wall.hero {
+    max-width: 1120px;
+    margin: clamp(48px, 6vw, 80px) auto 0;
+  }
+  .hero .tiles {
+    --row: clamp(150px, 17vw, 210px);
+    --pad: 28px;
   }
   .tiles {
     --row: clamp(120px, 14vw, 156px);
@@ -96,6 +106,10 @@ const n = logos.length;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
+    .hero .tiles {
+      --row: 116px;
+      --pad: 18px;
+    }
     .tiles.one {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -105,6 +119,10 @@ const n = logos.length;
     }
     .tiles li:last-child:nth-child(odd) {
       grid-column: span 2;
+    }
+    /* A logo alone on its row gets no more width than one in a half tile */
+    .tiles li:last-child:nth-child(odd) :global(.logo) {
+      max-width: calc(50% - 24px);
     }
     .tiles.one li:last-child {
       grid-column: auto;

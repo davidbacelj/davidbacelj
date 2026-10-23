@@ -10,6 +10,7 @@ import { getImage } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import Px from "./Px.astro";
 import LogoWall from "./LogoWall.astro";
+import Clip from "./Clip.astro";
 import { SOCIALS } from "../data/icons";
 import { storyHref } from "../data/sections";
 import { POSTS } from "../data/road";
@@ -36,6 +37,8 @@ const collage = [doc.cover, ...doc.pages.map((pg) => pg.photo), ...doc.rest].fil
 const parts = doc.pages.flatMap((pg, k) => pg.parts.map((part, j) => ({ k, j, h: part.h })));
 const second = parts.findIndex((p, n) => n > 0 && p.h);
 const wallAt = parts[second > 0 ? second - 1 : parts.length - 1];
+// A post can open with its logos instead (Section.logoCover); its photo then takes the logos' place.
+const swap = Boolean(s.logoCover && s.logos && wallAt);
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
 ---
 
@@ -75,6 +78,8 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
                 </figure>
               ))}
           </div>
+        ) : swap && s.logos ? (
+          <LogoWall logos={s.logos} with={s.with} hero />
         ) : doc.cover && (
           <figure class="hero">
             <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[800, 1300, 2000]} sizes="(max-width: 1200px) 100vw, 1120px" loading="eager" fetchpriority="high" />
@@ -104,6 +109,8 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
           )
         }
 
+        {s.clip && <Clip clip={s.clip} />}
+
         {!wallAt && s.logos && <LogoWall logos={s.logos} with={s.with} />}
 
         {
@@ -113,7 +120,12 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
                 <>
                   {part.h && <h2>{part.h}</h2>}
                   <p>{part.p}</p>
-                  {k === wallAt?.k && j === wallAt?.j && s.logos && <LogoWall logos={s.logos} with={s.with} />}
+                  {k === wallAt?.k && j === wallAt?.j && (swap ? doc.cover && (
+                    <figure class="wide">
+                      <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 1000px) 100vw, 920px" />
+                      <figcaption>{doc.cover.caption}</figcaption>
+                    </figure>
+                  ) : s.logos && <LogoWall logos={s.logos} with={s.with} />)}
                 </>
               ))}
               {pg.photo && !s.collage && (

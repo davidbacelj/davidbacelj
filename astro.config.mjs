@@ -13,9 +13,11 @@ export default defineConfig({
   // Astro writes a Content-Security-Policy into every page with the hash of each
   // script and style it emits, so nothing else can run. Headers Astro can't set
   // from a <meta> (frame-ancestors, HSTS and friends) are in vercel.json.
+  // frame-src lets SVT's player in, which a post loads only when the visitor
+  // presses play (Clip.astro).
   security: {
     csp: {
-      directives: ["default-src 'self'", "img-src 'self' data:", "font-src 'self'", "connect-src 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'self'"],
+      directives: ["default-src 'self'", "img-src 'self' data:", "font-src 'self'", "connect-src 'self'", "frame-src https://www.svt.se", "object-src 'none'", "base-uri 'self'", "form-action 'self'"],
     },
   },
   // No code blocks on the site; Shiki's inline styles would also clash with the CSP.
