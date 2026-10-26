@@ -11,6 +11,7 @@ import Base from "../layouts/Base.astro";
 import Px from "./Px.astro";
 import LogoWall from "./LogoWall.astro";
 import Clip from "./Clip.astro";
+import Press from "./Press.astro";
 import { SOCIALS } from "../data/icons";
 import { storyHref } from "../data/sections";
 import { POSTS } from "../data/road";
@@ -39,6 +40,11 @@ const second = parts.findIndex((p, n) => n > 0 && p.h);
 const wallAt = parts[second > 0 ? second - 1 : parts.length - 1];
 // A post can open with its logos instead (Section.logoCover); its photo then takes the logos' place.
 const swap = Boolean(s.logoCover && s.logos && wallAt);
+// "Featured in Breakit and Ny Teknik" under the opening, for posts with press.
+const outlets = [...new Set((s.press ?? []).map((a) => a.outlet))];
+// Sources leave out the articles already shown under "In the press".
+const sources = (s.links ?? []).filter((l) => !(s.press ?? []).some((a) => a.href === l.href));
+const featured = outlets.length > 1 ? `${outlets.slice(0, -1).join(", ")} and ${outlets.at(-1)}` : outlets[0];
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
 ---
 
@@ -66,6 +72,11 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
         <p class="meta">{[year, s.role].filter(Boolean).join(", ")}</p>
         <h1>{doc.title}</h1>
         <p class="lede">{doc.opening.p}</p>
+        {featured && (
+          <p class="featured">
+            Featured in <a href="#press">{featured}</a>
+          </p>
+        )}
       </header>
 
       {
@@ -92,7 +103,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
         {
           stat && (
             <p class="stat">
-              <b>{stat.value}</b>
+              <b class="marker draw">{stat.value}</b>
               <span>{stat.label}</span>
             </p>
           )
@@ -160,12 +171,14 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
           )
         }
 
+        {s.press && <Press press={s.press} />}
+
         {
-          s.links && (
+          sources.length > 0 && (
             <section class="sources" aria-label="Sources">
               <h2>Sources</h2>
               <ul>
-                {s.links.map((l) => (
+                {sources.map((l) => (
                   <li>
                     <a href={l.href} rel="noopener" target="_blank">
                       {l.label} ↗
@@ -287,6 +300,16 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     margin-top: 28px;
     font-size: clamp(20px, 2.1vw, 24px);
     line-height: 1.55;
+  }
+  .featured {
+    margin-top: 18px;
+    font-size: 15.5px;
+    color: var(--dim);
+  }
+  .featured a {
+    font-weight: 600;
+    color: var(--ink);
+    text-underline-offset: 3px;
   }
   .hero {
     max-width: 1120px;

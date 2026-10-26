@@ -25,6 +25,7 @@ export const HEADLINES: Headline[] = [
   { id: "hacking-ground", title: "I hosted a hackathon where people who had never coded built games" },
   { id: "viss", title: "Automation in plain language, in more than 30 languages" },
   { id: "on-the-road", title: "From the Golden Gate Bridge to Web Summit in one year" },
+  { id: "civeron-podcast", title: "On Civeron Podcast: from machine learning to AI entrepreneurship" },
   { id: "solar", title: "Swedish champion at UngDrive Masters" },
   { id: "stella", title: "STELLA, the first version of Incredible" },
   { id: "orangebox", title: "I wrote all the software for a tool-rental locker" },

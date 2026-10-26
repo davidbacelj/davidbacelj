@@ -31,6 +31,10 @@ The site needs no secrets, API keys or environment variables. If one is ever add
 
 Import the GitHub repository in Vercel. It detects Astro, so the defaults work: build command `npm run build`, output directory `dist`. Then add `davidbacelj.com` and `www.davidbacelj.com` under the project's Domains. `www.davidbacelj.com` is the main one and the bare domain redirects to it; `site` in `astro.config.mjs` must match the main domain, or the canonical links point search engines at a redirect. For the same reason `trailingSlash` there is `"never"`, matching `trailingSlash: false` in `vercel.json`.
 
+## Press clippings
+
+`scripts/capture-press.mjs` captures the top of a news article with your installed Google Chrome (headless, its own throwaway profile), hiding cookie walls, paywall sheets and ads. See the comment at the top of the script for how to add a new article.
+
 ## Search engines
 
 - Google reads `https://www.davidbacelj.com/sitemap-index.xml`, which is submitted once in Google Search Console and listed in `robots.txt`. Google rereads it by itself after each deploy.

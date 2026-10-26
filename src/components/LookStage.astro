@@ -232,7 +232,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                     <span class="d-foot">
                       {stat && (
                         <span class="d-stat">
-                          <b>{stat.value}</b> {stat.label}
+                          <b class="marker scroll">{stat.value}</b> {stat.label}
                         </span>
                       )}
                       <span class="d-open">Read the post →</span>
@@ -378,7 +378,9 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     font-family: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
     color: var(--ink);
     background: var(--ivory);
-    overflow-x: hidden;
+    /* clip, not hidden: hidden would make this a scroll container and stop the
+       cards' scroll-driven marker from following the page */
+    overflow-x: clip;
   }
 
   /* The first screen: the stage */
@@ -631,7 +633,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
   }
   .sheet {
     display: block;
-    overflow: hidden;
+    overflow: clip;
     border-radius: 22px;
     background: #fff;
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);

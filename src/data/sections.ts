@@ -6,7 +6,23 @@ import type { ImageMetadata } from "astro";
 import { LOGOS, PHOTOS, PRODUCT } from "./profile";
 
 import robowastePhoto from "../assets/photos/robowaste.webp";
+import incWaymo from "../assets/photos/incredible-waymo.webp";
+import incSpintop from "../assets/photos/incredible-spintop.webp";
+import incStartupDay from "../assets/photos/incredible-startup-day.webp";
+import incPhysicalAiDay from "../assets/photos/incredible-physical-ai-day.webp";
+import incTeamDinner from "../assets/photos/incredible-team-dinner.webp";
+import incOfficeSnow from "../assets/photos/incredible-office-snow.webp";
+import incComedy from "../assets/photos/incredible-comedy.webp";
+import incConference from "../assets/photos/incredible-conference.webp";
 import fossilEyeHall from "../assets/photos/fossileye-hall.webp";
+import civeronPodcast from "../assets/photos/civeron-podcast.webp";
+import pressBreakitIncredible from "../assets/press/breakit-incredible.webp";
+import pressBreakitViss from "../assets/press/breakit-viss.webp";
+import pressBreakitSweLlm from "../assets/press/breakit-swe-llm.webp";
+import pressNyTeknik from "../assets/press/nyteknik.webp";
+import pressTechtidningen from "../assets/press/techtidningen.webp";
+import pressJpLabelDetector from "../assets/press/jp-labeldetector.webp";
+import pressJpSkapa from "../assets/press/jp-skapa.webp";
 import officeTalk from "../assets/photos/office-talk.webp";
 import cofoundersLaughing from "../assets/photos/cofounders-laughing.webp";
 import cofoundersGreenWall from "../assets/photos/cofounders-green-wall.webp";
@@ -116,6 +132,10 @@ export interface Section {
   /** The post opens with the logos instead of the photo; the photo takes the
       logos' place after the story's first section (David's call for RoboWaste). */
   logoCover?: boolean;
+  /** News articles about it (2026-10-26): the top of each article as captured
+      from the outlet's site (masthead, headline, photo; never the full text
+      and never an ad), linked to the article. */
+  press?: { src: ImageMetadata; outlet: string; date: string; title: string; href: string }[];
 }
 
 export interface Stop {
@@ -138,6 +158,9 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "incredible",
+        press: [
+          { src: pressBreakitIncredible, outlet: "Breakit", date: "18 August 2026", title: "Blev \"fartblinda\" i AI-bubblan – Incredible byter riktning och tar in 19 nya miljoner", href: "https://www.breakit.se/artikel/47107/blev-fartblinda-i-ai-bubblan-incredible-byter-riktning-och-tar-in-19-nya-miljoner" },
+        ],
         title: "Incredible",
         when: "Now",
         role: "Co-founder",
@@ -146,7 +169,16 @@ export const STOPS: Stop[] = [
         photo: { src: PRODUCT.incredibleHome, alt: "The Incredible app on a Mac, with Hold to talk at the top and the day's tasks below" },
         thumbs: [
           { src: PRODUCT.incredibleSayIt, alt: "The Incredible voice bar" },
-          { src: PHOTOS.team, alt: "The Incredible team in the office" },
+          // His own photos from the Incredible year (2026-10-26), in pairs for the gallery.
+          // The team photo is the post's cover (covers.ts), so it isn't repeated here.
+          { src: incWaymo, alt: "David smiling from the back seat of a Waymo with no driver, its sensors on the roof" },
+          { src: incSpintop, alt: "David with Peter from Spintop Ventures and a colleague in front of the Incredible stand" },
+          { src: incStartupDay, alt: "David deep in conversation with a visitor, the Startup Day main stage behind them" },
+          { src: incPhysicalAiDay, alt: "A selfie of Fredric and David in the audience, Physical AI Day on the screen behind them" },
+          { src: incTeamDinner, alt: "The team round a kitchen table, mid-dinner" },
+          { src: incOfficeSnow, alt: "Three of the team laughing in a glass meeting room at night, snow outside" },
+          { src: incComedy, alt: "David giving a thumbs up with two of the team inside a giant clown mouth at a comedy club" },
+          { src: incConference, alt: "A selfie of David and Fredric with lanyards in a dark auditorium" },
         ],
         logos: [
           { src: LOGOS.incredible, alt: "Incredible" },
@@ -218,6 +250,10 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "viss",
+        press: [
+          { src: pressBreakitViss, outlet: "Breakit", date: "26 April 2024", title: "De bygger världens första AI-kollega – tar in miljoner från Spintop och Starbright", href: "https://www.breakit.se/artikel/39994/de-bygger-varldens-forsta-ai-kollega-tar-in-miljoner-fran-spintop-och-starbright" },
+          { src: pressTechtidningen, outlet: "Techtidningen", date: "12 December 2024", title: "Svenska ai-bolagets nya satsning: ”Konsekventa arbetsflöden som inte hallucinerar”", href: "https://techtidningen.se/svenska-ai-bolagets-nya-satsning-konsekventa-arbetsfloden-som-inte-hallucinerar/" },
+        ],
         title: "VISS.AI",
         when: "2024",
         role: "Co-founder",
@@ -256,6 +292,10 @@ export const STOPS: Stop[] = [
       },
       {
         id: "swe-llm",
+        press: [
+          { src: pressBreakitSweLlm, outlet: "Breakit", date: "25 June 2024", title: "AI-startupen Viss släpper största svenska språkmodellen: “Ett första steg”", href: "https://www.breakit.se/artikel/40556/ai-startupen-viss-slapper-storsta-svenska-sprakmodellen-ett-forsta-steg" },
+          { src: pressNyTeknik, outlet: "Ny Teknik", date: "1 July 2024", title: "Startup ska ge alla en AI-kollega med hjälp av svensk språkmodell", href: "https://www.nyteknik.se/tech/startup-ska-ge-alla-en-ai-kollega-med-hjalp-av-svensk-sprakmodell/4273548" },
+        ],
         logos: [{ src: LOGOS.viss, alt: "VISS.AI" }],
         title: "SWE-LLM",
         when: "2024",
@@ -271,6 +311,9 @@ export const STOPS: Stop[] = [
       },
       {
         id: "skapa",
+        press: [
+          { src: pressJpSkapa, outlet: "Jönköpings-Posten", date: "21 November 2024", title: "Philip och David vann pris – igen", href: "https://www.jp.se/naringsliv/philip-och-david-vann-pris-igen/" },
+        ],
         title: "SKAPA",
         when: "2024",
         role: "With Philip Alm",
@@ -278,6 +321,20 @@ export const STOPS: Stop[] = [
         photo: { src: PHOTOS.skapaAward, alt: "Philip Alm and David on stage with the SKAPA diploma, made out to them both" },
         logos: [{ src: LOGOS.skapa, alt: "SKAPA" }],
         links: [{ label: "Stiftelsen SKAPA", href: "https://www.stiftelsenskapa.se/skapa-pristagare-2025/skapa-pristagare-2024" }],
+      },
+      {
+        // His interview on Civeron Podcast (David asked for the post 2026-10-26),
+        // from the episode on Spotify and the show's own post about it.
+        id: "civeron-podcast",
+        title: "Civeron Podcast",
+        when: "2024",
+        role: "Podcast guest",
+        lede: "I was the guest on Civeron Podcast, talking about how I went from machine learning to AI entrepreneurship.",
+        photo: { src: civeronPodcast, alt: "The episode's cover: the host at the microphone and David laughing, with DAVID BACELJ in big white letters" },
+        links: [
+          { label: "Spotify", href: "https://open.spotify.com/episode/1nPxDdSwiiFOUF4u6phIbN" },
+          { label: "LinkedIn", href: "https://www.linkedin.com/posts/theodor-ekstrand_vi-intervjuade-david-bacelj-grundare-av-ugcPost-7253382098089033728-yB73/" },
+        ],
       },
     ],
   },
@@ -312,6 +369,9 @@ export const STOPS: Stop[] = [
     sections: [
       {
         id: "labeldetector",
+        press: [
+          { src: pressJpLabelDetector, outlet: "Jönköpings-Posten", date: "19 February 2023", title: "Philip, 22, och David, 23, kan hjälpa företag spara pengar", href: "https://www.jp.se/naringsliv/philip-22-och-david-23-kan-hjalpa-foretag-spara-pengar/" },
+        ],
         links: [{ label: "Incredible blog", href: "https://www.incredible.one/blog/the-projects-that-shaped-us-philip" }, { label: "Science Park", href: "https://sciencepark.se/nyhet/norditech-ar-arets-inkubatorbolag-2023-2/" }],
         title: "LabelDetector",
         when: "2022 to 2023",

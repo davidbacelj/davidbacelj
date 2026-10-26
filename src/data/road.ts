@@ -17,6 +17,7 @@ const ORDER = [
   "skapa",
   "break:home",
   "on-the-road",
+  "civeron-podcast",
   "swe-llm",
   "hackaping",
   "norditech",

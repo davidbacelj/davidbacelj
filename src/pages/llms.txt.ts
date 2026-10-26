@@ -25,7 +25,7 @@ export const GET: APIRoute = ({ site }) => {
   // Every public source the posts cite, once each, with the posts that cite it.
   const sources = new Map<string, { label: string; about: string[] }>();
   for (const { s } of work)
-    for (const l of s.links ?? []) {
+    for (const l of [...(s.links ?? []), ...(s.press ?? []).map((a) => ({ label: `${a.outlet}, ${a.date}`, href: a.href }))]) {
       const seen = sources.get(l.href) ?? { label: l.label, about: [] };
       seen.about.push(s.title);
       sources.set(l.href, seen);

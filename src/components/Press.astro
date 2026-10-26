@@ -1,0 +1,96 @@
+---
+// News articles about a post (David, 2026-10-26): the top of each article as
+// captured from the outlet's own site, so a reader sees it is a real article,
+// each one linking to the article itself.
+import Px from "./Px.astro";
+import type { Section } from "../data/sections";
+
+interface Props {
+  press: NonNullable<Section["press"]>;
+}
+const { press } = Astro.props;
+---
+
+<section class="press" id="press" aria-labelledby="press-title">
+  <h2 id="press-title">In the press</h2>
+  <ul class:list={["clips", { one: press.length === 1 }]}>
+    {
+      press.map((a) => (
+        <li>
+          <a href={a.href} rel="noopener" target="_blank">
+            <Px src={a.src} alt={`${a.outlet}, ${a.date}: ${a.title}`} widths={[480, 800, 1100]} sizes="(max-width: 700px) 92vw, 440px" />
+            <span class="src">
+              <b>{a.outlet}</b> {a.date}
+            </span>
+            <span class="go">Read the article ↗</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .press {
+    margin-top: 56px;
+    scroll-margin-top: 24px;
+  }
+  h2 {
+    font-size: clamp(26px, 2.8vw, 32px);
+    font-weight: 640;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  .clips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+    margin-top: 22px;
+  }
+  .clips.one {
+    grid-template-columns: minmax(0, 440px);
+  }
+  a {
+    display: block;
+    padding: 10px 10px 14px;
+    border-radius: 14px;
+    background: #fff;
+    color: #141414;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 18px 40px -28px rgb(0 0 0 / 0.35);
+    transition: box-shadow 0.2s;
+  }
+  a:hover {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 26px 52px -26px rgb(0 0 0 / 0.45);
+  }
+  a :global(.px) {
+    overflow: hidden;
+    border: 1px solid rgb(0 0 0 / 0.08);
+    border-radius: 8px;
+  }
+  .src {
+    display: block;
+    margin: 12px 4px 0;
+    font-size: 14px;
+    color: #6b675f;
+  }
+  .src b {
+    margin-right: 4px;
+    font-weight: 620;
+    color: #141414;
+  }
+  .go {
+    display: block;
+    margin: 2px 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 700px) {
+    .clips,
+    .clips.one {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -5,7 +5,14 @@ export const CAPTIONS: Record<string, string[]> = {
   incredible: [
     "Incredible on a Mac. Hold a key, say what you want, and it does it.",
     "The voice bar. It listens, then gets to work on the screen.",
-    "The team behind Incredible, in our office in Jönköping.",
+    "In a Waymo, a car with no driver, during our two months in the Bay Area, July 2026.",
+    "With Peter from Spintop Ventures, one of our lead investors, at the Incredible stand, September 2026.",
+    "Deep in a conversation at Startup Day, September 2026.",
+    "Fredric and me at Physical AI Day, September 2026.",
+    "Dinner with the team, April 2026.",
+    "A late evening in the office, with snow outside.",
+    "A night out at a comedy club.",
+    "Fredric and me in the audience at a conference.",
   ],
   "hacking-ground": [
     "Hosting Hacking Ground from the podium, under the stage lights.",
@@ -45,6 +52,7 @@ export const CAPTIONS: Record<string, string[]> = {
     "STELLA's command line, ready for a task.",
     "The package repository its agents were installed from.",
   ],
+  "civeron-podcast": ["The cover of my episode, from Civeron Podcast."],
   labeldetector: [
     "What the camera sees: every pallet label found.",
     "A LabelDetector camera on duty at the pilot.",

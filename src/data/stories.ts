@@ -301,6 +301,15 @@ export const STORIES: Record<string, Part[]> = {
     },
     { h: "Did it work?", p: "It did. I built it from scratch, took it out and filmed the sea with it." },
   ],
+  "civeron-podcast": [
+    {
+      p: "In October 2024 I was the guest on episode 6 of Civeron Podcast, called Från maskininlärning till AI-entreprenörskap: from machine learning to AI entrepreneurship. The interview is in Swedish, and it is on Spotify.",
+    },
+    {
+      h: "What we talked about",
+      p: "How I got into AI, through my work as a machine learning engineer and a developer of computer vision, and how Norditech and VISS.AI build AI that makes automation simple enough for anyone to use. We also talked about what it takes to succeed as an entrepreneur in a field that moves this fast.",
+    },
+  ],
   "off-the-clock": [
     { p: "When I am not at work, I am usually outside, or in the garage building something. This is what I do off the clock." },
     { h: "Skiing", p: "Cross-country skiing is my favourite way to spend a winter day, with fresh tracks across a frozen lake at sunset." },
