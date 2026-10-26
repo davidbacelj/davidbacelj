@@ -17,12 +17,14 @@ interface Props {
 const { logos, with: together, hero = false, card = false } = Astro.props;
 
 const AREA = hero || card ? 14000 : 9000;
-const heightOf = (src: ImageMetadata, scale = 1) => Math.min(114, Math.max(24, Math.round(scale * Math.sqrt(AREA / (src.width / src.height)))));
+const heightOf = (src: ImageMetadata, scale = 1) => Math.min(160, Math.max(24, Math.round(scale * Math.sqrt(AREA / (src.width / src.height)))));
 const n = logos.length;
+// A detailed mark (like SKAPA's, with its fine print) gets a taller tile.
+const big = logos.some((l) => (l.scale ?? 1) >= 2);
 ---
 
 <figure class:list={["wall", { hero, card }]}>
-  <ul class:list={["tiles", { one: n === 1, two: n === 2 || n === 4, five: n === 5, rows1: n <= 3 }]}>
+  <ul class:list={["tiles", { one: n === 1, two: n === 2 || n === 4, five: n === 5, rows1: n <= 3, big }]}>
     {
       logos.map((l) => (
         <li class:list={{ dark: l.dark }}>
@@ -56,6 +58,9 @@ const n = logos.length;
   }
   .tiles.one {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .tiles.big {
+    --row: clamp(170px, 20vw, 220px);
   }
   .tiles.two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -131,6 +136,9 @@ const n = logos.length;
     .wall.hero .tiles {
       --row: 116px;
       --pad: 18px;
+    }
+    .wall:not(.card) .tiles.big {
+      --row: 150px;
     }
     .wall:not(.card) .tiles.one {
       grid-template-columns: minmax(0, 1fr);

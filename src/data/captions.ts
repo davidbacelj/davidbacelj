@@ -17,7 +17,6 @@ export const CAPTIONS: Record<string, string[]> = {
     "Presenting Incredible to a room full of first-time game makers.",
     "The prize-giving on stage at the end of the day.",
     "The Hacking Ground wall in the venue, powered by VISS.AI.",
-    "Deep in a conversation at Startup Day, September 2026.",
   ],
   hackaping: [
     "Both our teams with their prizes. Two tracks, two first places.",
@@ -51,7 +50,11 @@ export const CAPTIONS: Record<string, string[]> = {
     "STELLA's command line, ready for a task.",
     "The package repository its agents were installed from.",
   ],
-  "civeron-podcast": ["Mid-laugh during the recording of the episode."],
+  "civeron-podcast": [
+    "Mid-laugh during the recording of the episode.",
+    "In a Waymo in San Francisco, July 2026. Self-driving cars are one of the things I talk about in the episode.",
+    "Deep in a conversation at Startup Day, September 2026.",
+  ],
   labeldetector: [
     "What the camera sees: every pallet label found.",
     "A LabelDetector camera on duty at the pilot.",
@@ -61,11 +64,14 @@ export const CAPTIONS: Record<string, string[]> = {
     "Wheelscan measures tread depth and uneven wear, reads the size and model off the sidewall, and finds damage on the rim. I built the models that read the text and find the rim damage.",
     "The Wheelscan station. Stereo cameras measure every tyre.",
     "The measurement software running at the station.",
-    "In a Waymo, a car that drives itself with cameras and lidar, in the Bay Area, July 2026.",
   ],
   orangebox: ["Don't buy. Rent. Get the app, pick a box, rent the tool.", "Setting up the lockers before they went live."],
-  "norditech-more": ["Norditech, the AI company Philip and I started.", "Rapid Dimension's industrial 3D printer, driven by our software."],
-  robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall.", "Fredric and me at Physical AI Day, September 2026."],
+  "norditech-more": [
+    "Norditech, the AI company Philip and I started.",
+    "Rapid Dimension's industrial 3D printer, driven by our software.",
+    "Fredric and me at Physical AI Day, September 2026.",
+  ],
+  robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall."],
   norditech: [
     "Philip and me in 2022. We met at a UF fair and started Norditech together.",
     "The Norditech team, spring 2022.",

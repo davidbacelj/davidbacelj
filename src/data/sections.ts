@@ -7,6 +7,7 @@ import { LOGOS, PHOTOS, PRODUCT } from "./profile";
 
 import robowastePhoto from "../assets/photos/robowaste.webp";
 import teamStanford from "../assets/photos/team-stanford.webp";
+import skapaPrize from "../assets/logos/skapa-prize.webp";
 import incWaymo from "../assets/photos/incredible-waymo.webp";
 import incSpintop from "../assets/photos/incredible-spintop.webp";
 import incStartupDay from "../assets/photos/incredible-startup-day.webp";
@@ -211,7 +212,6 @@ export const STOPS: Stop[] = [
           { src: groundJonkoping, alt: "On the Hacking Ground stage in Jönköping" },
           { src: hackathonCeremony, alt: "The prize-giving on stage at the end of the day" },
           { src: hackathonVenue, alt: "The Hacking Ground wall in the venue, powered by VISS.AI" },
-          { src: incStartupDay, alt: "David deep in conversation with a visitor, the Startup Day main stage behind them" },
         ],
         logos: [
           { src: gro36Logo, alt: "GRO36", dark: true },
@@ -316,7 +316,8 @@ export const STOPS: Stop[] = [
         role: "With Philip Alm",
         lede: "Philip and I won the SKAPA prize in Jönköping County, then second prize in the national SKAPA talent award.",
         photo: { src: PHOTOS.skapaAward, alt: "Philip Alm and David on stage with the SKAPA diploma, made out to them both" },
-        logos: [{ src: LOGOS.skapa, alt: "SKAPA" }],
+        // The same prize mark as the SKAPA break (David, 2026-10-26).
+        logos: [{ src: skapaPrize, alt: "SKAPA, the innovation prize in memory of the inventor Alfred Nobel", scale: 2.2 }],
         links: [{ label: "Stiftelsen SKAPA", href: "https://www.stiftelsenskapa.se/skapa-pristagare-2025/skapa-pristagare-2024" }],
       },
       {
@@ -328,6 +329,10 @@ export const STOPS: Stop[] = [
         role: "Podcast guest",
         lede: "I was the guest on Civeron Podcast, talking about how I went from machine learning to AI entrepreneurship.",
         photo: { src: civeronPodcast, alt: "David laughing at a table during the podcast recording" },
+        thumbs: [
+          { src: incWaymo, alt: "David smiling from the back seat of a Waymo with no driver, its sensors on the roof" },
+          { src: incStartupDay, alt: "David deep in conversation with a visitor, the Startup Day main stage behind them" },
+        ],
         links: [
           { label: "Spotify", href: "https://open.spotify.com/episode/1nPxDdSwiiFOUF4u6phIbN" },
           { label: "LinkedIn", href: "https://www.linkedin.com/posts/theodor-ekstrand_vi-intervjuade-david-bacelj-grundare-av-ugcPost-7253382098089033728-yB73/" },
@@ -405,7 +410,6 @@ export const STOPS: Stop[] = [
         thumbs: [
           { src: wheelscanMachine, alt: "The Wheelscan tyre measurement station" },
           { src: wheelscanDemo, alt: "The Wheelscan software at the station" },
-          { src: incWaymo, alt: "David smiling from the back seat of a Waymo with no driver, its sensors on the roof" },
         ],
         logos: [
           { src: wheelscanningLogo, alt: "Wheelscanning" },
@@ -433,7 +437,10 @@ export const STOPS: Stop[] = [
         role: "Consultant",
         lede: "For over two years I worked as a consultant at Norditech. These are a few of the projects we built.",
         photo: { src: norditechCover, alt: "The Norditech logo" },
-        thumbs: [{ src: rapidPrinter, alt: "The Rapid Dimension industrial 3D printer" }],
+        thumbs: [
+          { src: rapidPrinter, alt: "The Rapid Dimension industrial 3D printer" },
+          { src: incPhysicalAiDay, alt: "A selfie of Fredric and David in the audience, Physical AI Day on the screen behind them" },
+        ],
         logos: [
           { src: rapidLogo, alt: "Rapid Dimension" },
           { src: quicksetLogo, alt: "Quick-set" },
@@ -456,7 +463,6 @@ export const STOPS: Stop[] = [
         lede: "As CTO I built AI vision for sorting waste, and then FossilEye, which measures how much plastic is in waste before it is burned.",
         with: "Vattenfall, Tekniska verken, Umeå Energi and Saab",
         photo: { src: robowastePhoto, alt: "Field testing at the sorting machine, the FossilEye machines and the stereo camera rig" },
-        thumbs: [{ src: incPhysicalAiDay, alt: "A selfie of Fredric and David in the audience, Physical AI Day on the screen behind them" }],
         logoCover: true,
         clip: {
           src: "https://www.svt.se/videoplayer-embed/jJyEgoa",

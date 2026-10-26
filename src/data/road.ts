@@ -2,8 +2,9 @@
 // just the posts as he wants them read, with breaks between them. Each entry
 // is a section id, "pause:<year>" for that year's personal photo, or
 // "break:<name>" for one of the breaks drawn on the home page (profiles,
-// tensorflow, linux, producthunt, skapa, music, home). 2026-10-26: the Product
-// Hunt badge after Hacking Ground, the SKAPA prize mark after Hackaping. 2026-10-23: Jönköping right after SKAPA,
+// tensorflow, linux, producthunt, skapa, music, home). 2026-10-26: the SKAPA
+// prize mark after Hacking Ground, the Product Hunt badge after Hackaping, and
+// LabelDetector right under Orange Box. 2026-10-23: Jönköping right after SKAPA,
 // STELLA under Orange Box with the Linux break after it, and the submarine as
 // the very last post, after his life outside work (personal.ts). The build
 // stops if a post or a photo is missing or doubled.
@@ -14,7 +15,7 @@ const ORDER = [
   "incredible",
   "break:profiles",
   "hacking-ground",
-  "break:producthunt",
+  "break:skapa",
   "viss",
   "skapa",
   "break:home",
@@ -22,13 +23,13 @@ const ORDER = [
   "civeron-podcast",
   "swe-llm",
   "hackaping",
-  "break:skapa",
+  "break:producthunt",
   "norditech",
-  "labeldetector",
   "break:tensorflow",
   "wheelscanning",
   "robowaste",
   "orangebox",
+  "labeldetector",
   "stella",
   "break:linux",
   "norditech-more",
