@@ -3,16 +3,9 @@
 // its thumbs; the board shows the first four thumbs). Breaks are keyed by year.
 export const CAPTIONS: Record<string, string[]> = {
   incredible: [
+    "With Peter from Spintop Ventures, one of our lead investors, at the Incredible stand, September 2026.",
     "Incredible on a Mac. Hold a key, say what you want, and it does it.",
     "The voice bar. It listens, then gets to work on the screen.",
-    "In a Waymo, a car with no driver, during our two months in the Bay Area, July 2026.",
-    "With Peter from Spintop Ventures, one of our lead investors, at the Incredible stand, September 2026.",
-    "Deep in a conversation at Startup Day, September 2026.",
-    "Fredric and me at Physical AI Day, September 2026.",
-    "Dinner with the team, April 2026.",
-    "A late evening in the office, with snow outside.",
-    "A night out at a comedy club.",
-    "Fredric and me in the audience at a conference.",
   ],
   "hacking-ground": [
     "Hosting Hacking Ground from the podium, under the stage lights.",
@@ -22,6 +15,9 @@ export const CAPTIONS: Record<string, string[]> = {
     "The winning team, sign and all.",
     "Heads down at the laptops, a whole game in an afternoon.",
     "Presenting Incredible to a room full of first-time game makers.",
+    "The prize-giving on stage at the end of the day.",
+    "The Hacking Ground wall in the venue, powered by VISS.AI.",
+    "Deep in a conversation at Startup Day, September 2026.",
   ],
   hackaping: [
     "Both our teams with their prizes. Two tracks, two first places.",
@@ -33,6 +29,8 @@ export const CAPTIONS: Record<string, string[]> = {
     "Mid-sentence in our office, August 2024, back when we were VISS.AI.",
     "Philip and me, laughing, August 2024.",
     "Talking it through with Philip by the green wall.",
+    "A late evening in the office, with snow outside.",
+    "Fredric and me in the audience at a conference.",
   ],
   "on-the-road": [
     "At the Golden Gate Bridge on our Startup Grind trip, April 2024.",
@@ -40,6 +38,7 @@ export const CAPTIONS: Record<string, string[]> = {
     "At TechBBQ in Copenhagen, September 2024.",
     "On the plane to Web Summit in Lisbon, November 2024.",
     "Escaping from OpenAI in a prison suit, Web Summit 2025.",
+    "The team at Stanford, in the Bay Area.",
   ],
   "swe-llm": [
     "Asking SWE-LLM, in Swedish, who Astrid Lindgren was. And what 10 + 23 is.",
@@ -52,7 +51,7 @@ export const CAPTIONS: Record<string, string[]> = {
     "STELLA's command line, ready for a task.",
     "The package repository its agents were installed from.",
   ],
-  "civeron-podcast": ["The cover of my episode, from Civeron Podcast."],
+  "civeron-podcast": ["Mid-laugh during the recording of the episode."],
   labeldetector: [
     "What the camera sees: every pallet label found.",
     "A LabelDetector camera on duty at the pilot.",
@@ -62,14 +61,17 @@ export const CAPTIONS: Record<string, string[]> = {
     "Wheelscan measures tread depth and uneven wear, reads the size and model off the sidewall, and finds damage on the rim. I built the models that read the text and find the rim damage.",
     "The Wheelscan station. Stereo cameras measure every tyre.",
     "The measurement software running at the station.",
+    "In a Waymo, a car that drives itself with cameras and lidar, in the Bay Area, July 2026.",
   ],
   orangebox: ["Don't buy. Rent. Get the app, pick a box, rent the tool.", "Setting up the lockers before they went live."],
   "norditech-more": ["Norditech, the AI company Philip and I started.", "Rapid Dimension's industrial 3D printer, driven by our software."],
-  robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall."],
+  robowaste: ["Field tests at the sorting machine, and the FossilEye machines in the hall.", "Fredric and me at Physical AI Day, September 2026."],
   norditech: [
     "Philip and me in 2022. We met at a UF fair and started Norditech together.",
     "The Norditech team, spring 2022.",
     "Philip and me again, two years later.",
+    "The same company today: dinner with the Incredible team, April 2026.",
+    "A night out at a comedy club with the team.",
   ],
   tidaholm: ["A machine taking shape on the workshop floor at Tidaholm."],
   garden: [

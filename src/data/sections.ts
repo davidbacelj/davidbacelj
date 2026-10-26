@@ -6,6 +6,7 @@ import type { ImageMetadata } from "astro";
 import { LOGOS, PHOTOS, PRODUCT } from "./profile";
 
 import robowastePhoto from "../assets/photos/robowaste.webp";
+import teamStanford from "../assets/photos/team-stanford.webp";
 import incWaymo from "../assets/photos/incredible-waymo.webp";
 import incSpintop from "../assets/photos/incredible-spintop.webp";
 import incStartupDay from "../assets/photos/incredible-startup-day.webp";
@@ -166,19 +167,11 @@ export const STOPS: Stop[] = [
         role: "Co-founder",
         lede: "I co-founded Incredible, an AI that does the work on your computer when you tell it what you want.",
         with: "Philip Alm and the Incredible team in Jönköping",
-        photo: { src: PRODUCT.incredibleHome, alt: "The Incredible app on a Mac, with Hold to talk at the top and the day's tasks below" },
+        // The photo with Peter from Spintop shows big after the Funding part (David, 2026-10-26).
+        photo: { src: incSpintop, alt: "David with Peter from Spintop Ventures and a colleague in front of the Incredible stand" },
         thumbs: [
+          { src: PRODUCT.incredibleHome, alt: "The Incredible app on a Mac, with Hold to talk at the top and the day's tasks below" },
           { src: PRODUCT.incredibleSayIt, alt: "The Incredible voice bar" },
-          // His own photos from the Incredible year (2026-10-26), in pairs for the gallery.
-          // The team photo is the post's cover (covers.ts), so it isn't repeated here.
-          { src: incWaymo, alt: "David smiling from the back seat of a Waymo with no driver, its sensors on the roof" },
-          { src: incSpintop, alt: "David with Peter from Spintop Ventures and a colleague in front of the Incredible stand" },
-          { src: incStartupDay, alt: "David deep in conversation with a visitor, the Startup Day main stage behind them" },
-          { src: incPhysicalAiDay, alt: "A selfie of Fredric and David in the audience, Physical AI Day on the screen behind them" },
-          { src: incTeamDinner, alt: "The team round a kitchen table, mid-dinner" },
-          { src: incOfficeSnow, alt: "Three of the team laughing in a glass meeting room at night, snow outside" },
-          { src: incComedy, alt: "David giving a thumbs up with two of the team inside a giant clown mouth at a comedy club" },
-          { src: incConference, alt: "A selfie of David and Fredric with lanyards in a dark auditorium" },
         ],
         logos: [
           { src: LOGOS.incredible, alt: "Incredible" },
@@ -218,6 +211,7 @@ export const STOPS: Stop[] = [
           { src: groundJonkoping, alt: "On the Hacking Ground stage in Jönköping" },
           { src: hackathonCeremony, alt: "The prize-giving on stage at the end of the day" },
           { src: hackathonVenue, alt: "The Hacking Ground wall in the venue, powered by VISS.AI" },
+          { src: incStartupDay, alt: "David deep in conversation with a visitor, the Startup Day main stage behind them" },
         ],
         logos: [
           { src: gro36Logo, alt: "GRO36", dark: true },
@@ -262,6 +256,8 @@ export const STOPS: Stop[] = [
         thumbs: [
           { src: cofoundersLaughing, alt: "Philip Alm and David laughing, August 2024" },
           { src: cofoundersGreenWall, alt: "Philip and David talking by the green wall in the office, August 2024" },
+          { src: incOfficeSnow, alt: "Three of the team laughing in a glass meeting room at night, snow outside" },
+          { src: incConference, alt: "A selfie of David and Fredric with lanyards in a dark auditorium" },
         ],
         logos: [
           { src: LOGOS.viss, alt: "VISS.AI" },
@@ -288,6 +284,7 @@ export const STOPS: Stop[] = [
           { src: techbbq, alt: "At TechBBQ in Copenhagen, September 2024" },
           { src: travelWebsummit, alt: "The team on the plane to Web Summit, November 2024" },
           { src: websummit, alt: "David and the team at Web Summit, one of them in an orange prison suit, November 2025" },
+          { src: teamStanford, alt: "Four of the team arm in arm on the lawn at Stanford, Hoover Tower behind them" },
         ],
       },
       {
@@ -330,7 +327,7 @@ export const STOPS: Stop[] = [
         when: "2024",
         role: "Podcast guest",
         lede: "I was the guest on Civeron Podcast, talking about how I went from machine learning to AI entrepreneurship.",
-        photo: { src: civeronPodcast, alt: "The episode's cover: the host at the microphone and David laughing, with DAVID BACELJ in big white letters" },
+        photo: { src: civeronPodcast, alt: "David laughing at a table during the podcast recording" },
         links: [
           { label: "Spotify", href: "https://open.spotify.com/episode/1nPxDdSwiiFOUF4u6phIbN" },
           { label: "LinkedIn", href: "https://www.linkedin.com/posts/theodor-ekstrand_vi-intervjuade-david-bacelj-grundare-av-ugcPost-7253382098089033728-yB73/" },
@@ -408,6 +405,7 @@ export const STOPS: Stop[] = [
         thumbs: [
           { src: wheelscanMachine, alt: "The Wheelscan tyre measurement station" },
           { src: wheelscanDemo, alt: "The Wheelscan software at the station" },
+          { src: incWaymo, alt: "David smiling from the back seat of a Waymo with no driver, its sensors on the roof" },
         ],
         logos: [
           { src: wheelscanningLogo, alt: "Wheelscanning" },
@@ -458,6 +456,7 @@ export const STOPS: Stop[] = [
         lede: "As CTO I built AI vision for sorting waste, and then FossilEye, which measures how much plastic is in waste before it is burned.",
         with: "Vattenfall, Tekniska verken, Umeå Energi and Saab",
         photo: { src: robowastePhoto, alt: "Field testing at the sorting machine, the FossilEye machines and the stereo camera rig" },
+        thumbs: [{ src: incPhysicalAiDay, alt: "A selfie of Fredric and David in the audience, Physical AI Day on the screen behind them" }],
         logoCover: true,
         clip: {
           src: "https://www.svt.se/videoplayer-embed/jJyEgoa",
@@ -492,6 +491,8 @@ export const STOPS: Stop[] = [
         thumbs: [
           { src: norditechTeam2022, alt: "The Norditech team in April 2022" },
           { src: PHOTOS.cofounders, alt: "Philip and David, August 2024" },
+          { src: incTeamDinner, alt: "The team round a kitchen table, mid-dinner" },
+          { src: incComedy, alt: "David giving a thumbs up with two of the team inside a giant clown mouth at a comedy club" },
         ],
         logos: [
           { src: norditechLogo, alt: "Norditech" },

@@ -5,8 +5,10 @@
 // posts in his own order (src/data/road.ts), each a card led by a big photo of
 // him where he picked one, and his personal photos between them.
 import "@fontsource-variable/geist/wght.css";
-import { Picture } from "astro:assets";
+import { Picture, Image } from "astro:assets";
 import Px from "./Px.astro";
+import productHuntBadge from "../assets/logos/producthunt-top-post.svg";
+import skapaPrize from "../assets/logos/skapa-prize.webp";
 import LogoWall from "./LogoWall.astro";
 import Icon from "./Icon.astro";
 import { STACK, SOCIALS } from "../data/icons";
@@ -35,7 +37,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     <Picture src={PHOTOS.stage} formats={["avif"]} fallbackFormat="webp" widths={[1000, 1800, 2600, 3200]} sizes="100vw" alt="David Bacelj in a black suit at the podium, hosting Hacking Ground under the stage lights" loading="eager" fetchpriority="high" />
     <div class="hero-text">
       <h1>David Bacelj</h1>
-      <p class="hero-line">Co-founder of Incredible. Before that, head of AI at Wheelscanning, a Saab spin-off, and CTO of RoboWaste.</p>
+      <p class="hero-line">{PERSON.tagline}</p>
       <ul class="icons">
         {
           ICONS.map((s) => (
@@ -147,6 +149,28 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
                     <h2 id="home-title">I live in Jönköping</h2>
                     <p>This corner of Sweden, at the southern tip of Lake Vättern. I grew up here, and it is where we build Incredible.</p>
                   </div>
+                </section>
+              </div>
+            );
+          if (item.kind === "break" && item.name === "producthunt")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk award" aria-labelledby="ph-title">
+                  <img class="ph-badge" src={productHuntBadge.src} width={productHuntBadge.width} height={productHuntBadge.height} alt="Product Hunt: #1 Product of the Day" loading="lazy" decoding="async" />
+                  <h2 id="ph-title">Number one on Product Hunt</h2>
+                  <p>Our agent platform was the #1 product of the day on Product Hunt in 2025.</p>
+                </section>
+              </div>
+            );
+          if (item.kind === "break" && item.name === "skapa")
+            return (
+              <div class="post">
+                <span class="dot" data-node aria-hidden="true" />
+                <section class="brk award" aria-labelledby="skapa-title">
+                  <Image src={skapaPrize} alt="SKAPA, the innovation prize in memory of the inventor Alfred Nobel" widths={[460, 770]} sizes="(max-width: 900px) 80vw, 460px" class="skapa-mark" loading="lazy" />
+                  <h2 id="skapa-title">Winner of the SKAPA prize</h2>
+                  <p>Sweden's largest innovation prize, founded in memory of Alfred Nobel. We won it for Jönköping County in 2024 and took second in all of Sweden.</p>
                 </section>
               </div>
             );
@@ -965,6 +989,34 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     line-height: 1.55;
     color: #34332f;
     text-wrap: pretty;
+  }
+
+  /* Prizes on the road: the badge or mark itself, a title and one line */
+  .award {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    padding: clamp(36px, 5vw, 60px);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 34px 70px -40px rgb(0 0 0 / 0.45);
+  }
+  .ph-badge {
+    width: min(380px, 100%);
+    height: auto;
+    margin-bottom: 8px;
+  }
+  .award :global(.skapa-mark) {
+    width: min(420px, 100%);
+    height: auto;
+    margin-bottom: 4px;
+  }
+  .award p {
+    max-width: 560px;
+    text-wrap: pretty;
+    font-size: 17.5px;
+    line-height: 1.55;
+    color: #34332f;
   }
 
   /* At home in the terminal: dark like the music break, the Linux logo in a tile */

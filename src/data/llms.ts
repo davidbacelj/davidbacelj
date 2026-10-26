@@ -8,7 +8,7 @@
 
 /** The blockquote under the name: who he is, in three sentences. */
 export const LLMS_SUMMARY =
-  "David Bacelj is a Swedish engineer and tech entrepreneur, co-founder of Incredible, VISS.AI and Norditech. He has raised millions of dollars in venture capital and won the SKAPA prize, Sweden's largest innovation award. Today he works on sales and GTM engineering at Incredible, an AI assistant that does the work on your computer.";
+  "David Bacelj is a Swedish engineer who sells, co-founder of Incredible, VISS.AI and Norditech. He has raised millions of dollars in venture capital and won the SKAPA prize, Sweden's largest innovation award. Today he works on sales and GTM engineering at Incredible, an AI assistant that does the work on your computer.";
 
 export const LLMS_INTRO: string[] = [
   "David builds the technology and he sells it. On the technical side he has built AI models from the ground up in TensorFlow, been CTO of Norditech and RoboWaste, been head of AI at Wheelscanning, a Saab spin-off with hundreds of machines across Europe, and helped train the largest Swedish language model of its time. On the business side he has raised venture capital together with his co-founder Philip Alm, met enterprise customers and investors in the Bay Area, and helped take Incredible to customers in Sweden, France, Germany and the US.",

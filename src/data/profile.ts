@@ -36,10 +36,13 @@ export const PERSON = {
   name: "David Bacelj",
   lead: "I co-founded Incredible, an assistant for Mac and Windows that does the work on your computer when you tell it what you want.",
   before: "Before Incredible I built machine-vision systems for recycling and for warehouses, and I programmed industrial robots.",
-  // The line Google shows under the site in search results (David's wording,
-  // 2026-10-22). Keep it under about 155 characters or Google cuts it off.
+  // The line Google shows under the site in search results. 2026-10-26 he picked
+  // "engineer who sells" as the line he uses everywhere (website, LinkedIn, X).
+  // Keep it under about 155 characters or Google cuts it off.
   description:
-    "David Bacelj is a Swedish engineer and tech entrepreneur, co-founder of Incredible, VISS.AI and Norditech. He has raised millions in venture capital.",
+    "David Bacelj is a Swedish engineer who sells, co-founder of Incredible, VISS.AI and Norditech. He builds AI models and the GTM engine behind them.",
+  /** The line under his name on the home page, his tagline everywhere. */
+  tagline: "Engineer who sells. Co-founder of Incredible, building AI models and the GTM engine behind them.",
   // The longer version, for search engines' structured data, where there is no length limit.
   bio: "David Bacelj is a Swedish engineer and tech entrepreneur, best known as a co-founder of Incredible, VISS.AI and Norditech. He has raised millions of dollars in venture capital and grown several companies. His expertise is in GTM engineering, sales and building AI models.",
   expertise: ["GTM engineering", "Sales", "Artificial intelligence"],

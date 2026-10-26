@@ -2,7 +2,8 @@
 // just the posts as he wants them read, with breaks between them. Each entry
 // is a section id, "pause:<year>" for that year's personal photo, or
 // "break:<name>" for one of the breaks drawn on the home page (profiles,
-// tensorflow, linux, music, home). 2026-10-23: Jönköping right after SKAPA,
+// tensorflow, linux, producthunt, skapa, music, home). 2026-10-26: the Product
+// Hunt badge after Hacking Ground, the SKAPA prize mark after Hackaping. 2026-10-23: Jönköping right after SKAPA,
 // STELLA under Orange Box with the Linux break after it, and the submarine as
 // the very last post, after his life outside work (personal.ts). The build
 // stops if a post or a photo is missing or doubled.
@@ -13,6 +14,7 @@ const ORDER = [
   "incredible",
   "break:profiles",
   "hacking-ground",
+  "break:producthunt",
   "viss",
   "skapa",
   "break:home",
@@ -20,6 +22,7 @@ const ORDER = [
   "civeron-podcast",
   "swe-llm",
   "hackaping",
+  "break:skapa",
   "norditech",
   "labeldetector",
   "break:tensorflow",
@@ -40,7 +43,7 @@ const ORDER = [
 
 export type Post = { kind: "post"; s: Section; year: string };
 export type Pause = { kind: "pause"; sign: string; photo: Photo; text: string };
-const BREAKS = ["music", "tensorflow", "linux", "profiles", "home"] as const;
+const BREAKS = ["music", "tensorflow", "linux", "producthunt", "skapa", "profiles", "home"] as const;
 export type Break = { kind: "break"; name: (typeof BREAKS)[number] };
 
 const posts = new Map(STOPS.flatMap((stop) => stop.sections.map((s): [string, Post] => [s.id, { kind: "post", s, year: s.when ?? stop.sign }])));

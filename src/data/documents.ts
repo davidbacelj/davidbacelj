@@ -37,7 +37,8 @@ export function documentOf(s: Section, cover?: DocPhoto): Doc {
     ...(s.thumbs ?? []).map((t, k) => ({ photo: t, caption: CAPTIONS[s.id]?.[k + 1] ?? t.alt })),
   ];
   const front = cover ?? own[0];
-  const inside = cover ? own : own.slice(1);
+  // A cover that is also one of the section's own photos shows once, at the top.
+  const inside = cover ? own.filter((p) => p.photo.src.src !== cover.photo.src.src) : own.slice(1);
   const pages: DocPage[] = [];
   for (let i = 0; i < parts.length; i += 2) pages.push({ parts: parts.slice(i, i + 2), photo: inside[pages.length] });
   const used = pages.filter((p) => p.photo).length;
