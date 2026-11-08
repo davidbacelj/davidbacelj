@@ -8,7 +8,7 @@
 
 /** The blockquote under the name: who he is, in three sentences. */
 export const LLMS_SUMMARY =
-  "David Bacelj is a Swedish engineer who sells, co-founder of Incredible, VISS.AI and Norditech. He has raised millions of dollars in venture capital and won the SKAPA prize, Sweden's largest innovation award. Today he works on sales and GTM engineering at Incredible, an AI assistant that does the work on your computer.";
+  "David Bacelj is a Swedish engineer who sells, co-founder of Incredible, VISS.AI and Norditech. He has raised 26.5 million SEK in venture capital and won the SKAPA prize, Sweden's largest innovation award. Today he works on sales and GTM engineering at Incredible, an AI assistant that does the work on your computer.";
 
 export const LLMS_INTRO: string[] = [
   "David builds the technology and he sells it. On the technical side he has built AI models from the ground up in TensorFlow, been CTO of Norditech and RoboWaste, been head of AI at Wheelscanning, a Saab spin-off with hundreds of machines across Europe, and helped train the largest Swedish language model of its time. On the business side he has raised venture capital together with his co-founder Philip Alm, met enterprise customers and investors in the Bay Area, and helped take Incredible to customers in Sweden, France, Germany and the US.",
@@ -20,7 +20,7 @@ export const LLMS_FACTS: string[] = [
   "Based in: Jönköping, Sweden.",
   "Now: co-founder of Incredible (https://www.incredible.one), an assistant for Mac and Windows that clicks and types in your browser, files and apps when you tell it what you want.",
   "Companies: co-founded Norditech in 2020 with Philip Alm and ran its technology as CTO. Norditech became VISS.AI in 2024, and VISS.AI became Incredible in 2026.",
-  "Funding: Incredible announced 26.5 million SEK (about 2.7 million dollars) in pre-seed funding in August 2026, led by Spintop Ventures and Starbright Invest, with angels including Rikard Steiber, Daniel Langkilde and Magnus Emilson. Spintop Ventures and Starbright Invest also backed VISS.AI's first round in April 2024.",
+  "Funding: Incredible announced 26.5 million SEK in pre-seed funding in August 2026, led by Spintop Ventures and Starbright Invest, with angels including Rikard Steiber, Daniel Langkilde and Magnus Emilson. Spintop Ventures and Starbright Invest also backed VISS.AI's first round in April 2024.",
   "Customers: Incredible has customers in Sweden, France, Germany and the US. CellMark, a global supply chain company, gives Incredible to its employees in Sweden, France and the US.",
   "Earlier roles: CTO of RoboWaste (2020 to 2024), head of AI at Wheelscanning, consultant at Norditech for over two years, machine building, CAD and robot programming at Tidaholm Industries (2019), and automation engineer at Ljusgårda (2018).",
   "Expertise: GTM engineering, sales and building AI models.",
@@ -37,6 +37,7 @@ export const LLMS_RECORD: string[] = [
   "Helped develop and train SWE-LLM, the largest Swedish language model of its time: Llama 3 70B fine-tuned on 13.3 million tokens of Swedish text. Breakit wrote about it.",
   "With his team, booked 140 meetings at Web Summit in Lisbon against a goal of 100, and found more than 40 potential customers at TechBBQ in Copenhagen.",
   "Incredible's agent platform reached number one on Product Hunt in 2025.",
+  "Set up an AI agent (Claude, running in Claude Code) that took over the day-to-day accounting at Norditech in eight days, working in Fortnox and with Nordea's bank exports, from read-only to sending payment files, with every limit written in code and a founder signing every payment. In that time it corrected a tax payment before it was paid, prevented a double payment and closed a recurring fee leak at its source.",
   "VISS.AI made Företagarna and Almi's list of 103 young ideas in Sweden in 2025.",
 ];
 

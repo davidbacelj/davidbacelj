@@ -2,7 +2,7 @@
 // and the top of the post. 2026-10-23 David asked for his role where it says
 // most ("CTO of RoboWaste", "Head of AI vision at Wheelscanning") and a better
 // line everywhere else: each one adds something the headline doesn't already
-// say. 2026-10-26 he went through them one by one (USD for the round, "2 gold
+// say. 2026-10-26 he went through them one by one (the round as the exact 26.5M SEK, "2 gold
 // medals", "140 meetings booked in 24 hours" and "200+ in the audience" are his
 // own figures). The value is drawn with a highlighter pen on the card and the
 // post. Every one comes from a public source or from David himself.
@@ -14,7 +14,8 @@ export interface Stat {
 
 /** One line per section: a number or a role. His life outside work has none. */
 export const SECTION_STATS: Record<string, Stat> = {
-  incredible: { value: "~$3M", label: "pre-seed (26.5M SEK), led by Spintop Ventures and Starbright Invest" },
+  incredible: { value: "26.5M SEK", label: "pre-seed, led by Spintop Ventures and Starbright Invest" },
+  "accounting-agent": { value: "8 days", label: "from read-only to running our day-to-day accounting" },
   "hacking-ground": { value: "Host and speaker", label: "with Ground, GRO36 and Glitched" },
   viss: { value: "Co-founder", label: "backed by Spintop Ventures and Starbright Invest in 2024" },
   skapa: { value: "Innovation prize", label: "won in Jönköping County, then 2nd in all of Sweden" },

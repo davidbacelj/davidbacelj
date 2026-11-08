@@ -97,6 +97,7 @@ export const CAPTIONS: Record<string, string[]> = {
     "Suited up, autumn 2022. For once out of the workshop clothes.",
   ],
   ljusgarda: ["Ljusgårda, one of Europe's largest indoor farms."],
+  "accounting-agent": ["Claude works in the systems our money runs through: Fortnox for the books, Pleo for the company cards and Nordea for the bank."],
 };
 
 // Captions for a year's personal photo on the road, by year. None right now:

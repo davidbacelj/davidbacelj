@@ -14,7 +14,8 @@ export interface Headline {
 
 export const HEADLINES: Headline[] = [
   { id: "incredible", title: "Co-founder of Incredible, backed by 26.5 million SEK" },
-  { id: "skapa", title: "Winner of the SKAPA prize, Sweden's largest innovation award" },
+  { id: "accounting-agent", title: "I handed our accounting to an AI agent, and it found money in eight days" },
+  { id: "skapa", title: "Winner of SKAPA Prize, Sweden's largest innovation award" },
   { id: "hackaping", title: "Two first places at Sweden's biggest AI hackathon" },
   { title: "Among the top 0.1% of GTM engineers", text: "I am among the top 0.1% of GTM engineers.", needsSource: true },
   { id: "wheelscanning", title: "Head of AI at a Saab spin-off with hundreds of machines across Europe" },

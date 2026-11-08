@@ -14,6 +14,7 @@ import { PERSONAL } from "./personal";
 const ORDER = [
   "incredible",
   "break:profiles",
+  "accounting-agent",
   "hacking-ground",
   "break:skapa",
   "viss",

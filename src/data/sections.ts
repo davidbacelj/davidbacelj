@@ -101,6 +101,8 @@ import saabLogo from "../assets/logos/saab.png";
 import ljusgardaCover from "../assets/photos/ljusgarda-cover.png";
 // Norditech's logotype on a light blue panel (2026-10-21: the consulting post leads with it).
 import norditechCover from "../assets/photos/norditech-cover.png";
+// Claude joined to Fortnox, Pleo and Nordea on a blush panel (2026-11-07: his pick of three).
+import accountingAgentCover from "../assets/photos/accounting-agent-cover.png";
 
 export interface Photo {
   src: ImageMetadata;
@@ -187,6 +189,19 @@ export const STOPS: Stop[] = [
           { label: "CellMark", href: "https://www.incredible.one/blog/cellmark-success-story" },
           { label: "Product Hunt", href: "https://www.incredible.one/blog/our-2025-vibe-computing" },
         ],
+      },
+      {
+        // An AI agent that took over Norditech's day-to-day accounting (David's
+        // brief, 5 November 2026). Everything comes from that brief; it leaves
+        // out account numbers, people's names, customers and the fraudster.
+        // David chose to name Claude, Claude Code, Fortnox, Pleo and Nordea (2026-11-06);
+        // the debt collector and the phone operator stay unnamed.
+        id: "accounting-agent",
+        title: "The accounting agent",
+        when: "2026",
+        role: "AI agents",
+        lede: "I set up Claude as an AI agent that runs our day-to-day accounting. It books and checks everything, and a founder signs every payment.",
+        photo: { src: accountingAgentCover, alt: "Claude joined to Fortnox, Pleo and Nordea" },
       },
     ],
   },
