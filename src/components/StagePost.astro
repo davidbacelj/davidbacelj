@@ -46,6 +46,9 @@ const outlets = [...new Set((s.press ?? []).map((a) => a.outlet))];
 const sources = (s.links ?? []).filter((l) => !(s.press ?? []).some((a) => a.href === l.href));
 const featured = outlets.length > 1 ? `${outlets.slice(0, -1).join(", ")} and ${outlets.at(-1)}` : outlets[0];
 const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label === n)!).filter(Boolean);
+// A paragraph's `[words](https://…)` as links: split() gives text, words, href, text, and so on.
+const linked = (p: string) =>
+  p.split(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/).flatMap((t, n, all) => (n % 3 === 0 ? [t] : n % 3 === 1 ? [{ words: t, href: all[n + 1] }] : []));
 ---
 
 <Base title={`${doc.title} · David Bacelj`} description={s.lede} themeColor="#f4f1ea">
@@ -130,7 +133,7 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
               {pg.parts.map((part, j) => (
                 <>
                   {part.h && <h2>{part.h}</h2>}
-                  <p>{part.p}</p>
+                  <p>{linked(part.p).map((t) => (typeof t === "string" ? t : <a href={t.href} rel="noopener" target="_blank">{t.words}</a>))}</p>
                   {k === wallAt?.k && j === wallAt?.j && (swap ? doc.cover && (
                     <figure class="wide">
                       <Px src={doc.cover.photo.src} alt={doc.cover.photo.alt} widths={[700, 1100, 1600]} sizes="(max-width: 1000px) 100vw, 920px" />
@@ -389,6 +392,15 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((x) => x.label
     font-size: 19px;
     line-height: 1.72;
     color: #26241f;
+  }
+  .body > p a {
+    color: var(--ink);
+    text-decoration-color: rgb(0 0 0 / 0.3);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 0.15s;
+  }
+  .body > p a:hover {
+    text-decoration-color: currentColor;
   }
   .body > h2 {
     margin-top: 52px;

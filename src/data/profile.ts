@@ -50,9 +50,12 @@ export const PERSON = {
   email: "david.bacelj@gmail.com",
 };
 
-/** Where else David is online; the page metadata lists these as the same person. */
+/** Where else David is online. The page metadata lists his own profiles (not
+ *  the `site`s, which are products) as the same person. CadFlow added at his
+ *  request, 2026-11-21. */
 export const LINKS = [
-  { label: "Incredible", href: "https://www.incredible.one" },
+  { label: "Incredible", href: "https://www.incredible.one", site: true },
+  { label: "CadFlow", href: "https://www.cadflow.app/", site: true },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/davidbacelj/" },
   { label: "X", href: "https://x.com/davidbacelj" },
   { label: "GitHub", href: "https://github.com/davidbacelj" },

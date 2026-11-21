@@ -12,9 +12,9 @@ import skapaPrize from "../assets/logos/skapa-prize.webp";
 import LogoWall from "./LogoWall.astro";
 import Icon from "./Icon.astro";
 import { STACK, SOCIALS } from "../data/icons";
-import { PHOTOS, PERSON } from "../data/profile";
+import { PHOTOS, PERSON, LINKS } from "../data/profile";
 import { MUSIC, storyHref } from "../data/sections";
-import { ROAD } from "../data/road";
+import { ROAD, POSTS } from "../data/road";
 import { PAUSE_CAPTIONS } from "../data/captions";
 import { SECTION_STATS } from "../data/highlights";
 import { COVERS } from "../data/covers";
@@ -304,6 +304,35 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
         </ul>
       </div>
     </div>
+    <!-- Every post in road order, and where else to find him (2026-11-21). -->
+    <nav class="end-links" aria-label="All posts and links">
+      <div>
+        <h3>All posts</h3>
+        <ul class="posts">
+          {
+            POSTS.map(({ s }) => (
+              <li>
+                <a href={storyHref(s.id)}>{s.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3>Elsewhere</h3>
+        <ul>
+          {
+            LINKS.map((l) => (
+              <li>
+                <a href={l.href} rel="noopener" target="_blank">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </nav>
   </footer>
 </div>
 
@@ -1121,6 +1150,42 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     margin-top: 20px;
     color: rgb(255 255 255 / 0.8);
   }
+  .end-links {
+    width: min(var(--wide), 100%);
+    margin: clamp(72px, 8vw, 110px) auto 0;
+    padding-top: 40px;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    gap: 64px;
+  }
+  .end-links ul {
+    display: grid;
+    gap: 10px 32px;
+    margin-top: 18px;
+    font-size: 15.5px;
+    line-height: 1.4;
+  }
+  /* Read down each column, in road order */
+  .end-links .posts {
+    display: block;
+    columns: 3;
+    column-gap: 32px;
+  }
+  .end-links .posts li {
+    break-inside: avoid;
+    margin-bottom: 10px;
+  }
+  .end-links a {
+    color: rgb(255 255 255 / 0.7);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .end-links a:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 
   /* Phone */
   @media (max-width: 900px) {
@@ -1214,6 +1279,13 @@ const ICONS = ["LinkedIn", "X", "GitHub"].map((n) => SOCIALS.find((s) => s.label
     }
     .end-grid {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .end-links {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 48px;
+    }
+    .end-links .posts {
+      columns: 2;
     }
   }
 </style>

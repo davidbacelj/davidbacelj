@@ -6,20 +6,21 @@
 // prize mark after Hacking Ground, the Product Hunt badge after Hackaping, and
 // LabelDetector right under Orange Box. 2026-10-23: Jönköping right after SKAPA,
 // STELLA under Orange Box with the Linux break after it, and the submarine as
-// the very last post, after his life outside work (personal.ts). The build
-// stops if a post or a photo is missing or doubled.
+// the very last post, after his life outside work (personal.ts). 2026-11-12: the
+// accounting agent right after Jönköping, not so far up. The build stops if a
+// post or a photo is missing or doubled.
 import { STOPS, type Photo, type Section } from "./sections";
 import { PERSONAL } from "./personal";
 
 const ORDER = [
   "incredible",
   "break:profiles",
-  "accounting-agent",
   "hacking-ground",
   "break:skapa",
   "viss",
   "skapa",
   "break:home",
+  "accounting-agent",
   "on-the-road",
   "civeron-podcast",
   "swe-llm",

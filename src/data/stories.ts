@@ -7,6 +7,7 @@
 export interface Part {
   /** A small heading, in sentence case. The opening part has none. */
   h?: string;
+  /** The paragraph. `[words](https://…)` in it becomes a link on the post. */
   p: string;
 }
 
@@ -295,6 +296,14 @@ export const STORIES: Record<string, Part[]> = {
     {
       h: "What I learned",
       p: "I learned a lot of CAD, and different ways of making parts: water jet cutting, laser cutting and assembling the machines. There was some electrical engineering too, and I programmed robots.",
+    },
+    {
+      // David asked for these two links to CadFlow (2026-11-21).
+      h: "CAD today",
+      p: "CAD stayed with me. Today I'm working on [CadFlow](https://www.cadflow.app/), modern CAD for makers and engineers that runs in the browser. You can design a part yourself or let AI help you along the way.",
+    },
+    {
+      p: "If you'd rather have AI help in the CAD program you already use, CadFlow has a guide to [the best CAD MCP servers for Claude and ChatGPT](https://www.cadflow.app/blog/cad-mcp-servers/) and how to install them.",
     },
   ],
   garden: [
