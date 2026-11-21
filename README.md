@@ -1,6 +1,6 @@
 ### Hi, I'm David
 
-I co-founded [Incredible](https://www.incredible.one), an assistant for Mac and Windows that does the work on your computer when you tell it what you want. Before Incredible I built machine-vision systems for recycling and for warehouses, and I programmed industrial robots.
+I co-founded [Incredible](https://www.incredible.one), an assistant for Mac and Windows that does the work on your computer when you tell it what you want. Before Incredible I built machine-vision systems for recycling and for warehouses, and I programmed industrial robots. also involved in [Cadflow](https://cadflow.app)
 
 [davidbacelj.com](https://davidbacelj.com) · [LinkedIn](https://www.linkedin.com/in/davidbacelj/) · [X](https://x.com/davidbacelj)
 
